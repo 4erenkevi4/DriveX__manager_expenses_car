@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_car">
+
+    <fragment
+        android:id="@+id/nav_car"
+        android:name="com.example.drivex.presentation.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/nav_notify"
+        android:name="com.example.drivex.presentation.ui.notification.NotificationFragment"
+        android:label="@string/menu_notify"
+        tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.example.drivex.presentation.ui.map.MapFragment"
+        android:label="@string/menu_notify"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/nav_stat"
+        android:name="com.example.drivex.presentation.ui.stat.StatFragment"
+        android:label="@string/menu_stat"
+        tools:layout="@layout/fragment_stat" />
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.drivex.presentation.ui.setting.SettingFragment"
+        android:label="@string/menu_setting"
+        tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/nav_info"
+        android:name="com.example.drivex.presentation.ui.info.InfoFragment"
+        android:label="@string/menu_info"
+        tools:layout="@layout/fragment_info" />
+
+
+
+</navigation>
