@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -41,12 +42,24 @@ class FuelActivity : AppCompatActivity() {
         buttonPhoto = findViewById(R.id.button_photo)
         buttonSave = findViewById(R.id.button_save)
         containerPhoto = findViewById(R.id.fuel_photo_container)
+        
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(FuelViewModel::class.java)
 
         initCalendar()
+        initPhotoButton()
         initSaveButton()
+
     }
+    private fun initPhotoButton(){
+
+        buttonPhoto.setOnClickListener {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, 1)
+        }
+    }
+
+
 
     private fun initSaveButton() {
 
