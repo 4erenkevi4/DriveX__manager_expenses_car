@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
@@ -20,7 +21,6 @@ import java.util.*
 
 class FuelActivity : AppCompatActivity() {
 
-
     private lateinit var textViewDate: TextView
     private lateinit var editTextMileage: EditText
     private lateinit var editTextCost: EditText
@@ -29,7 +29,8 @@ class FuelActivity : AppCompatActivity() {
     private lateinit var buttonSave: ImageView
     private lateinit var containerPhoto: ImageView
     lateinit var fuelViewModel: FuelViewModel
-
+    private val CAMERA_PERMISSION_CODE = 1
+    private val CAMERA_PIC_REQUEST = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,29 +43,31 @@ class FuelActivity : AppCompatActivity() {
         buttonPhoto = findViewById(R.id.button_photo)
         buttonSave = findViewById(R.id.button_save)
         containerPhoto = findViewById(R.id.fuel_photo_container)
-        
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(FuelViewModel::class.java)
-
         initCalendar()
         initPhotoButton()
         initSaveButton()
-
     }
-    private fun initPhotoButton(){
 
+    private fun initPhotoButton() {
         buttonPhoto.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, 1)
+            startActivityForResult(intent, CAMERA_PIC_REQUEST)
         }
     }
 
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CAMERA_PIC_REQUEST) {
+            val image: Bitmap? = data?.getParcelableExtra("data")
+            containerPhoto.setImageBitmap(image)
+        }
+    }
 
     private fun initSaveButton() {
-
         buttonSave.setOnClickListener {
-           putData()
+            putData()
         }
     }
 
@@ -72,7 +75,6 @@ class FuelActivity : AppCompatActivity() {
         textViewDate.setOnClickListener {
             showDatePicker()
         }
-
     }
 
 
@@ -80,7 +82,6 @@ class FuelActivity : AppCompatActivity() {
         val mileage: String = editTextMileage.text.toString()
         val volume: String = editTextVolume.text.toString()
         val cost: String = editTextCost.text.toString()
-
         val refuel = Refuel(
             id = 0,
             mileage = mileage.toInt(),
@@ -118,9 +119,8 @@ class FuelActivity : AppCompatActivity() {
         val mileage: String = editTextMileage.text.toString()
         val volume: String = editTextVolume.text.toString()
         val cost: String = editTextCost.text.toString()
-        val intent=Intent(this,MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         if (mileage.isNotEmpty() && volume.isNotEmpty() && cost.isNotEmpty()) {
-
             val refuel = Refuel(
                 id = 0,
                 mileage = mileage.toInt(),
@@ -130,7 +130,6 @@ class FuelActivity : AppCompatActivity() {
             )
             fuelViewModel.addRefuel(refuel)
             startActivity(intent)
-
         } else {
             if (mileage.isEmpty()) {
                 editTextMileage.setBackgroundColor(Color.RED)
@@ -140,7 +139,7 @@ class FuelActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-           if (cost.isEmpty()) {
+            if (cost.isEmpty()) {
                 editTextCost.setBackgroundColor(Color.RED)
                 Toast.makeText(
                     this,
@@ -157,14 +156,13 @@ class FuelActivity : AppCompatActivity() {
                 ).show()
             }
         }
-        }
-        class ViewModelFactory(
-            private val aplication: Application
-        ) : ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel?> create(modelClass: Class<T>): T {
-                return FuelViewModel(aplication) as T
-            }
-        }
+    }
 
-
+    class ViewModelFactory(
+        private val aplication: Application
+    ) : ViewModelProvider.Factory {
+        override fun <T : androidx.lifecycle.ViewModel?> create(modelClass: Class<T>): T {
+            return FuelViewModel(aplication) as T
+        }
+    }
 }
