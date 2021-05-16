@@ -1,25 +1,17 @@
 package com.example.drivex.presentation.ui.activity
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
-import android.provider.MediaStore
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.drivex.presentation.ui.activity.viewModels.FuelViewModel
 
-class FuelActivity : AppCompatActivity() {
+class FuelActivity : AbstractActivity() {
 
     private lateinit var textViewDate: TextView
     private lateinit var editTextMileage: EditText
@@ -45,16 +37,9 @@ class FuelActivity : AppCompatActivity() {
         containerPhoto = findViewById(R.id.fuel_photo_container)
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(FuelViewModel::class.java)
-        initCalendar()
-        initPhotoButton()
-        initSaveButton()
-    }
-
-    private fun initPhotoButton() {
-        buttonPhoto.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, CAMERA_PIC_REQUEST)
-        }
+        initCalendar(textViewDate)
+        initPhotoButton(buttonPhoto)
+        initSaveButton(buttonSave)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -64,19 +49,6 @@ class FuelActivity : AppCompatActivity() {
             containerPhoto.setImageBitmap(image)
         }
     }
-
-    private fun initSaveButton() {
-        buttonSave.setOnClickListener {
-            putData()
-        }
-    }
-
-    private fun initCalendar() {
-        textViewDate.setOnClickListener {
-            showDatePicker()
-        }
-    }
-
 
     private suspend fun insertTodo() {
         val mileage: String = editTextMileage.text.toString()
@@ -92,30 +64,7 @@ class FuelActivity : AppCompatActivity() {
         fuelViewModel.readAllDataByDate()
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun showDatePicker() {
-        textViewDate.text = SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis())
-        val cal = Calendar.getInstance()
-        val dateSetListener =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                cal.set(Calendar.YEAR, year)
-                cal.set(Calendar.MONTH, monthOfYear)
-                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                val myFormat = "dd.MM.yyyy"
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                textViewDate.text = sdf.format(cal.time)
-            }
-        textViewDate.setOnClickListener {
-            DatePickerDialog(
-                this, dateSetListener,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)
-            ).show()
-        }
-    }
-
-    private fun putData() {
+     override fun putData() {
         val mileage: String = editTextMileage.text.toString()
         val volume: String = editTextVolume.text.toString()
         val cost: String = editTextCost.text.toString()

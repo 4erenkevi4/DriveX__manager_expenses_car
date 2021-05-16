@@ -1,4 +1,4 @@
-package com.example.drivex.presentation.ui.activity
+package com.example.drivex.presentation.ui.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater

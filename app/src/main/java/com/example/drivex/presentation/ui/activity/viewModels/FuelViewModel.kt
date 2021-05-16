@@ -1,4 +1,4 @@
-package com.example.drivex.presentation.ui.activity
+package com.example.drivex.presentation.ui.activity.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

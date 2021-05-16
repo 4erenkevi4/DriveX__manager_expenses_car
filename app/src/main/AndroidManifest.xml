@@ -20,14 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.example.drivex.presentation.ui.activity.FuelActivity" />
+        <activity android:name="com.example.drivex.presentation.ui.activity.AbstractActivity" />
+        <activity android:name="com.example.drivex.presentation.ui.activity.ServiceActivity" />
 
-    <activity android:name="com.example.drivex.presentation.ui.activity.FuelActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
 
     </application>
 
