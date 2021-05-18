@@ -2,16 +2,21 @@ package com.example.drivex.presentation.ui.activity
 
 import android.app.Application
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import android.widget.Toast.makeText
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
 import com.example.drivex.presentation.ui.activity.viewModels.FuelViewModel
+import com.example.drivex.utils.Constans
 
+@Suppress("UNCHECKED_CAST")
 class FuelActivity : AbstractActivity() {
+
 
     private lateinit var textViewDate: TextView
     private lateinit var editTextMileage: EditText
@@ -20,14 +25,13 @@ class FuelActivity : AbstractActivity() {
     private lateinit var buttonPhoto: ImageView
     private lateinit var buttonSave: ImageView
     private lateinit var containerPhoto: ImageView
-    lateinit var fuelViewModel: FuelViewModel
-    private val CAMERA_PERMISSION_CODE = 1
-    private val CAMERA_PIC_REQUEST = 2
+    private lateinit var fuelViewModel: FuelViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_refuel)
-        Toast.makeText(this, "Пожалуйста, добавьте данные текущей заправки.", 500.toInt()).show()
+        makeText(this, "Пожалуйста, добавьте данные текущей заправки.",  Toast.LENGTH_SHORT).show()
         textViewDate = findViewById(R.id.textView_date)
         editTextMileage = findViewById(R.id.text_mileage)
         editTextCost = findViewById(R.id.cost_fuell)
@@ -38,24 +42,16 @@ class FuelActivity : AbstractActivity() {
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(FuelViewModel::class.java)
         initCalendar(textViewDate)
-        initPhotoButton(buttonPhoto)
         initSaveButton(buttonSave)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CAMERA_PIC_REQUEST) {
-            val image: Bitmap? = data?.getParcelableExtra("data")
-            containerPhoto.setImageBitmap(image)
-        }
     }
 
     private suspend fun insertTodo() {
         val mileage: String = editTextMileage.text.toString()
         val volume: String = editTextVolume.text.toString()
         val cost: String = editTextCost.text.toString()
+
         val refuel = Refuel(
-            id = 0,
+            id = Constans.ACTIVITY_FUEL,
             mileage = mileage.toInt(),
             volume = volume.toInt(),
             totalSum = cost.toDouble(),
@@ -64,45 +60,34 @@ class FuelActivity : AbstractActivity() {
         fuelViewModel.readAllDataByDate()
     }
 
-     override fun putData() {
+
+    override fun putData() {
         val mileage: String = editTextMileage.text.toString()
         val volume: String = editTextVolume.text.toString()
         val cost: String = editTextCost.text.toString()
         val intent = Intent(this, MainActivity::class.java)
         if (mileage.isNotEmpty() && volume.isNotEmpty() && cost.isNotEmpty()) {
+
             val refuel = Refuel(
                 id = 0,
                 mileage = mileage.toInt(),
                 volume = volume.toInt(),
                 totalSum = cost.toDouble(),
-                date = textViewDate.text.toString()
+                date = textViewDate.text.toString(),
+                icon = R.drawable.fuel_icon
             )
             fuelViewModel.addRefuel(refuel)
             startActivity(intent)
+
         } else {
             if (mileage.isEmpty()) {
-                editTextMileage.setBackgroundColor(Color.RED)
-                Toast.makeText(
-                    this,
-                    "Пожалуйста, добавьте текущее значение пробега",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast("Пожалуйста, добавьте текущее значение пробега", editTextMileage)
             }
             if (cost.isEmpty()) {
-                editTextCost.setBackgroundColor(Color.RED)
-                Toast.makeText(
-                    this,
-                    "Пожалуйста, укажите стоимость текущей заправки",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast("Пожалуйста, укажите стоимость текущей заправки", editTextCost)
             }
             if (volume.isEmpty()) {
-                editTextVolume.setBackgroundColor(Color.RED)
-                Toast.makeText(
-                    this,
-                    "Пожалуйста, добавьте обьем заправленного топлива",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showToast("Пожалуйста, добавьте обьем заправленного топлива", editTextVolume)
             }
         }
     }
@@ -115,3 +100,4 @@ class FuelActivity : AbstractActivity() {
         }
     }
 }
+

@@ -3,9 +3,11 @@ package com.example.drivex.presentation.ui.activity
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.provider.MediaStore
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -15,7 +17,7 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
     private val CAMERA_PIC_REQUEST = 2
 
     @SuppressLint("SimpleDateFormat")
-    override fun  initCalendar(textViewDate: TextView) {
+    override fun initCalendar(textViewDate: TextView) {
         textViewDate.setOnClickListener {
             textViewDate.text = SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis())
             val cal = Calendar.getInstance()
@@ -39,17 +41,29 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
         }
     }
 
-    override fun initPhotoButton(view: View){
+    override fun initPhotoButton(view: View) {
         view.setOnClickListener {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, CAMERA_PIC_REQUEST)
-    }
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, CAMERA_PIC_REQUEST)
+        }
     }
 
+
     override fun initSaveButton(view: View) {
-            view.setOnClickListener {
-                putData()
-            }
+        view.setOnClickListener {
+            putData()
         }
+    }
+
+    override fun showToast(text: String,view: View ) {
+        view.setBackgroundColor(Color.RED)
+        Toast.makeText(
+            this,
+            text,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 }
+
+
 

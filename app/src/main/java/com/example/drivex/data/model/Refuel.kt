@@ -11,5 +11,6 @@ data class Refuel(
     var mileage:Int =0,
     var volume:Int=0,
     var totalSum:Double=0.0,
-    var date: String=""
+    var date: String="",
+    var icon:Int = 0
 ) : Serializable

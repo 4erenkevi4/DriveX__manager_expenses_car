@@ -9,5 +9,6 @@ interface ScreenManager {
    fun initPhotoButton(view: View)
    fun initSaveButton(view: View)
    fun putData()
+   fun showToast(text: String,view: View )
 
 }

@@ -13,7 +13,7 @@
         android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/text_model_info"
@@ -38,7 +38,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_model_info" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/all_expencess_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -55,7 +55,7 @@
             android:layout_marginTop="25dp"
             android:hint="info2:"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/all_expencess_car" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,8 +68,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
     <TextView
@@ -86,10 +84,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
