@@ -58,7 +58,7 @@ class FuelActivity : AbstractActivity() {
         if (mileage.isNotEmpty() && volume.isNotEmpty() && cost.isNotEmpty()) {
 
             val refuel = Refuel(
-                id = Constans.ACTIVITY_FUEL,
+                id = 0,
                 title = "Заправка",
                 mileage = mileage.toInt(),
                 volume = volume.toInt(),
