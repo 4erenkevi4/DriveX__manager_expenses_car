@@ -32,14 +32,16 @@ class MainAdapter(private val click: (Long) -> Unit) :
             date.text = refuel.date
             cost.text = refuel.totalSum.toString() + " BYN"
             iconType.setImageResource(refuel.icon)
-            if (refuel.icon==R.drawable.fuel_icon) {
-                nameType.setTextColor(android.R.color.holo_green_dark.toInt())
-                nameType.text = "Заправка"
-            }
-             if (refuel.icon==R.drawable.servicel_icon) {
+            if (refuel.icon==R.drawable.servicel_icon) {
                 nameType.text = "Сервис"
                 nameType.setTextColor(R.color.teal_700.toInt())
             }
+            if (refuel.icon==R.drawable.fuel_icon) {
+                nameType.text = "Заправка"
+                nameType.setTextColor(R.color.purple_200.toInt())
+            }
+
+
         }
 
         fun oClick(position: Long) {

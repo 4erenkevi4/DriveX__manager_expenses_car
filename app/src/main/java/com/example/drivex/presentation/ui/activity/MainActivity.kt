@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     private fun setBoomMenu() {
         val intentFuell = Intent(this, FuelActivity::class.java)
         val intentService = Intent(this, ServiceActivity::class.java)
-        val dialog = AddPayDialogFragment()
+        val dialog = AddPayDialogFragment(application)
         val fragment = TestFragment()
         val buttonFuel = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_car)
