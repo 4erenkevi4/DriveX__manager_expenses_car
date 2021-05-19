@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.drivex.R
+import com.example.drivex.presentation.ui.dialogs.AddExpDialogFragment
 import com.example.drivex.presentation.ui.dialogs.AddPayDialogFragment
 import com.example.drivex.presentation.ui.map.TestFragment
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
@@ -59,9 +60,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setBoomMenu() {
+        val intentMain = Intent(this, MainActivity::class.java)
+        val context = this
         val intentFuell = Intent(this, FuelActivity::class.java)
         val intentService = Intent(this, ServiceActivity::class.java)
-        val dialog = AddPayDialogFragment()
+        val dialogPayment = AddPayDialogFragment(application, intentMain)
+        val dialogShopping = AddExpDialogFragment(application, intentMain,context)
         val fragment = TestFragment()
         val buttonFuel = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_car)
@@ -74,10 +78,11 @@ class MainActivity : AppCompatActivity() {
         val buttonPayments = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_money)
             .normalText("Платеж")
-            .listener { dialog.show(supportFragmentManager, "payments_dialog") }
+            .listener { dialogPayment.show(supportFragmentManager, "payments_dialog") }
         val buttonExpenses = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_shopping)
-            .normalText("Расход")
+            .normalText("Покупка")
+            .listener { dialogShopping.show(supportFragmentManager, "shopping_dialog") }
         val buttonDriving = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_map)
             .normalText("Поездка")

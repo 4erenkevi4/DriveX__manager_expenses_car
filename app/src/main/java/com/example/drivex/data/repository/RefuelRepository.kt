@@ -7,5 +7,6 @@ interface RefuelRepository {
     suspend fun getAllRefuel(): List<Refuel>
     suspend fun getRefuelById(id: Long): LiveData<Refuel>
     suspend fun addRefuel(refuel: Refuel)
-
+    suspend fun getSumOfExpenses(): LiveData<Double>
+    suspend fun getLastMileage(): LiveData<Int>
 }

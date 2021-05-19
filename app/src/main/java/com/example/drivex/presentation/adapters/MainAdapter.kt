@@ -1,7 +1,6 @@
 package com.example.drivex.presentation.adapters
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,12 +31,9 @@ class MainAdapter(private val click: (Long) -> Unit) :
             date.text = refuel.date
             cost.text = refuel.totalSum.toString() + " BYN"
             iconType.setImageResource(refuel.icon)
-            if (refuel.icon==R.drawable.fuel_icon) {
-                nameType.setTextColor(android.R.color.holo_green_dark.toInt())
-                nameType.text = "Заправка"
-            }
+            nameType.text = refuel.title
+
              if (refuel.icon==R.drawable.servicel_icon) {
-                nameType.text = "Сервис"
                 nameType.setTextColor(R.color.teal_700.toInt())
             }
         }
@@ -56,12 +52,12 @@ class MainAdapter(private val click: (Long) -> Unit) :
             parent,
             false
         )
-        return ViewHolder(view, click)
+        return ViewHolder(view,click)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        holder.bind(list[position])
+        holder.bind(item)
         holder.oClick(item.id)
 
     }

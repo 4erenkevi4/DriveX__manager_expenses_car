@@ -11,7 +11,7 @@ import android.widget.Toast.makeText
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
-import com.example.drivex.presentation.ui.activity.viewModels.FuelViewModel
+import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.utils.Constans
 
 @Suppress("UNCHECKED_CAST")
@@ -25,7 +25,7 @@ class FuelActivity : AbstractActivity() {
     private lateinit var buttonPhoto: ImageView
     private lateinit var buttonSave: ImageView
     private lateinit var containerPhoto: ImageView
-    private lateinit var fuelViewModel: FuelViewModel
+    private lateinit var fuelViewModel: AbstractViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,24 +40,13 @@ class FuelActivity : AbstractActivity() {
         buttonSave = findViewById(R.id.button_save)
         containerPhoto = findViewById(R.id.fuel_photo_container)
         val viewModelFactory = ViewModelFactory(application)
-        fuelViewModel = ViewModelProvider(this, viewModelFactory).get(FuelViewModel::class.java)
+        fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
     }
 
-    private suspend fun insertTodo() {
-        val mileage: String = editTextMileage.text.toString()
-        val volume: String = editTextVolume.text.toString()
-        val cost: String = editTextCost.text.toString()
-
-        val refuel = Refuel(
-            id = Constans.ACTIVITY_FUEL,
-            mileage = mileage.toInt(),
-            volume = volume.toInt(),
-            totalSum = cost.toDouble(),
-            date = textViewDate.text.toString()
-        )
-        fuelViewModel.readAllDataByDate()
+    override fun initCalendar(textViewDate: TextView) {
+        AbstractActivity.initCalendar(textViewDate,this)
     }
 
 
@@ -69,12 +58,14 @@ class FuelActivity : AbstractActivity() {
         if (mileage.isNotEmpty() && volume.isNotEmpty() && cost.isNotEmpty()) {
 
             val refuel = Refuel(
-                id = 0,
+                id = Constans.ACTIVITY_FUEL,
+                title = "Заправка",
                 mileage = mileage.toInt(),
                 volume = volume.toInt(),
                 totalSum = cost.toDouble(),
                 date = textViewDate.text.toString(),
-                icon = R.drawable.fuel_icon
+                icon = R.drawable.fuel_icon,
+                description = ""
             )
             fuelViewModel.addRefuel(refuel)
             startActivity(intent)
@@ -96,7 +87,7 @@ class FuelActivity : AbstractActivity() {
         private val aplication: Application
     ) : ViewModelProvider.Factory {
         override fun <T : androidx.lifecycle.ViewModel?> create(modelClass: Class<T>): T {
-            return FuelViewModel(aplication) as T
+            return AbstractViewModel(aplication) as T
         }
     }
 }

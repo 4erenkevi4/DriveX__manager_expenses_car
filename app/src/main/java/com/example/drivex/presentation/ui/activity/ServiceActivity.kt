@@ -1,18 +1,22 @@
 package com.example.drivex.presentation.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
-import com.example.drivex.presentation.ui.activity.viewModels.FuelViewModel
+import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.utils.Constans
+import com.example.drivex.presentation.adapters.ServiceAdapter
 
 class ServiceActivity : AbstractActivity() {
 
@@ -22,7 +26,7 @@ class ServiceActivity : AbstractActivity() {
     private lateinit var description: TextView
     private lateinit var buttonPhoto: ImageView
     private lateinit var buttonSave: ImageView
-    lateinit var fuelViewModel: FuelViewModel
+    lateinit var fuelViewModel: AbstractViewModel
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,25 +40,15 @@ class ServiceActivity : AbstractActivity() {
         buttonPhoto = findViewById(R.id.button_photo_)
         buttonSave = findViewById(R.id.button_save_)
         val viewModelFactory = ViewModelFactory(application)
-        fuelViewModel = ViewModelProvider(this, viewModelFactory).get(FuelViewModel::class.java)
+        fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         initPhotoButton(buttonPhoto)
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
+        setRecyclerview()
     }
 
-    private suspend fun insertTodo() {
-        val mileage: String = editTextMileage.text.toString()
-        val desc: String = description.text.toString()
-        val cost: String = editTextCost.text.toString()
-
-        val refuel = Refuel(
-            id = Constans.ACTIVITY_SERVICE,
-            mileage = mileage.toInt(),
-            //volume = volume.toInt(),
-            totalSum = cost.toDouble(),
-            date = textViewDate.text.toString()
-        )
-        fuelViewModel.readAllDataByDate()
+    override fun initCalendar(textViewDate: TextView) {
+        initCalendar(textViewDate, this)
     }
 
 
@@ -67,8 +61,9 @@ class ServiceActivity : AbstractActivity() {
 
             val refuel = Refuel(
                 id = 0,
+                title="Сервис",
                 mileage = mileage.toInt(),
-                //desc = description.toInt(),
+                description = desc,
                 totalSum = cost.toDouble(),
                 date = textViewDate.text.toString(),
                 icon = R.drawable.servicel_icon
@@ -85,16 +80,26 @@ class ServiceActivity : AbstractActivity() {
             }
         }
     }
-
-
-    }
-    @Suppress("UNCHECKED_CAST")
-    class ViewModelFactory(
-        private val aplication: Application
-    ) : ViewModelProvider.Factory {
-        override fun <T : androidx.lifecycle.ViewModel?> create(modelClass: Class<T>): T {
-            return FuelViewModel(aplication) as T
+    @SuppressLint("SetTextI18n")
+    private fun setRecyclerview() {
+        val adapter = ServiceAdapter { item, view ->
+            description.text = description.text.toString() + " " + item + ";"
+            view.setBackgroundColor(Color.GRAY)
         }
+        recyclerView = findViewById(R.id.recycler_view_service)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
+
     }
+
+}
+@Suppress("UNCHECKED_CAST")
+class ViewModelFactory(
+    private val aplication: Application
+) : ViewModelProvider.Factory {
+    override fun <T : androidx.lifecycle.ViewModel?> create(modelClass: Class<T>): T {
+        return AbstractViewModel(aplication) as T
+    }
+}
 
 

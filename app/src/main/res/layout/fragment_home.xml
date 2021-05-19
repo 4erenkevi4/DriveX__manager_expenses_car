@@ -7,6 +7,8 @@
     android:layout_marginTop="?attr/actionBarSize"
     tools:context=".presentation.ui.home.HomeFragment">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
@@ -43,7 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="8dp"
-            android:hint="info1:"
+            android:text="info1:"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_mileage_info" />
 

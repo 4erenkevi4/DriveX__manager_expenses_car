@@ -8,6 +8,8 @@ import java.io.Serializable
 data class Refuel(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
+    var title:String,
+    var description:String,
     var mileage:Int =0,
     var volume:Int=0,
     var totalSum:Double=0.0,

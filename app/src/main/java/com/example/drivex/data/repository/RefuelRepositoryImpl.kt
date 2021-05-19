@@ -21,4 +21,16 @@ class RefuelRepositoryImpl(application: Application) :
     override suspend fun addRefuel(refuel: Refuel) {
         refuelDao.addRefuel(refuel)
     }
+
+    override suspend fun getSumOfExpenses(): LiveData<Double> {
+        return refuelDao.getSumOfExpenses()
+    }
+
+    override suspend fun getLastMileage(): LiveData<Int> {
+        return refuelDao.getLastMileage()
+    }
+
+
+
+
 }
