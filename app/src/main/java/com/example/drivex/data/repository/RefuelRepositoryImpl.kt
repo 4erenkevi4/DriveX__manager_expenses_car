@@ -14,8 +14,12 @@ class RefuelRepositoryImpl(application: Application) :
         db.refuelDao()
     }
 
+    override suspend fun insert(refuel: Refuel) {
+       return refuelDao.insert(refuel)
+    }
+
     override suspend fun getAllRefuel(): List<Refuel> =refuelDao.getAllRefuel()
-    override suspend fun getRefuelById(id: Long): LiveData<Refuel> {
+    override fun getRefuelById(id: Long): LiveData<Refuel> {
         return refuelDao.getRefuelById(id)
     }
     override suspend fun addRefuel(refuel: Refuel) {

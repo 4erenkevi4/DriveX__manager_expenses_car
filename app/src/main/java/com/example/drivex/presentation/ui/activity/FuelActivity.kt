@@ -1,8 +1,10 @@
 package com.example.drivex.presentation.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,7 +19,6 @@ import com.example.drivex.utils.Constans
 @Suppress("UNCHECKED_CAST")
 class FuelActivity : AbstractActivity() {
 
-
     private lateinit var textViewDate: TextView
     private lateinit var editTextMileage: EditText
     private lateinit var editTextCost: EditText
@@ -27,11 +28,10 @@ class FuelActivity : AbstractActivity() {
     private lateinit var containerPhoto: ImageView
     private lateinit var fuelViewModel: AbstractViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_refuel)
-        makeText(this, "Пожалуйста, добавьте данные текущей заправки.",  Toast.LENGTH_SHORT).show()
+        makeText(this, "Пожалуйста, добавьте данные текущей заправки.", Toast.LENGTH_SHORT).show()
         textViewDate = findViewById(R.id.textView_date)
         editTextMileage = findViewById(R.id.text_mileage)
         editTextCost = findViewById(R.id.cost_fuell)
@@ -41,14 +41,33 @@ class FuelActivity : AbstractActivity() {
         containerPhoto = findViewById(R.id.fuel_photo_container)
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
+        val id = intent.getLongExtra("id", -1L)
+        if (id == -1L) {
+            initSaveButton(buttonSave)
+        } else {
+            updateMode(id)
+        }
         initCalendar(textViewDate)
-        initSaveButton(buttonSave)
+        initPhotoButton(buttonPhoto)
     }
 
     override fun initCalendar(textViewDate: TextView) {
-        AbstractActivity.initCalendar(textViewDate,this)
+        initCalendar(textViewDate, this)
     }
 
+    @SuppressLint("SetTextI18n")
+    fun updateMode(id: Long) {
+        val intent = Intent(this, MainActivity::class.java)
+        fuelViewModel.readRefuelById(id).observe(this, { desc ->
+            desc?.let {
+                editTextMileage.setText(desc.mileage.toString())
+                editTextVolume.setText(desc.title)
+                editTextCost.setText(desc.totalSum.toString())
+                textViewDate.text = desc.date
+            }
+        })
+        buttonSave.setOnClickListener { startActivity(intent) }
+    }
 
     override fun putData() {
         val mileage: String = editTextMileage.text.toString()

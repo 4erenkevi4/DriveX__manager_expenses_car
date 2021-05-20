@@ -32,9 +32,20 @@ init {
         return refuelRepository.getAllRefuel()
     }
 
+     fun readRefuelById(id:Long): LiveData<Refuel> {
+        return refuelRepository.getRefuelById(id)
+    }
+
+
+
      fun addRefuel(refuel: Refuel) {
         viewModelScope.launch(Dispatchers.IO) {
             refuelRepository.addRefuel(refuel)
+        }
+    }
+    fun insert(refuel: Refuel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            refuelRepository.insert(refuel)
         }
     }
 
