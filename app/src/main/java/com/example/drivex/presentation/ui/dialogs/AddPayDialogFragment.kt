@@ -39,7 +39,7 @@ class AddPayDialogFragment(application: Application, private val intent: Intent)
                 id = 0,
                 description = description.toString(),
                 totalSum = cost.toDouble(),
-                icon = R.drawable.ic_money,
+                icon = R.drawable.pay_icon,
                 title = "Платеж"
             )
             fuelViewModel.addRefuel(refuel)

@@ -3,6 +3,7 @@ package com.example.drivex.presentation.ui.activity
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -27,6 +28,7 @@ class FuelActivity : AbstractActivity() {
     private lateinit var buttonSave: ImageView
     private lateinit var containerPhoto: ImageView
     private lateinit var fuelViewModel: AbstractViewModel
+    private val CAMERA_PIC_REQUEST = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +55,13 @@ class FuelActivity : AbstractActivity() {
 
     override fun initCalendar(textViewDate: TextView) {
         initCalendar(textViewDate, this)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CAMERA_PIC_REQUEST) {
+            val image: Bitmap? = data?.getParcelableExtra("data")
+            containerPhoto.setImageBitmap(image)
+        }
     }
 
     @SuppressLint("SetTextI18n")

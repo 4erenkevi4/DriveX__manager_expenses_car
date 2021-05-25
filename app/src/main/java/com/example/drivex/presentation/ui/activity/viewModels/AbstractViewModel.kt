@@ -61,8 +61,8 @@ init {
     }
 
     private val allFuelVolumeSumInt: LiveData<Int> = refuelDao.getSummVolumeById("Заправка")
-    val allFuelVolumeSum: LiveData<String> = Transformations.map(allFuelVolumeSumInt){ checkpoint ->
-        (checkpoint?.toString() ?: "0") + " Л."
+    val allFuelVolumeSum: LiveData<String> = Transformations.map(allFuelVolumeSumInt){ summ ->
+        (summ?.toString() ?: "0") + " Л."
     }
 
     private val lastMileage: LiveData<Int> = refuelDao.getLastMileage()

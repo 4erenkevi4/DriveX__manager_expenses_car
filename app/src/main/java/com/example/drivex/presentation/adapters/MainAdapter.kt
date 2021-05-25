@@ -33,7 +33,7 @@ class MainAdapter(private val click: (Long) -> Unit) :
             iconType.setImageResource(refuel.icon)
             nameType.text = refuel.title
 
-             if (refuel.icon==R.drawable.servicel_icon) {
+            if (refuel.title == "Заправка") {
                 nameType.setTextColor(R.color.teal_700.toInt())
             }
         }
@@ -52,7 +52,7 @@ class MainAdapter(private val click: (Long) -> Unit) :
             parent,
             false
         )
-        return ViewHolder(view,click)
+        return ViewHolder(view, click)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

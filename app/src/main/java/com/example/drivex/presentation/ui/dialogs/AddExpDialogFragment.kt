@@ -47,7 +47,7 @@ class AddExpDialogFragment(
                 id = 0,
                 description = description.toString(),
                 totalSum = cost.toDouble(),
-                icon = R.drawable.ic_shopping,
+                icon = R.drawable.shoping_icon,
                 title = "Покупка"
             )
             viewModel.addRefuel(refuel)

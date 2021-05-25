@@ -24,7 +24,6 @@ class ServiceAdapter(private val click: (String,View) -> Unit):
         fun oClick(string: String,view: View) {
             root.setOnClickListener {
                 onClick(string,view)
-
             }
         }
     }

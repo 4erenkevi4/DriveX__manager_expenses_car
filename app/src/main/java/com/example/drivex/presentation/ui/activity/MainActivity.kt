@@ -15,7 +15,14 @@ import androidx.appcompat.widget.Toolbar
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.dialogs.AddExpDialogFragment
 import com.example.drivex.presentation.ui.dialogs.AddPayDialogFragment
+import com.example.drivex.presentation.ui.map.MapViewModel
 import com.example.drivex.presentation.ui.map.TestFragment
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 
@@ -26,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         boomMenu = findViewById(R.id.boom_menu)
@@ -64,6 +72,7 @@ class MainActivity : AppCompatActivity() {
         val context = this
         val intentFuell = Intent(this, FuelActivity::class.java)
         val intentService = Intent(this, ServiceActivity::class.java)
+        val intentMap = Intent(this, MapsActivity::class.java)
         val dialogPayment = AddPayDialogFragment(application, intentMain)
         val dialogShopping = AddExpDialogFragment(application, intentMain,context)
         val fragment = TestFragment()
@@ -86,11 +95,12 @@ class MainActivity : AppCompatActivity() {
         val buttonDriving = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_map)
             .normalText("Поездка")
-            .listener { fragment.show(supportFragmentManager, "map_dialog") }
+            .listener { startActivity(intentMap) }
         boomMenu.addBuilder(buttonFuel)
         boomMenu.addBuilder(buttonService)
         boomMenu.addBuilder(buttonPayments)
         boomMenu.addBuilder(buttonExpenses)
         boomMenu.addBuilder(buttonDriving)
     }
+
 }

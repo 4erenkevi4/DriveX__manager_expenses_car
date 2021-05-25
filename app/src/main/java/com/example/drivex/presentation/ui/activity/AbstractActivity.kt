@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
-    private val CAMERA_PERMISSION_CODE = 1
     private val CAMERA_PIC_REQUEST = 2
 
     companion object {
