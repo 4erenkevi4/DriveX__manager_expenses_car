@@ -20,7 +20,11 @@
         android:id="@+id/nav_map"
         android:name="com.example.drivex.presentation.ui.map.MapFragment"
         android:label="@string/menu_notify"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_nav_map_to_nav_car"
+            app:destination="@id/nav_car" />
+    </fragment>
     <fragment
         android:id="@+id/nav_stat"
         android:name="com.example.drivex.presentation.ui.stat.StatFragment"

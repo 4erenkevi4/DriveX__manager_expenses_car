@@ -1,7 +1,9 @@
 package com.example.drivex.presentation.ui.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +18,15 @@ import com.example.drivex.R
 import com.example.drivex.presentation.adapters.MainAdapter
 import com.example.drivex.presentation.ui.activity.FuelActivity
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
+import com.example.drivex.utils.Constans.REQUEST_CODE_LOCATION_PERMISSION
+import com.example.drivex.utils.TrackingUtility
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 
- class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewModel: AbstractViewModel
@@ -34,6 +40,7 @@ import kotlinx.coroutines.launch
     lateinit var liveDataCostFUel: LiveData<String>
     lateinit var liveDataVolumeFUel: LiveData<String>
     lateinit var liveDataCostService: LiveData<String>
+    lateinit var liveDatarefuelSum: LiveData<Int>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,8 +59,10 @@ import kotlinx.coroutines.launch
         liveDataCostFUel = viewModel.allFuelCostSum
         liveDataVolumeFUel = viewModel.allFuelVolumeSum
         liveDataCostService = viewModel.allServiceCostSum
+        liveDatarefuelSum = viewModel.refuelSum
         setinfoView()
         setRecyclerview(view)
+        requestPermissions()
         return view
     }
 
@@ -61,8 +70,8 @@ import kotlinx.coroutines.launch
     private fun setinfoView() {
         liveDataCost.observe(viewLifecycleOwner, { allExpenses.text = "Общие расходы: $it" })
         liveDataMileage.observe(viewLifecycleOwner, { allMileage.text = "Пробег: $it" })
-        liveDataCostFUel.observe(viewLifecycleOwner,
-            { allCostFuel.text = "Общие затраты на топливо: $it" })
+        liveDatarefuelSum.observe(viewLifecycleOwner,
+            { allCostFuel.text = "Общие затраты на топливо: $it BYN" })
         liveDataVolumeFUel.observe(viewLifecycleOwner,
             { allVolume.text = "Общий обьем топлива: $it" })
         liveDataCostService.observe(viewLifecycleOwner,
@@ -81,6 +90,48 @@ import kotlinx.coroutines.launch
         GlobalScope.launch(Dispatchers.Default) {
             adapter.setData(viewModel.readAllDataByDate())
         }
+    }
+
+    private fun requestPermissions() {
+        if (TrackingUtility.hasLocationPermissions(requireContext())) {
+            return
+        }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            EasyPermissions.requestPermissions(
+                this,
+                "You need to accept location permission to use this app",
+                REQUEST_CODE_LOCATION_PERMISSION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        } else {
+            EasyPermissions.requestPermissions(
+                this,
+                "You need to accept location permissions to use this app",
+                REQUEST_CODE_LOCATION_PERMISSION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            )
+        }
+    }
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).setThemeResId(R.style.Base_Theme_AppCompat_Dialog_Alert).build().show()
+        } else {
+            requestPermissions()
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {}
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
 }

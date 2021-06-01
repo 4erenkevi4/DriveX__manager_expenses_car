@@ -60,6 +60,11 @@ init {
         NumberFormat.getCurrencyInstance(Locale("ru", "BY")).format(sumOfCosts?: 0.0)
     }
 
+    val refuelSum: LiveData<Int> = refuelDao.getSUmExpensesById("Заправка")
+    val serviceSum: LiveData<Int> = refuelDao.getSUmExpensesById("Сервис")
+    val shoppingSum: LiveData<Int> = refuelDao.getSUmExpensesById("Покупка")
+    val paymentsSum: LiveData<Int> = refuelDao.getSUmExpensesById("Платеж")
+
     private val allFuelVolumeSumInt: LiveData<Int> = refuelDao.getSummVolumeById("Заправка")
     val allFuelVolumeSum: LiveData<String> = Transformations.map(allFuelVolumeSumInt){ summ ->
         (summ?.toString() ?: "0") + " Л."
