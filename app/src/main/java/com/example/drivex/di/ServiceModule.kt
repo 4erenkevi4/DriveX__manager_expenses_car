@@ -1,12 +1,13 @@
-package com.androiddevs.runningapp.di
+package com.example.drivex.di
 
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import com.androiddevs.runningapp.R
-import com.androiddevs.runningapp.other.Constants
-import com.androiddevs.runningapp.ui.MainActivity
+import com.example.drivex.R
+import com.example.drivex.presentation.ui.activity.MainActivity
+import com.example.drivex.utils.Constans.ACTION_SHOW_TRACKING_FRAGMENT
+import com.example.drivex.utils.Constans.NOTIFICATION_CHANNEL_ID
 import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.Module
 import dagger.Provides
@@ -34,10 +35,10 @@ object ServiceModule {
     fun provideBaseNotificationBuilder(
         @ApplicationContext context: Context,
         pendingIntent: PendingIntent
-    ) = NotificationCompat.Builder(context, Constants.NOTIFICATION_CHANNEL_ID)
+    ) = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
         .setAutoCancel(false)
         .setOngoing(true)
-        .setSmallIcon(R.drawable.ic_directions_run_black_24dp)
+        .setSmallIcon(R.drawable.ic_car)
         .setContentTitle("Running App")
         .setContentText("00:00:00")
         .setContentIntent(pendingIntent)
@@ -51,7 +52,7 @@ object ServiceModule {
             context,
             0,
             Intent(context, MainActivity::class.java).apply {
-                action = Constants.ACTION_SHOW_TRACKING_FRAGMENT
+                action = ACTION_SHOW_TRACKING_FRAGMENT
             },
             PendingIntent.FLAG_UPDATE_CURRENT
         )

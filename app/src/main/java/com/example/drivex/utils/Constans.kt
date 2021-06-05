@@ -16,7 +16,11 @@ object Constans {
     // Tracking Options
     const val LOCATION_UPDATE_INTERVAL = 5000L
     const val FASTEST_LOCATION_UPDATE_INTERVAL = 2000L
-
+    // Database
+    const val DATABASE_NAME = "map_db"
+    // Shared Preferences
+    const val SHARED_PREFERENCES_NAME = "sharedPref"
+    const val KEY_FIRST_TIME_TOGGLE = "KEY_FIRST_TIME_TOGGLE"
     // Map Options
     const val POLYLINE_COLOR = Color.RED
     const val POLYLINE_WIDTH = 8f

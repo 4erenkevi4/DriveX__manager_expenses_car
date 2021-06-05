@@ -20,12 +20,14 @@ import com.example.drivex.presentation.ui.activity.FuelActivity
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.utils.Constans.REQUEST_CODE_LOCATION_PERMISSION
 import com.example.drivex.utils.TrackingUtility
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private lateinit var recyclerView: RecyclerView

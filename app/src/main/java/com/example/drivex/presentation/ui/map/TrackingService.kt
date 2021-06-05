@@ -17,7 +17,9 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
 import com.example.drivex.R
+import com.example.drivex.utils.Constans
 import com.example.drivex.utils.Constans.ACTION_PAUSE_SERVICE
+import com.example.drivex.utils.Constans.ACTION_SHOW_TRACKING_FRAGMENT
 import com.example.drivex.utils.Constans.ACTION_START_OR_RESUME_SERVICE
 import com.example.drivex.utils.Constans.ACTION_STOP_SERVICE
 import com.example.drivex.utils.Constans.FASTEST_LOCATION_UPDATE_INTERVAL
@@ -33,15 +35,18 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.model.LatLng
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
+import javax.inject.Inject
 
 typealias Polyline = MutableList<LatLng>
 typealias Polylines = MutableList<Polyline>
-
+@AndroidEntryPoint
 class TrackingService : LifecycleService() {
 
     private val timeRunInSeconds = MutableLiveData<Long>()
@@ -58,7 +63,7 @@ class TrackingService : LifecycleService() {
     /**
      * Base notification builder that contains the settings every notification will have
      */
-
+    @Inject
     lateinit var baseNotificationBuilder: NotificationCompat.Builder
 
     /**
@@ -66,6 +71,7 @@ class TrackingService : LifecycleService() {
      */
     private lateinit var curNotification: NotificationCompat.Builder
 
+    @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate() {

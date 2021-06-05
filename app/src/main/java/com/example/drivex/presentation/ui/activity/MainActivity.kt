@@ -25,7 +25,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration

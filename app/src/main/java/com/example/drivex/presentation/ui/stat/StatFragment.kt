@@ -16,6 +16,7 @@ import com.androidplot.pie.Segment
 import com.androidplot.pie.SegmentFormatter
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
+import kotlinx.coroutines.*
 
 class StatFragment : Fragment() {
 
@@ -44,18 +45,12 @@ class StatFragment : Fragment() {
         text1 = root.findViewById(R.id.text_stat)
         text2= root.findViewById(R.id.text_stat2)
         pieChart = root.findViewById(R.id.pieChart)
-        var expRefuel = 0
-        var expService = 0
-        var expShopping = 0
-        var expPayment = 0
+
         liveDataRefuelSum = viewModel.refuelSum
         liveDataServiceSum = viewModel.serviceSum
         liveDataShoppingSum = viewModel.shoppingSum
         liveDataPaymentSum = viewModel.paymentsSum
-        liveDataShoppingSum.observe(viewLifecycleOwner,{text2.text=it.toString()})
-        liveDataPaymentSum.observe(viewLifecycleOwner,{expPayment})
-        liveDataRefuelSum.observe(viewLifecycleOwner,
-            { text1.text = it.toString()})
+
 
         button = root.findViewById(R.id.button2)
         liveDataCost = viewModel.allExpensesSum
@@ -63,18 +58,20 @@ class StatFragment : Fragment() {
         //liveDataCost.observe(viewLifecycleOwner, { textView.text = "Общие расходы: $it" })
         //liveDataMileage.observe(viewLifecycleOwner, { textView2.text = "Пробег: $it" })
 
-        val ExpensesList = arrayListOf<Int>(expService,expShopping,expPayment
-        )
 
-        val s1 = Segment("S1", expRefuel)
-        val s2 = Segment("S1", liveDataServiceSum.value)
-        val s3 = Segment("S1", liveDataShoppingSum.value)
-        val s4 = Segment("S1", liveDataPaymentSum.value)
+
+
+        val s1 = Segment("S1",1 )
+        val s2 = Segment("S1", 1)
+        val s3 = Segment("S1", 2)
+        val s4 = Segment("S1",1)
 
         val sf1 = SegmentFormatter(Color.BLUE)
         val sf2 = SegmentFormatter(Color.YELLOW)
         val sf3 = SegmentFormatter(Color.CYAN)
         val sf4 = SegmentFormatter(Color.MAGENTA)
+
+       
 
         pieChart.addSegment(s1,sf1)
         pieChart.addSegment(s2,sf2)
@@ -86,8 +83,11 @@ class StatFragment : Fragment() {
             liveDataMileage.observe(viewLifecycleOwner, { text2.text = "Пробег: $it" })
         }
 
-        
-
         return root
     }
+
+
 }
+
+
+

@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".presentation.ui.DrivexApp"
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -38,6 +38,8 @@
         <activity android:name=".presentation.ui.activity.AbstractActivity" />
         <activity android:name=".presentation.ui.activity.ServiceActivity" />
         <activity android:name=".presentation.ui.activity.MapsActivity" />
+        <service android:name="com.example.drivex.presentation.ui.map.TrackingService"
+            android:foregroundServiceType="location"/>
     </application>
 
 </manifest>

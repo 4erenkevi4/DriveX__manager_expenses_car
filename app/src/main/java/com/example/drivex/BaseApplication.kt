@@ -1,4 +1,4 @@
-package com.androiddevs.runningapp
+package com.example.drivex
 
 import android.app.Application
 import dagger.android.AndroidInjector
