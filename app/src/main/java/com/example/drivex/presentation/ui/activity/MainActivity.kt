@@ -15,14 +15,6 @@ import androidx.appcompat.widget.Toolbar
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.dialogs.AddExpDialogFragment
 import com.example.drivex.presentation.ui.dialogs.AddPayDialogFragment
-import com.example.drivex.presentation.ui.map.MapViewModel
-import com.example.drivex.presentation.ui.map.TestFragment
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,8 +35,6 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_car,
@@ -77,7 +67,6 @@ class MainActivity : AppCompatActivity() {
         val intentMap = Intent(this, MapsActivity::class.java)
         val dialogPayment = AddPayDialogFragment(application, intentMain)
         val dialogShopping = AddExpDialogFragment(application, intentMain,context)
-        val fragment = TestFragment()
         val buttonFuel = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_car)
             .normalText("Заправка")

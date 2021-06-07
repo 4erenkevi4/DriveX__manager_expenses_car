@@ -9,15 +9,15 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.androidplot.pie.PieChart
 import com.androidplot.pie.Segment
 import com.androidplot.pie.SegmentFormatter
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
-import kotlinx.coroutines.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StatFragment : Fragment() {
 
     private lateinit var statViewModel: StatViewModel

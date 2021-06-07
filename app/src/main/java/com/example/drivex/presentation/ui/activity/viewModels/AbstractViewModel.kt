@@ -1,34 +1,29 @@
 package com.example.drivex.presentation.ui.activity.viewModels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.viewModelScope
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.*
 import com.example.drivex.data.RefuelDao
 import com.example.drivex.data.RefuelRoomDatabase
 import com.example.drivex.data.model.Refuel
-import com.example.drivex.data.repository.RefuelRepository
 import com.example.drivex.data.repository.RefuelRepositoryImpl
-import com.example.drivex.utils.Constans
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.*
 
-class AbstractViewModel(application: Application) : AndroidViewModel(application) {
+class AbstractViewModel @ViewModelInject constructor(
+    private val refuelRepository: RefuelRepositoryImpl, application:Application
+) : ViewModel() {
 
-private val refuelRepository:RefuelRepository
-init {
-    refuelRepository = RefuelRepositoryImpl(application)
-    }
+
     private val refuelDao: RefuelDao by lazy {
         val db = RefuelRoomDatabase.getInstance(application)
         db.refuelDao()
     }
 
 
-     suspend fun readAllDataByDate(): List<Refuel> {
+    fun readAllDataByDate(): List<Refuel> {
         return refuelRepository.getAllRefuel()
     }
 
