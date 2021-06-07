@@ -22,9 +22,6 @@ interface MapDao {
     @Query("SELECT * FROM map_table ORDER BY distanceInMeters DESC")
     fun getAllDriveSortedByDistance(): LiveData<List<MapModels>>
 
-    @Query("SELECT * FROM map_table ORDER BY avgSpeedInKMH DESC")
-    fun getAllDriveSortedByAvgSpeed(): LiveData<List<MapModels>>
-
     @Query("SELECT SUM(timeInMillis) FROM map_table")
     fun getTotalTimeInMillis(): LiveData<Long>
 

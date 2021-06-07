@@ -1,19 +1,31 @@
 package com.example.drivex.data.repository
 
-import androidx.lifecycle.LiveData
+import android.app.Application
+import com.example.drivex.data.MapRoomDatabase
 import com.example.drivex.data.model.MapModels
-import com.example.drivex.data.model.Refuel
+import com.example.drivex.domain.MapDao
+import javax.inject.Inject
 
-interface MapRepository {
 
-    suspend fun insertMap(mapModels: MapModels): Unit
-    suspend fun deleteRun(mapModels: MapModels): Unit
-     fun getAllDriveSortedByDate(): LiveData<List<MapModels>>
-    fun getAllDriveSortedByTimeInMillis(): LiveData<List<MapModels>>
-    fun getAllDriveSortedByDistance(): LiveData<List<MapModels>>
-    fun getAllDriveSortedByAvgSpeed(): LiveData<List<MapModels>>
-    fun getTotalDistance(): LiveData<Int>
-    fun getTotalTimeInMillis(): LiveData<Long>
-    fun getTotalAvgSpeed(): LiveData<Float>
+class MapRepository @Inject constructor(
+    val mapDao: MapDao
+) {
+
+    suspend fun insertMap(mapModels: MapModels) = mapDao.insertRun(mapModels)
+
+    suspend fun deleteRun(mapModels: MapModels) = mapDao.deleteRun(mapModels)
+
+    fun getAllDriveSortedByDate() = mapDao.getAllDriveSortedByDate()
+
+    fun getAllDriveSortedByTimeInMillis() = mapDao.getAllDriveSortedByTimeInMillis()
+
+    fun getAllDriveSortedByDistance() = mapDao.getAllDriveSortedByDistance()
+
+    fun getTotalAvgSpeed() = mapDao.getTotalAvgSpeed()
+
+    fun getTotalDistance() = mapDao.getTotalDistance()
+
+    fun getTotalTimeInMillis() = mapDao.getTotalTimeInMillis()
+
 
 }

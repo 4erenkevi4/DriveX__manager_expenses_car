@@ -1,29 +1,20 @@
 package com.example.drivex.presentation.ui.map
 
-import android.app.Application
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.example.drivex.data.MapRoomDatabase
 import com.example.drivex.data.model.MapModels
 import com.example.drivex.data.repository.MapRepository
-import com.example.drivex.data.repository.MapRepositoryImpl
-import com.example.drivex.domain.MapDao
 import com.example.drivex.utils.SortType
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class MapViewModel(application: Application) : ViewModel() {
+class MapViewModel @ViewModelInject constructor(
     private val mapRepository: MapRepository
-    init {
-        mapRepository = MapRepositoryImpl(application)
-    }
-    private val mapDao: MapDao by lazy {
-        val db = MapRoomDatabase.getInstance(application)
-        db.getmapDao()
-    }
+) : ViewModel() {
+    var totalAvgSpeed = mapRepository.getTotalAvgSpeed()
     private val runsSortedByDate = mapRepository.getAllDriveSortedByDate()
     private val runsSortedByDistance = mapRepository.getAllDriveSortedByDistance()
     private val runsSortedByTimeInMillis = mapRepository.getAllDriveSortedByTimeInMillis()
-    private val runsSortedByAvgSpeed = mapRepository.getAllDriveSortedByAvgSpeed()
 
     val runs = MediatorLiveData<List<MapModels>>()
 
@@ -49,18 +40,12 @@ class MapViewModel(application: Application) : ViewModel() {
                 result?.let { runs.value = it }
             }
         }
-        runs.addSource(runsSortedByAvgSpeed) { result ->
-            if(sortType == SortType.AVG_SPEED) {
-                result?.let { runs.value = it }
-            }
-        }
     }
 
     fun sortRuns(sortType: SortType) = when(sortType) {
         SortType.DATE -> runsSortedByDate.value?.let { runs.value = it }
         SortType.DISTANCE -> runsSortedByDistance.value?.let { runs.value = it }
         SortType.RUNNING_TIME -> runsSortedByTimeInMillis.value?.let { runs.value = it }
-        SortType.AVG_SPEED -> runsSortedByAvgSpeed.value?.let { runs.value = it }
     }.also {
         this.sortType = sortType
     }

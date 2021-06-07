@@ -17,11 +17,16 @@
     <string name="menu_home">My Car</string>
     <string name="menu_car">Мой автомобиль</string>
     <string name="menu_notify">Напоминания</string>
-    <string name="menu_map">Карты</string>
+    <string name="menu_ride">Поездки</string>
     <string name="menu_stat">Статистика</string>
     <string name="menu_setting">Настройки</string>
     <string name="menu_info">О приложении</string>
     <string name="title_activity_map">Map</string>
     <string name="start_text">Start</string>
     <string name="stop_text">Stop</string>
+    <string-array name="filter_options">
+        <item>Date</item>
+        <item>Driving Time</item>
+        <item>Distance</item>
+    </string-array>
 </resources>

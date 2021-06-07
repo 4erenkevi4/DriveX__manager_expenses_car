@@ -5,13 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.drivex.data.converters.Converters
+import com.example.drivex.data.converterss.Converters
 import com.example.drivex.data.model.MapModels
 import com.example.drivex.domain.MapDao
 
 @Database(
     entities = [MapModels::class],
-    version = 1
+    version = 1, exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class MapRoomDatabase : RoomDatabase() {

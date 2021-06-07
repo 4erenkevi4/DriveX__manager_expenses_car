@@ -15,7 +15,7 @@
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_map"
-            android:title="@string/menu_map" />
+            android:title="@string/menu_ride" />
         <item
             android:id="@+id/nav_stat"
             android:icon="@drawable/ic_stats"

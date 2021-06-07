@@ -9,29 +9,29 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.example.drivex.R
 import com.example.drivex.data.model.MapModels
 import com.example.drivex.presentation.ui.map.MapViewModel
 import com.example.drivex.presentation.ui.map.TrackingService
 import com.example.drivex.utils.Constans
+import com.example.drivex.utils.Constans.MAP_VIEW_BUNDLE_KEY
 import com.example.drivex.utils.TrackingUtility
-import com.google.android.gms.maps.*
-
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_tracking.*
 import timber.log.Timber
 import java.util.*
 import kotlin.math.round
 
+@AndroidEntryPoint
 class MapsActivity : AppCompatActivity() {
 
-    private lateinit var mMap: GoogleMap
+    private  var mMap: GoogleMap? = null
     lateinit var btnToggleRun: Button
     lateinit var btnFinishRun: Button
     lateinit var tvTimer: TextView
@@ -53,9 +53,8 @@ class MapsActivity : AppCompatActivity() {
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.mapGoogle) as SupportMapFragment
-        mapFragment.getMapAsync {
+val viewMap = mapGoogle as SupportMapFragment
+        viewMap.getMapAsync {
             mMap = it
             addAllPolylines()
         }
@@ -196,9 +195,9 @@ class MapsActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val mapViewBundle = outState.getBundle(Constans.MAP_VIEW_BUNDLE_KEY)
+        val mapViewBundle = outState.getBundle(MAP_VIEW_BUNDLE_KEY)
         if (mapViewBundle != null) {
-            onSaveInstanceState(mapViewBundle)
+            mapGoogle?.onSaveInstanceState(mapViewBundle)
         }
     }
 
@@ -213,15 +212,13 @@ class MapsActivity : AppCompatActivity() {
                 bounds.include(point)
             }
         }
-        val mapView = findViewById<MapView>(R.id.mapView)
-        val width = mapView?.width
-        val height = mapView?.height
+        val viewMap = findViewById<View>(R.id.mapGoogle)
         mMap?.moveCamera(
             CameraUpdateFactory.newLatLngBounds(
                 bounds.build(),
-                width!!,
-                height!!,
-                (height * 0.05f).toInt()
+                viewMap.width,
+                viewMap.height,
+                (viewMap.width * 0.05f).toInt()
             )
         )
     }
@@ -235,12 +232,12 @@ class MapsActivity : AppCompatActivity() {
             for (polyline in pathPoints) {
                 distanceInMeters += TrackingUtility.calculatePolylineLength(polyline).toInt()
             }
-            val id = 4
             val avgSpeed =
                 round((distanceInMeters / 1000f) / (curTimeInMillis / 1000f / 60 / 60) * 10) / 10f
             val timestamp = Calendar.getInstance().timeInMillis
-            val run = MapModels(id, bmp, timestamp, avgSpeed, distanceInMeters, curTimeInMillis)
+            val run = MapModels( bmp, timestamp, avgSpeed,  distanceInMeters, curTimeInMillis)
             viewModel.insertRun(run)
+
             stopRun()
         }
     }
@@ -252,7 +249,7 @@ class MapsActivity : AppCompatActivity() {
         Timber.d("STOPPING RUN")
         tvTimer.text = "00:00:00:00"
         stopTrackingService()
-        val intentMain = Intent(this, MapsActivity::class.java)
+        val intentMain = Intent(this, MainActivity::class.java)
         startActivity(intentMain)
     }
 }
