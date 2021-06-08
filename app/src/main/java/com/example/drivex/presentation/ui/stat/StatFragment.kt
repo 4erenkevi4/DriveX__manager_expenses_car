@@ -15,14 +15,21 @@ import com.androidplot.pie.PieChart
 import com.androidplot.pie.Segment
 import com.androidplot.pie.SegmentFormatter
 import com.example.drivex.R
+import com.example.drivex.data.RefuelDao
+import com.example.drivex.data.RefuelRoomDatabase
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
+import com.example.drivex.utils.Constans.PAYMENT
+import com.example.drivex.utils.Constans.REFUEL
+import com.example.drivex.utils.Constans.SERVICE
+import com.example.drivex.utils.Constans.SHOPPING
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.*
 
 class StatFragment : Fragment() {
 
-    private lateinit var statViewModel: StatViewModel
     lateinit var liveDataCost: LiveData<String>
-    lateinit var liveDataMileage: LiveData<String>
+    lateinit var liveDataMileage: LiveData<Int>
     lateinit var liveDataRefuelSum: LiveData<Int>
     lateinit var liveDataServiceSum: LiveData<Int>
     lateinit var liveDataShoppingSum: LiveData<Int>
@@ -31,15 +38,16 @@ class StatFragment : Fragment() {
     private lateinit var pieChart: PieChart
     lateinit var text1:TextView
     lateinit var text2:TextView
-    lateinit var button: Button
-
+    private val refuelDao: RefuelDao by lazy {
+        val db = RefuelRoomDatabase.getInstance(requireContext())
+        db.refuelDao()
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        statViewModel =
-            ViewModelProvider(this).get(StatViewModel::class.java)
+
         viewModel = ViewModelProvider(this).get(AbstractViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_stat, container, false)
         text1 = root.findViewById(R.id.text_stat)
@@ -51,41 +59,33 @@ class StatFragment : Fragment() {
         liveDataShoppingSum = viewModel.shoppingSum
         liveDataPaymentSum = viewModel.paymentsSum
 
-
-        button = root.findViewById(R.id.button2)
         liveDataCost = viewModel.allExpensesSum
-        liveDataMileage = viewModel.lastMileageStr
-        //liveDataCost.observe(viewLifecycleOwner, { textView.text = "Общие расходы: $it" })
-        //liveDataMileage.observe(viewLifecycleOwner, { textView2.text = "Пробег: $it" })
+        liveDataMileage = viewModel.lastMileage
+        liveDataCost.observe(viewLifecycleOwner, { text1.text = "Общие расходы: $it" })
+        liveDataMileage.observe(viewLifecycleOwner, Observer{
+            it?.let {
+                val totalMileage = "Пробег: ${it} km"
+                 text2.text = totalMileage
+            }
+        })
+GlobalScope.launch(Dispatchers.Default) {
+    pieChart.addSegment( Segment(REFUEL, viewModel.totalRef(REFUEL)),SegmentFormatter(Color.RED))
+    pieChart.addSegment( Segment(SERVICE, viewModel.totalRef(SERVICE)),SegmentFormatter(Color.YELLOW))
+    pieChart.addSegment( Segment(SHOPPING,viewModel.totalRef(SHOPPING)),SegmentFormatter(Color.CYAN))
+    pieChart.addSegment( Segment(PAYMENT,viewModel.totalRef(PAYMENT)),SegmentFormatter(Color.MAGENTA))
+
+}
 
 
-
-
-        val s1 = Segment("S1",1 )
-        val s2 = Segment("S1", 1)
-        val s3 = Segment("S1", 2)
-        val s4 = Segment("S1",1)
-
-        val sf1 = SegmentFormatter(Color.BLUE)
-        val sf2 = SegmentFormatter(Color.YELLOW)
-        val sf3 = SegmentFormatter(Color.CYAN)
-        val sf4 = SegmentFormatter(Color.MAGENTA)
-
-       
-
-        pieChart.addSegment(s1,sf1)
-        pieChart.addSegment(s2,sf2)
-        pieChart.addSegment(s3,sf3)
-        pieChart.addSegment(s4,sf4)
-
-        button.setOnClickListener {
             liveDataCost.observe(viewLifecycleOwner, { text1.text = "Общие расходы: $it" })
             liveDataMileage.observe(viewLifecycleOwner, { text2.text = "Пробег: $it" })
-        }
 
         return root
     }
-
+    suspend fun getMileage():Int{
+        val ffd:Int = refuelDao.getLastMileageInt()
+        return ffd
+    }
 
 }
 

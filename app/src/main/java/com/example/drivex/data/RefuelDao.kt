@@ -37,5 +37,10 @@ interface RefuelDao {
     @Query("SELECT SUM(volume) FROM refuel WHERE title = :titleExp")
     fun getSummVolumeById(titleExp:String): LiveData<Int>
 
+    @Query("SELECT mileage FROM refuel ORDER BY date DESC LIMIT 1")
+    fun getLastMileageInt(): Int
+
+    @Query("SELECT SUM(totalSum) FROM refuel WHERE title = :titleExp")
+    fun getSUmExpensesIntById(titleExp:String): Int
 
 }

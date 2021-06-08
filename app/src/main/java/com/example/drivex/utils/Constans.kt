@@ -1,6 +1,7 @@
 package com.example.drivex.utils
 
 import android.graphics.Color
+import java.util.*
 
 object Constans {
     const val CAMERA_PERMISSION_CODE = 1
@@ -31,5 +32,10 @@ object Constans {
     const val NOTIFICATION_CHANNEL_NAME = "Tracking"
     const val NOTIFICATION_ID = 1
     const val REQUEST_CODE_LOCATION_PERMISSION = 0
+
+    const val REFUEL = "Заправка"
+    const val SERVICE = "Сервис"
+    const val SHOPPING = "Покупка"
+    const val PAYMENT = "Платеж"
 
 }

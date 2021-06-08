@@ -10,4 +10,5 @@ interface RefuelRepository {
     suspend fun addRefuel(refuel: Refuel)
     suspend fun getSumOfExpenses(): LiveData<Double>
     suspend fun getLastMileage(): LiveData<Int>
+    suspend fun getSUmExpensesIntById(key:String):Int
 }

@@ -34,7 +34,9 @@ class RefuelRepositoryImpl(application: Application) :
         return refuelDao.getLastMileage()
     }
 
-
+    override suspend fun getSUmExpensesIntById(key: String): Int {
+        return refuelDao.getSUmExpensesIntById(key)
+    }
 
 
 }

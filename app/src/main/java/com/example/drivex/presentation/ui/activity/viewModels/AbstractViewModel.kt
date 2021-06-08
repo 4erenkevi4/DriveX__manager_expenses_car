@@ -12,6 +12,7 @@ import com.example.drivex.data.repository.RefuelRepository
 import com.example.drivex.data.repository.RefuelRepositoryImpl
 import com.example.drivex.utils.Constans
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.*
@@ -27,16 +28,17 @@ init {
         db.refuelDao()
     }
 
-
      suspend fun readAllDataByDate(): List<Refuel> {
         return refuelRepository.getAllRefuel()
+    }
+
+    suspend fun totalRef(key:String):Int {
+        return refuelRepository.getSUmExpensesIntById(key)
     }
 
      fun readRefuelById(id:Long): LiveData<Refuel> {
         return refuelRepository.getRefuelById(id)
     }
-
-
 
      fun addRefuel(refuel: Refuel) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -70,9 +72,13 @@ init {
         (summ?.toString() ?: "0") + " Л."
     }
 
-    private val lastMileage: LiveData<Int> = refuelDao.getLastMileage()
+    val lastMileage: LiveData<Int> = refuelDao.getLastMileage()
     val lastMileageStr: LiveData<String> = Transformations.map(lastMileage){ checkpoint ->
         (checkpoint?.toString() ?: "0") + " Km."
     }
+
+
+
+
 
 }
