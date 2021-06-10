@@ -34,9 +34,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="3dp" />
 
-    <com.androidplot.pie.PieChart
+    <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
-        style="@style/APDefacto.Light"
         android:layout_width="400dp"
         android:layout_height="400dp"
         android:layout_marginBottom="4dp"
@@ -44,6 +43,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.272"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

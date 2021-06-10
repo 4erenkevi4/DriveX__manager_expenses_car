@@ -2,9 +2,11 @@ package com.example.drivex.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.room.Delete
 import com.example.drivex.data.model.Refuel
 import com.example.drivex.data.RefuelDao
 import com.example.drivex.data.RefuelRoomDatabase
+import com.example.drivex.data.model.MapModels
 
 
 class RefuelRepositoryImpl(application: Application) :
@@ -18,7 +20,13 @@ class RefuelRepositoryImpl(application: Application) :
        return refuelDao.insert(refuel)
     }
 
+    override suspend fun delete(refuel: Refuel) {
+        refuelDao.delete(refuel)
+    }
+
+
     override suspend fun getAllRefuel(): List<Refuel> =refuelDao.getAllRefuel()
+
     override fun getRefuelById(id: Long): LiveData<Refuel> {
         return refuelDao.getRefuelById(id)
     }
@@ -37,6 +45,9 @@ class RefuelRepositoryImpl(application: Application) :
     override suspend fun getSUmExpensesIntById(key: String): Int {
         return refuelDao.getSUmExpensesIntById(key)
     }
+
+    override  fun getAllSortedByTotalSumm() = refuelDao.getAllSortedByTotalSumm()
+
 
 
 }

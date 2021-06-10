@@ -6,13 +6,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
+import com.example.drivex.data.model.MapModels
 import com.example.drivex.data.model.Refuel
 import com.example.drivex.utils.Constans
 
 class MainAdapter(private val click: (Long) -> Unit) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+
+    private val diffCallback = object : DiffUtil.ItemCallback<Refuel>() {
+        override fun areItemsTheSame(oldItem: Refuel, newItem: Refuel): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Refuel, newItem: Refuel): Boolean {
+            return oldItem.hashCode() == newItem.hashCode()
+        }
+    }
+    val differ = AsyncListDiffer(this, diffCallback)
+    fun submitList(listExp: List<Refuel>) = differ.submitList(listExp)
 
     private var list = listOf<Refuel>()
 

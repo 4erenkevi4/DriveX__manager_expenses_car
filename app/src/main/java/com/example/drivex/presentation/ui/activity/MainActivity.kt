@@ -15,14 +15,6 @@ import androidx.appcompat.widget.Toolbar
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.dialogs.AddExpDialogFragment
 import com.example.drivex.presentation.ui.dialogs.AddPayDialogFragment
-import com.example.drivex.presentation.ui.map.MapViewModel
-import com.example.drivex.presentation.ui.map.TestFragment
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,7 +69,6 @@ class MainActivity : AppCompatActivity() {
         val intentMap = Intent(this, MapsActivity::class.java)
         val dialogPayment = AddPayDialogFragment(application, intentMain)
         val dialogShopping = AddExpDialogFragment(application, intentMain,context)
-        val fragment = TestFragment()
         val buttonFuel = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_car)
             .normalText("Заправка")

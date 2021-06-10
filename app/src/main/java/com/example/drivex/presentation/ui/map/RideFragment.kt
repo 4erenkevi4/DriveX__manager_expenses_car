@@ -61,9 +61,6 @@ class RideFragment: Fragment(R.layout.fragment_ride) {
         }
     }
 
-    /**
-     * Handles swipe-to-delete
-     */
     private val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
         ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
     ) {
@@ -79,7 +76,7 @@ class RideFragment: Fragment(R.layout.fragment_ride) {
             val position = viewHolder.layoutPosition
             val run = rideAdapter.differ.currentList[position]
             viewModel.deleteRun(run)
-            Snackbar.make(requireView(), "Successfully deleted run", Snackbar.LENGTH_LONG).apply {
+            Snackbar.make(requireView(), "Поездка удалена", Snackbar.LENGTH_LONG).apply {
                 setAction("Undo") {
                     viewModel.insertRun(run)
                 }
