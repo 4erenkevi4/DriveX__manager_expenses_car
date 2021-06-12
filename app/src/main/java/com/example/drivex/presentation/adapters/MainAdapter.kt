@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
 import com.example.drivex.data.model.MapModels
 import com.example.drivex.data.model.Refuel
-import com.example.drivex.utils.Constans
+import kotlin.math.exp
 
 class MainAdapter(private val click: (Long) -> Unit) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
@@ -26,10 +26,12 @@ class MainAdapter(private val click: (Long) -> Unit) :
             return oldItem.hashCode() == newItem.hashCode()
         }
     }
-    val differ = AsyncListDiffer(this, diffCallback)
-    fun submitList(listExp: List<Refuel>) = differ.submitList(listExp)
 
-    private var list = listOf<Refuel>()
+    var listExp = AsyncListDiffer(this, diffCallback)
+
+    inner class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    fun submitList(list: List<Refuel>) = listExp.submitList(list)
 
     class ViewHolder(
         view: View,
@@ -42,13 +44,13 @@ class MainAdapter(private val click: (Long) -> Unit) :
         private val cost: TextView = root.findViewById(R.id.cost)
 
         @SuppressLint("SetTextI18n")
-        fun bind(refuel: Refuel) {
-            date.text = refuel.date
-            cost.text = refuel.totalSum.toString() + " BYN"
-            iconType.setImageResource(refuel.icon)
-            nameType.text = refuel.title
+        fun bind(expenss: Refuel) {
+            date.text = expenss.date
+            cost.text = expenss.totalSum.toString() + " BYN"
+            iconType.setImageResource(expenss.icon)
+            nameType.text = expenss.title
 
-            if (refuel.title == "Заправка") {
+            if (expenss.title == "Заправка") {
                 nameType.setTextColor(R.color.teal_700.toInt())
             }
         }
@@ -71,16 +73,16 @@ class MainAdapter(private val click: (Long) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = list[position]
+        val item = listExp.currentList[position]
         holder.bind(item)
         holder.oClick(item.id)
 
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = listExp.currentList.size
 
-    fun setData(task: List<Refuel>) {
-        this.list = task
+    fun setData(expenses: List<Refuel>) {
+        this.listExp.submitList(expenses)
         notifyDataSetChanged()
     }
 

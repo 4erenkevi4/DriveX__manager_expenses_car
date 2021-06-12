@@ -24,8 +24,13 @@ class RefuelRepositoryImpl(application: Application) :
         refuelDao.delete(refuel)
     }
 
+    override suspend fun deletebyId(id: Long) {
+        refuelDao.deleteById(id)
+    }
 
     override suspend fun getAllRefuel(): List<Refuel> =refuelDao.getAllRefuel()
+
+    override fun getAllExpensesBydate() = refuelDao.getAllExpensesBydate()
 
     override fun getRefuelById(id: Long): LiveData<Refuel> {
         return refuelDao.getRefuelById(id)
@@ -45,9 +50,5 @@ class RefuelRepositoryImpl(application: Application) :
     override suspend fun getSUmExpensesIntById(key: String): Int {
         return refuelDao.getSUmExpensesIntById(key)
     }
-
-    override  fun getAllSortedByTotalSumm() = refuelDao.getAllSortedByTotalSumm()
-
-
 
 }

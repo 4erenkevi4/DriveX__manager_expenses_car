@@ -56,6 +56,7 @@ class FuelActivity : AbstractActivity() {
     override fun initCalendar(textViewDate: TextView) {
         initCalendar(textViewDate, this)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_PIC_REQUEST) {
@@ -75,6 +76,8 @@ class FuelActivity : AbstractActivity() {
                 textViewDate.text = desc.date
             }
         })
+
+
         buttonSave.setOnClickListener { startActivity(intent) }
     }
 

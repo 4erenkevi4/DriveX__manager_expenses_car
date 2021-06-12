@@ -16,61 +16,55 @@ import java.text.NumberFormat
 import java.util.*
 
 class AbstractViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val refuelRepository: RefuelRepository
-
+    private val expensesRepository: RefuelRepository
 
     init {
-        refuelRepository = RefuelRepositoryImpl(application)
+        expensesRepository = RefuelRepositoryImpl(application)
     }
-    private val runsSortedByDate = refuelRepository.getAllSortedByTotalSumm()
+    val expenses = MediatorLiveData<List<Refuel>>()
+    private val runsSortedByDate = expensesRepository.getAllExpensesBydate()
+
+    init {
+        expenses.addSource(runsSortedByDate) { result ->
+            Timber.d("RUNS SORTED BY DATE")
+            result?.let { expenses.value = it }
+        }
+    }
+
 
     private val refuelDao: RefuelDao by lazy {
         val db = RefuelRoomDatabase.getInstance(application)
         db.refuelDao()
     }
-    val expens = MediatorLiveData<List<Refuel>>()
-    var sortType = SortType.DATE
 
-    /**
-     * Posts the correct run list in the LiveData
-     */
-    init {
-        expens.addSource(runsSortedByDate) { result ->
-            Timber.d("RUNS SORTED BY DATE")
-            if (sortType == SortType.DATE) {
-                result?.let { expens.value = it }
-            }
-        }
-    }
-    
     suspend fun readAllDataByDate(): List<Refuel> {
-        return refuelRepository.getAllRefuel()
+        return expensesRepository.getAllRefuel()
     }
 
     suspend fun totalRef(key: String): Int {
-        return refuelRepository.getSUmExpensesIntById(key)
+        return expensesRepository.getSUmExpensesIntById(key)
     }
 
     fun readRefuelById(id: Long): LiveData<Refuel> {
-        return refuelRepository.getRefuelById(id)
+        return expensesRepository.getRefuelById(id)
     }
 
     fun addRefuel(refuel: Refuel) {
         viewModelScope.launch(Dispatchers.IO) {
-            refuelRepository.addRefuel(refuel)
+            expensesRepository.addRefuel(refuel)
         }
     }
 
     fun insert(refuel: Refuel) {
         viewModelScope.launch(Dispatchers.IO) {
-            refuelRepository.insert(refuel)
+            expensesRepository.insert(refuel)
         }
     }
 
     fun delete(refuel: Refuel) = viewModelScope.launch {
-        refuelRepository.delete(refuel)
+        refuelDao.delete(refuel)
     }
+
 
     val allExpensesSum: LiveData<String> =
         Transformations.map(refuelDao.getSumOfExpenses()) { sumOfCosts ->

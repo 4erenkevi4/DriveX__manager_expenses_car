@@ -68,7 +68,7 @@
         android:layout_marginTop="40dp"
         android:src="@drawable/ic_baseline_camera_alt_24"
         app:layout_constraintEnd_toStartOf="@+id/button_save"
-        app:layout_constraintHorizontal_bias="0.352"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edir_text_volume" />
 
@@ -82,6 +82,7 @@
         app:layout_constraintEnd_toEndOf="@+id/button_photo"
         app:layout_constraintStart_toStartOf="@+id/button_photo"
         app:layout_constraintTop_toBottomOf="@+id/button_photo" />
+
 
     <ImageView
         android:id="@+id/button_save"

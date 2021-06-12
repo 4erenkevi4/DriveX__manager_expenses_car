@@ -24,6 +24,7 @@
     <string name="title_activity_map">Map</string>
     <string name="start_text">Start</string>
     <string name="stop_text">Stop</string>
+    <string name="deleted">Удалить</string>
     <string-array name="filter_options">
         <item>Date</item>
         <item>Driving Time</item>

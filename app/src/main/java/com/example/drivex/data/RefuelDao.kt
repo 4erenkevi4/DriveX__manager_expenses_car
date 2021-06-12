@@ -18,19 +18,19 @@ interface RefuelDao {
     suspend fun delete(refuel: Refuel)
 
     @Query("DELETE FROM refuel WHERE id = :id")
-    fun deleteById(id: Long)
+    suspend fun deleteById(id: Long)
 
     @Query("SELECT * FROM refuel ORDER BY date ASC")
     fun getAllRefuel(): List<Refuel>
+
+    @Query("SELECT * FROM refuel ORDER BY id ASC")
+    fun getAllExpensesBydate(): LiveData<List<Refuel>>
 
     @Query("SELECT * FROM refuel WHERE id = :id")
     fun getRefuelById(id: Long): LiveData<Refuel>
 
     @Query("SELECT SUM(totalSum) FROM refuel")
     fun getSumOfExpenses(): LiveData<Double>
-
-    @Query("SELECT * FROM refuel ORDER BY totalSum DESC")
-    fun getAllSortedByTotalSumm(): LiveData<List<Refuel>>
 
     @Query("SELECT mileage FROM refuel ORDER BY date DESC LIMIT 1")
     fun getLastMileage(): LiveData<Int>

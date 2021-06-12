@@ -7,10 +7,11 @@ interface RefuelRepository {
     fun getRefuelById(id: Long): LiveData<Refuel>
     suspend fun insert(refuel: Refuel)
     suspend fun delete (refuel: Refuel)
+    suspend fun deletebyId (id: Long)
     suspend fun getAllRefuel(): List<Refuel>
     suspend fun addRefuel(refuel: Refuel)
     suspend fun getSumOfExpenses(): LiveData<Double>
     suspend fun getLastMileage(): LiveData<Int>
     suspend fun getSUmExpensesIntById(key:String):Int
-    fun getAllSortedByTotalSumm(): LiveData<List<Refuel>>
+    fun getAllExpensesBydate(): LiveData<List<Refuel>>
 }

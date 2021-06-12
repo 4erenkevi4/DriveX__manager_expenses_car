@@ -28,7 +28,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-import java.util.*
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
@@ -60,42 +59,21 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         allVolume = view.findViewById(R.id.volume_summ)
         allCostFuel = view.findViewById(R.id.fuel_expenses)
         allCostService = view.findViewById(R.id.service_summ)
+        recyclerView = view.findViewById(R.id.recycler_view_home)
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileageStr
         liveDataCostFUel = viewModel.allFuelCostSum
         liveDataVolumeFUel = viewModel.allFuelVolumeSum
         liveDataCostService = viewModel.allServiceCostSum
         liveDatarefuelSum = viewModel.refuelSum
-        viewModel.expens.observe(viewLifecycleOwner,  { expens ->
-            adapter.submitList(expens)
+
+        viewModel.expenses.observe(viewLifecycleOwner,  { expenses ->
+            adapter.submitList(expenses)
         })
         setinfoView()
         setRecyclerview(view)
         requestPermissions()
         return view
-    }
-    private val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
-        ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-    ) {
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ): Boolean {
-            return true
-        }
-
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            val position = viewHolder.layoutPosition
-            val expenses = adapter.differ.currentList[position]
-            viewModel.delete(expenses)
-            Snackbar.make(requireView(), "Поездка удалена", Snackbar.LENGTH_LONG).apply {
-                setAction("Undo") {
-                    viewModel.insert(expenses)
-                }
-                show()
-            }
-        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -112,20 +90,39 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     }
 
+    private val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+        ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.layoutPosition
+            val expenses = adapter.listExp.currentList[position]
+            viewModel.delete(expenses)
+            Snackbar.make(requireView(), "Запись удалена", Snackbar.LENGTH_LONG).apply {
+                setAction("Отменить") {
+                    viewModel.insert(expenses)
+                }
+                show()
+            }
+        }
+    }
+
     private fun setRecyclerview(view: View) {
         adapter = MainAdapter { id ->
             startActivity(Intent(context, FuelActivity::class.java).putExtra("id", id))
         }
-        recyclerView = view.findViewById(R.id.recycler_view_home)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-
+        recyclerView.adapter = adapter
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
-        recyclerView.adapter = adapter
-        GlobalScope.launch(Dispatchers.Default) {
-            adapter.setData(viewModel.readAllDataByDate())
-        }
+
 
     }
 
