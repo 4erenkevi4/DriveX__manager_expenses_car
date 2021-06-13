@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/notification_important/baseline_notification_important_24.xml" />
+                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/add/baseline_add_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="2b7a00" />
-                            <entry key="outputName" value="ic_notification_important" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_baseline_add_24" />
                             <entry key="sourceFile" value="D:\AndroidProjects\Drivex_Car\DriveX__manager_expenses_car" />
                           </map>
                         </option>

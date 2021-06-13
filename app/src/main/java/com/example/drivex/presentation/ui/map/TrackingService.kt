@@ -17,9 +17,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
 import com.example.drivex.R
-import com.example.drivex.utils.Constans
 import com.example.drivex.utils.Constans.ACTION_PAUSE_SERVICE
-import com.example.drivex.utils.Constans.ACTION_SHOW_TRACKING_FRAGMENT
 import com.example.drivex.utils.Constans.ACTION_START_OR_RESUME_SERVICE
 import com.example.drivex.utils.Constans.ACTION_STOP_SERVICE
 import com.example.drivex.utils.Constans.FASTEST_LOCATION_UPDATE_INTERVAL
@@ -40,7 +38,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -49,28 +46,20 @@ typealias Polylines = MutableList<Polyline>
 @AndroidEntryPoint
 class TrackingService : LifecycleService() {
 
-    private val timeRunInSeconds = MutableLiveData<Long>()
+    private val timeDriveInSeconds = MutableLiveData<Long>()
 
     private var isFirstRun = true
     private var serviceKilled = false
 
     companion object {
-        val timeRunInMillis = MutableLiveData<Long>()
+        val timeDriveInMillis = MutableLiveData<Long>()
         val isTracking = MutableLiveData<Boolean>()
         val pathPoints = MutableLiveData<Polylines>()
     }
 
-    /**
-     * Base notification builder that contains the settings every notification will have
-     */
     @Inject
     lateinit var baseNotificationBuilder: NotificationCompat.Builder
-
-    /**
-     * Builder of the current notification
-     */
     private lateinit var curNotification: NotificationCompat.Builder
-
     @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -86,10 +75,10 @@ class TrackingService : LifecycleService() {
     }
 
     private fun postInitialValues() {
-        timeRunInMillis.postValue(0L)
+        timeDriveInMillis.postValue(0L)
         isTracking.postValue(false)
         pathPoints.postValue(mutableListOf())
-        timeRunInSeconds.postValue(0L)
+        timeDriveInSeconds.postValue(0L)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -105,11 +94,9 @@ class TrackingService : LifecycleService() {
                     }
                 }
                 ACTION_PAUSE_SERVICE -> {
-                    Timber.d("Paused Service")
                     pauseService()
                 }
                 ACTION_STOP_SERVICE -> {
-                    Timber.d("Stopped service.")
                     killService()
                 }
             }
@@ -117,9 +104,6 @@ class TrackingService : LifecycleService() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    /**
-     * Stops the service properly.
-     */
     private fun killService() {
         serviceKilled = true
         isFirstRun = true
@@ -129,9 +113,6 @@ class TrackingService : LifecycleService() {
         stopSelf()
     }
 
-    /**
-     * Enables or disables location tracking according to the tracking state.
-     */
     @SuppressLint("MissingPermission")
     private fun updateLocationChecking(isTracking: Boolean) {
         if (isTracking) {
@@ -148,9 +129,6 @@ class TrackingService : LifecycleService() {
         }
     }
 
-    /**
-     * Location Callback that receives location updates and adds them to pathPoints.
-     */
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult?) {
             super.onLocationResult(result)
@@ -165,14 +143,11 @@ class TrackingService : LifecycleService() {
     }
 
     private var isTimerEnabled = false
-    private var lapTime = 0L // time since we started the timer
-    private var timeRun = 0L // total time of the timer
-    private var timeStarted = 0L // the time when we started the timer
+    private var lapTime = 0L
+    private var timeDrive = 0L
+    private var timeStarted = 0L
     private var lastSecondTimestamp = 0L
 
-    /**
-     * Starts the timer for the tracking.
-     */
     private fun startTimer() {
         addEmptyPolyline()
         isTracking.postValue(true)
@@ -180,32 +155,23 @@ class TrackingService : LifecycleService() {
         isTimerEnabled = true
         CoroutineScope(Dispatchers.Main).launch {
             while (isTracking.value!!) {
-                // time difference between now and time started
                 lapTime = System.currentTimeMillis() - timeStarted
-                // post the new laptime
-                timeRunInMillis.postValue(timeRun + lapTime)
-                // if a new second was reached, we want to update timeRunInSeconds, too
-                if (timeRunInMillis.value!! >= lastSecondTimestamp + 1000L) {
-                    timeRunInSeconds.postValue(timeRunInSeconds.value!! + 1)
+                timeDriveInMillis.postValue(timeDrive + lapTime)
+                if (timeDriveInMillis.value!! >= lastSecondTimestamp + 1000L) {
+                    timeDriveInSeconds.postValue(timeDriveInSeconds.value!! + 1)
                     lastSecondTimestamp += 1000L
                 }
                 delay(TIMER_UPDATE_INTERVAL)
             }
-            timeRun += lapTime
+            timeDrive += lapTime
         }
     }
 
-    /**
-     * Disables the timer and tracking.
-     */
     private fun pauseService() {
         isTimerEnabled = false
         isTracking.postValue(false)
     }
 
-    /**
-     * This adds the location to the last list of pathPoints.
-     */
     private fun addPathPoint(location: Location?) {
         location?.let {
             val pos = LatLng(location.latitude, location.longitude)
@@ -216,19 +182,12 @@ class TrackingService : LifecycleService() {
         }
     }
 
-    /**
-     * Will add an empty polyline in the pathPoints list or initialize it if empty.
-     */
     private fun addEmptyPolyline() = pathPoints.value?.apply {
         add(mutableListOf())
         pathPoints.postValue(this)
     } ?: pathPoints.postValue(mutableListOf(mutableListOf()))
 
-    /**
-     * Starts this service as a foreground service and creates the necessary notification
-     */
     private fun startForegroundService() {
-        Timber.d("TrackingService started.")
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -238,12 +197,9 @@ class TrackingService : LifecycleService() {
         }
 
         startForeground(NOTIFICATION_ID, curNotification.build())
-        //curNotification = curNotification.setContentIntent(getActivityPendingIntent())
         startTimer()
         isTracking.postValue(true)
-
-        // updating notification
-        timeRunInSeconds.observe(this) {
+        timeDriveInSeconds.observe(this) {
             if(!serviceKilled) {
                 val notification = curNotification
                     .setContentText(TrackingUtility.getFormattedStopWatchTime(it * 1000L))
@@ -252,9 +208,6 @@ class TrackingService : LifecycleService() {
         }
     }
 
-    /**
-     * Updates the action buttons of the notification
-     */
     private fun updateNotificationTrackingState(isTracking: Boolean) {
         val notificationActionText = if (isTracking) "Pause" else "Resume"
         val pendingIntent = if (isTracking) {

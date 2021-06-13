@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
 import com.example.drivex.data.model.MapModels
 import com.example.drivex.data.model.Refuel
+import com.example.drivex.utils.Constans.PAYMENT
+import com.example.drivex.utils.Constans.REFUEL
+import com.example.drivex.utils.Constans.SERVICE
+import com.example.drivex.utils.Constans.SHOPPING
 import kotlin.math.exp
 
 class MainAdapter(private val click: (Long) -> Unit) :
@@ -28,8 +32,6 @@ class MainAdapter(private val click: (Long) -> Unit) :
     }
 
     var listExp = AsyncListDiffer(this, diffCallback)
-
-    inner class RunViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     fun submitList(list: List<Refuel>) = listExp.submitList(list)
 
@@ -49,10 +51,12 @@ class MainAdapter(private val click: (Long) -> Unit) :
             cost.text = expenss.totalSum.toString() + " BYN"
             iconType.setImageResource(expenss.icon)
             nameType.text = expenss.title
-
-            if (expenss.title == "Заправка") {
-                nameType.setTextColor(R.color.teal_700.toInt())
-            }
+when(expenss.title){
+    REFUEL-> nameType.setTextColor(R.color.yellow20.toInt())
+    SERVICE-> nameType.setTextColor(R.color.orange20.toInt())
+    SHOPPING-> nameType.setTextColor(R.color.purple20.toInt())
+    PAYMENT-> nameType.setTextColor(R.color.green20.toInt())
+}
         }
 
         fun oClick(position: Long) {
@@ -80,10 +84,5 @@ class MainAdapter(private val click: (Long) -> Unit) :
     }
 
     override fun getItemCount(): Int = listExp.currentList.size
-
-    fun setData(expenses: List<Refuel>) {
-        this.listExp.submitList(expenses)
-        notifyDataSetChanged()
-    }
 
 }

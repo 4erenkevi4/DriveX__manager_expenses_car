@@ -7,59 +7,108 @@
     android:layout_height="match_parent"
     android:background="@drawable/fuel_image">
 
+
     <TextView
-        android:id="@+id/textView_date"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="100dp"
+        android:id="@+id/textView_description"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:textColor="@color/text_80"
         android:gravity="center"
-        android:hint="@string/date"
-        android:textColorHint="#78F3FF"
-        android:textColor="#78F3FF"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView_date"
+        style="@style/Description_edit_text"
+        android:layout_width="180dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/date"
+        android:textColor="@color/gray20"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView_date"
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toStartOf="@+id/textView_date"
+        app:layout_constraintTop_toBottomOf="@+id/textView_date" />
+
+
+
     <EditText
         android:id="@+id/text_mileage"
+        style="@style/Description_edit_text"
         android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:hint="@string/mileage"
-        android:textColorHint="#78F3FF"
-        android:textColor="#78F3FF"
+        android:layout_height="45dp"
+
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toEndOf="@+id/textView_date"
         app:layout_constraintTop_toTopOf="@+id/textView_date" />
 
-    <EditText
-        android:id="@+id/cost_fuell"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:hint="@string/summ"
-        android:textColorHint="#78F3FF"
-        android:textColor="#78F3FF"
-        android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/edir_text_volume"
-        app:layout_constraintTop_toTopOf="@+id/edir_text_volume" />
+        android:text="@string/mileage"
+        android:textColor="@color/gray20"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/text_mileage"
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toStartOf="@+id/text_mileage"
+        app:layout_constraintTop_toBottomOf="@+id/text_mileage" />
 
     <EditText
-        android:id="@+id/edir_text_volume"
+        android:id="@+id/cost_fuell"
+        style="@style/Description_edit_text"
         android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/edit_text_volume"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_volume"
+        />
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:hint="@string/volume"
+        android:text="@string/summ"
+        android:textColor="@color/gray20"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/cost_fuell"
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toStartOf="@+id/cost_fuell"
+        app:layout_constraintTop_toBottomOf="@+id/cost_fuell" />
+
+    <EditText
+        android:id="@+id/edit_text_volume"
+        style="@style/Description_edit_text"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:inputType="number"
-        android:textColorHint="#78F3FF"
-        android:textColor="#78F3FF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_date" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/volume"
+        android:textColor="@color/gray20"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/edit_text_volume"
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toStartOf="@+id/edit_text_volume"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_volume" />
 
     <ImageView
         android:id="@+id/button_photo"
@@ -70,7 +119,7 @@
         app:layout_constraintEnd_toStartOf="@+id/button_save"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edir_text_volume" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_volume" />
 
     <TextView
         android:id="@+id/textView7"
@@ -99,7 +148,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/save_date"
-        android:textColor="#FF781D"
+        android:textColor="@color/yellow20"
         app:layout_constraintEnd_toEndOf="@+id/button_save"
         app:layout_constraintStart_toStartOf="@+id/button_save"
         app:layout_constraintTop_toBottomOf="@+id/button_save" />

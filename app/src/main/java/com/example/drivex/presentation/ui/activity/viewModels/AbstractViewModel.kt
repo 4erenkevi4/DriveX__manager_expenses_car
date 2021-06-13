@@ -2,13 +2,11 @@ package com.example.drivex.presentation.ui.activity.viewModels
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.drivex.data.RefuelDao
-import com.example.drivex.data.RefuelRoomDatabase
-import com.example.drivex.data.model.MapModels
+import com.example.drivex.domain.ExpensesDao
+import com.example.drivex.data.ExpensesRoomDatabase
 import com.example.drivex.data.model.Refuel
-import com.example.drivex.data.repository.RefuelRepository
-import com.example.drivex.data.repository.RefuelRepositoryImpl
-import com.example.drivex.utils.SortType
+import com.example.drivex.data.repository.ExpensesRepository
+import com.example.drivex.data.repository.ExpensesRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -16,10 +14,10 @@ import java.text.NumberFormat
 import java.util.*
 
 class AbstractViewModel(application: Application) : AndroidViewModel(application) {
-    private val expensesRepository: RefuelRepository
+    private val expensesRepository: ExpensesRepository
 
     init {
-        expensesRepository = RefuelRepositoryImpl(application)
+        expensesRepository = ExpensesRepositoryImpl(application)
     }
     val expenses = MediatorLiveData<List<Refuel>>()
     private val runsSortedByDate = expensesRepository.getAllExpensesBydate()
@@ -32,8 +30,8 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
     }
 
 
-    private val refuelDao: RefuelDao by lazy {
-        val db = RefuelRoomDatabase.getInstance(application)
+    private val refuelDao: ExpensesDao by lazy {
+        val db = ExpensesRoomDatabase.getInstance(application)
         db.refuelDao()
     }
 

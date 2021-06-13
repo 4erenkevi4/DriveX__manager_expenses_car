@@ -24,6 +24,7 @@ class FuelActivity : AbstractActivity() {
     private lateinit var editTextMileage: EditText
     private lateinit var editTextCost: EditText
     private lateinit var editTextVolume: EditText
+    private lateinit var description: TextView
     private lateinit var buttonPhoto: ImageView
     private lateinit var buttonSave: ImageView
     private lateinit var containerPhoto: ImageView
@@ -37,10 +38,11 @@ class FuelActivity : AbstractActivity() {
         textViewDate = findViewById(R.id.textView_date)
         editTextMileage = findViewById(R.id.text_mileage)
         editTextCost = findViewById(R.id.cost_fuell)
-        editTextVolume = findViewById(R.id.edir_text_volume)
+        editTextVolume = findViewById(R.id.edit_text_volume)
         buttonPhoto = findViewById(R.id.button_photo)
         buttonSave = findViewById(R.id.button_save)
         containerPhoto = findViewById(R.id.fuel_photo_container)
+        description = findViewById(R.id.textView_description)
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         val id = intent.getLongExtra("id", -1L)
@@ -74,8 +76,10 @@ class FuelActivity : AbstractActivity() {
                 editTextVolume.setText(desc.title)
                 editTextCost.setText(desc.totalSum.toString())
                 textViewDate.text = desc.date
+                description.text = desc.description
             }
         })
+
 
 
         buttonSave.setOnClickListener { startActivity(intent) }
@@ -96,7 +100,7 @@ class FuelActivity : AbstractActivity() {
                 totalSum = cost.toDouble(),
                 date = textViewDate.text.toString(),
                 icon = R.drawable.fuel_icon,
-                description = ""
+                description = "Данные выбранной заправки:"
             )
             fuelViewModel.addRefuel(refuel)
             startActivity(intent)

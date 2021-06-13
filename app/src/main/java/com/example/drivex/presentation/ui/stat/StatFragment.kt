@@ -8,11 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
-import com.example.drivex.data.RefuelDao
-import com.example.drivex.data.RefuelRoomDatabase
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.REFUEL
@@ -25,12 +22,8 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.coroutines.*
-import java.text.DecimalFormat
 
 
 class StatFragment : Fragment() {
@@ -43,12 +36,12 @@ class StatFragment : Fragment() {
     lateinit var liveDataPaymentSum: LiveData<Int>
     private lateinit var viewModel: AbstractViewModel
     private lateinit var pieChart: PieChart
-    lateinit var text1: TextView
-    lateinit var text2: TextView
-    private val refuelDao: RefuelDao by lazy {
-        val db = RefuelRoomDatabase.getInstance(requireContext())
-        db.refuelDao()
-    }
+    lateinit var mileage: TextView
+    lateinit var allExpenses: TextView
+    lateinit var expensesRefuel: TextView
+    lateinit var expensesService: TextView
+    lateinit var expensesShopping: TextView
+    lateinit var expensesPayment: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,8 +51,12 @@ class StatFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(AbstractViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_stat, container, false)
-        text1 = root.findViewById(R.id.text_stat)
-        text2 = root.findViewById(R.id.text_stat2)
+        mileage = root.findViewById(R.id.text_stat5)
+        allExpenses = root.findViewById(R.id.text_stat2)
+        expensesRefuel = root.findViewById(R.id.text_stat)
+        expensesService = root.findViewById(R.id.text_stat3)
+        expensesShopping = root.findViewById(R.id.text_stat4)
+        expensesPayment = root.findViewById(R.id.text_stat6)
         pieChart = root.findViewById(R.id.pieChart)
         setupPieChart()
         loadPieChartData()
@@ -67,19 +64,16 @@ class StatFragment : Fragment() {
         liveDataServiceSum = viewModel.serviceSum
         liveDataShoppingSum = viewModel.shoppingSum
         liveDataPaymentSum = viewModel.paymentsSum
-
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileage
-        liveDataCost.observe(viewLifecycleOwner, { text1.text = "Общие расходы: $it" })
-        liveDataMileage.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                val totalMileage = "Пробег: ${it} km"
-                text2.text = totalMileage
-            }
-        })
 
-        liveDataCost.observe(viewLifecycleOwner, { text1.text = "Общие расходы: $it" })
-        liveDataMileage.observe(viewLifecycleOwner, { text2.text = "Пробег: $it" })
+
+        liveDataCost.observe(viewLifecycleOwner, { allExpenses.text = "Общие расходы: $it" })
+        liveDataMileage.observe(viewLifecycleOwner, { mileage.text = "Актуальный пробег: $it Км" })
+        liveDataRefuelSum.observe(viewLifecycleOwner, { expensesRefuel.text = "Расходы на топливо: $it BYN" })
+        liveDataServiceSum.observe(viewLifecycleOwner, { expensesService.text = "Расходы на ТО: $it BYN" })
+        liveDataShoppingSum.observe(viewLifecycleOwner, { expensesShopping.text = "Расходы на платежи: $it BYN" })
+        liveDataPaymentSum.observe(viewLifecycleOwner, { expensesPayment.text = "Расходы на покупки: $it BYN" })
 
         return root
     }
