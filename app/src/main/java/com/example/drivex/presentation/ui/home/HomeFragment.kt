@@ -12,6 +12,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
@@ -20,6 +23,7 @@ import com.example.drivex.presentation.ui.activity.FuelActivity
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.utils.Constans.REQUEST_CODE_LOCATION_PERMISSION
 import com.example.drivex.utils.TrackingUtility
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -32,6 +36,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewModel: AbstractViewModel
+    lateinit var  adapter:MainAdapter
     lateinit var allExpenses: TextView
     lateinit var allMileage: TextView
     lateinit var allVolume: TextView
@@ -56,12 +61,17 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         allVolume = view.findViewById(R.id.volume_summ)
         allCostFuel = view.findViewById(R.id.fuel_expenses)
         allCostService = view.findViewById(R.id.service_summ)
+        recyclerView = view.findViewById(R.id.recycler_view_home)
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileageStr
         liveDataCostFUel = viewModel.allFuelCostSum
         liveDataVolumeFUel = viewModel.allFuelVolumeSum
         liveDataCostService = viewModel.allServiceCostSum
         liveDatarefuelSum = viewModel.refuelSum
+
+        viewModel.expenses.observe(viewLifecycleOwner,  { expenses ->
+            adapter.submitList(expenses)
+        })
         setinfoView()
         setRecyclerview(view)
         requestPermissions()
@@ -82,16 +92,40 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     }
 
+    private val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+        ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.layoutPosition
+            val expenses = adapter.listExp.currentList[position]
+            viewModel.delete(expenses)
+            Snackbar.make(requireView(), "Запись удалена", Snackbar.LENGTH_LONG).apply {
+                setAction("Отменить") {
+                    viewModel.insert(expenses)
+                }
+                show()
+            }
+        }
+    }
+
     private fun setRecyclerview(view: View) {
-        val adapter = MainAdapter { id ->
+        adapter = MainAdapter { id ->
             startActivity(Intent(context, FuelActivity::class.java).putExtra("id", id))
         }
-        recyclerView = view.findViewById(R.id.recycler_view_home)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
-        GlobalScope.launch(Dispatchers.Default) {
-            adapter.setData(viewModel.readAllDataByDate())
-        }
+
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
+
+
     }
 
     private fun requestPermissions() {
@@ -135,5 +169,6 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
+
 
 }

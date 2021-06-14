@@ -20,9 +20,6 @@ class MapViewModel @ViewModelInject constructor(
 
     var sortType = SortType.DATE
 
-    /**
-     * Posts the correct run list in the LiveData
-     */
     init {
         runs.addSource(runsSortedByDate) { result ->
             Timber.d("RUNS SORTED BY DATE")

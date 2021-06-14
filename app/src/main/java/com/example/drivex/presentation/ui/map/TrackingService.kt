@@ -17,9 +17,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
 import com.example.drivex.R
-import com.example.drivex.utils.Constans
 import com.example.drivex.utils.Constans.ACTION_PAUSE_SERVICE
-import com.example.drivex.utils.Constans.ACTION_SHOW_TRACKING_FRAGMENT
 import com.example.drivex.utils.Constans.ACTION_START_OR_RESUME_SERVICE
 import com.example.drivex.utils.Constans.ACTION_STOP_SERVICE
 import com.example.drivex.utils.Constans.FASTEST_LOCATION_UPDATE_INTERVAL
@@ -40,7 +38,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -49,13 +46,13 @@ typealias Polylines = MutableList<Polyline>
 @AndroidEntryPoint
 class TrackingService : LifecycleService() {
 
-    private val timeRunInSeconds = MutableLiveData<Long>()
+    private val timeDriveInSeconds = MutableLiveData<Long>()
 
     private var isFirstRun = true
     private var serviceKilled = false
 
     companion object {
-        val timeRunInMillis = MutableLiveData<Long>()
+        val timeDriveInMillis = MutableLiveData<Long>()
         val isTracking = MutableLiveData<Boolean>()
         val pathPoints = MutableLiveData<Polylines>()
     }
@@ -63,7 +60,6 @@ class TrackingService : LifecycleService() {
     @Inject
     lateinit var baseNotificationBuilder: NotificationCompat.Builder
     private lateinit var curNotification: NotificationCompat.Builder
-
     @Inject
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -71,6 +67,7 @@ class TrackingService : LifecycleService() {
         super.onCreate()
         curNotification = baseNotificationBuilder
         postInitialValues()
+
         isTracking.observe(this) {
             updateNotificationTrackingState(it)
             updateLocationChecking(it)
@@ -78,10 +75,10 @@ class TrackingService : LifecycleService() {
     }
 
     private fun postInitialValues() {
-        timeRunInMillis.postValue(0L)
+        timeDriveInMillis.postValue(0L)
         isTracking.postValue(false)
         pathPoints.postValue(mutableListOf())
-        timeRunInSeconds.postValue(0L)
+        timeDriveInSeconds.postValue(0L)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -97,11 +94,9 @@ class TrackingService : LifecycleService() {
                     }
                 }
                 ACTION_PAUSE_SERVICE -> {
-                    Timber.d("Paused Service")
                     pauseService()
                 }
                 ACTION_STOP_SERVICE -> {
-                    Timber.d("Stopped service.")
                     killService()
                 }
             }
@@ -148,9 +143,9 @@ class TrackingService : LifecycleService() {
     }
 
     private var isTimerEnabled = false
-    private var lapTime = 0L // time since we started the timer
-    private var timeRun = 0L // total time of the timer
-    private var timeStarted = 0L // the time when we started the timer
+    private var lapTime = 0L
+    private var timeDrive = 0L
+    private var timeStarted = 0L
     private var lastSecondTimestamp = 0L
 
     private fun startTimer() {
@@ -161,14 +156,14 @@ class TrackingService : LifecycleService() {
         CoroutineScope(Dispatchers.Main).launch {
             while (isTracking.value!!) {
                 lapTime = System.currentTimeMillis() - timeStarted
-                timeRunInMillis.postValue(timeRun + lapTime)
-                if (timeRunInMillis.value!! >= lastSecondTimestamp + 1000L) {
-                    timeRunInSeconds.postValue(timeRunInSeconds.value!! + 1)
+                timeDriveInMillis.postValue(timeDrive + lapTime)
+                if (timeDriveInMillis.value!! >= lastSecondTimestamp + 1000L) {
+                    timeDriveInSeconds.postValue(timeDriveInSeconds.value!! + 1)
                     lastSecondTimestamp += 1000L
                 }
                 delay(TIMER_UPDATE_INTERVAL)
             }
-            timeRun += lapTime
+            timeDrive += lapTime
         }
     }
 
@@ -193,7 +188,6 @@ class TrackingService : LifecycleService() {
     } ?: pathPoints.postValue(mutableListOf(mutableListOf()))
 
     private fun startForegroundService() {
-        Timber.d("TrackingService started.")
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -205,7 +199,7 @@ class TrackingService : LifecycleService() {
         startForeground(NOTIFICATION_ID, curNotification.build())
         startTimer()
         isTracking.postValue(true)
-        timeRunInSeconds.observe(this) {
+        timeDriveInSeconds.observe(this) {
             if(!serviceKilled) {
                 val notification = curNotification
                     .setContentText(TrackingUtility.getFormattedStopWatchTime(it * 1000L))
@@ -214,7 +208,6 @@ class TrackingService : LifecycleService() {
         }
     }
 
-    
     private fun updateNotificationTrackingState(isTracking: Boolean) {
         val notificationActionText = if (isTracking) "Pause" else "Resume"
         val pendingIntent = if (isTracking) {

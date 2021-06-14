@@ -4,19 +4,353 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.notification.NotificationFragment">
+    android:background="@color/background_blue">
 
     <TextView
-        android:id="@+id/text_notification"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        android:text="О чем вам напомнить? "
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/notify_container1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/notify_container1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/notify_to"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/notify_serv" />
+
+        <ImageView
+            android:id="@+id/notify_drive"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/notify_drive" />
+
+        <ImageView
+            android:id="@+id/notify_wash"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/notify_wash" />
+
+        <ImageView
+            android:id="@+id/notify_pitstop"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:src="@drawable/notify_pitstop" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_text_container1"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/notify_container2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Плановое ТО"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Поездка"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Мойка авто"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Шиномонтаж"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_container2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notify_container1">
+
+        <ImageView
+            android:id="@+id/notify_diagnost"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/notify_diagnost" />
+
+        <ImageView
+            android:id="@+id/notify_strah"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/notify_strah" />
+
+        <ImageView
+            android:id="@+id/notify_license"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/notify_license" />
+
+        <ImageView
+            android:id="@+id/notify_oil"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/notify_oil" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_text_container2"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/notify_container3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Диагностика"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Страховка"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Продлить права"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Замена масла"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_container3"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="1dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notify_container2">
+
+        <ImageView
+            android:id="@+id/notify_pay"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/Notify_icon"
+            android:layout_weight="1"
+            android:src="@drawable/notify_pay" />
+
+        <ImageView
+            android:id="@+id/notify_texosmotr"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/notify_texosm" />
+
+        <ImageView
+            android:id="@+id/notify_shopping"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:src="@drawable/notify_shopping" />
+
+        <ImageView
+            android:id="@+id/notify_other"
+            style="@style/Notify_icon"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="9dp"
+
+            android:layout_weight="1"
+            android:src="@drawable/notify_other" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_text_container3"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notify_container3">
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Платеж"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Техосмотр"
+            android:textColor="@color/yellow20"
+            android:textSize="11sp" />
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Покупка"
+            android:textColor="@color/yellow20"
+            android:textSize="12sp" />
+
+        <TextView
+            style="@style/Description_edit_text"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Прочее"
+            android:textColor="@color/yellow20"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/editText_desc_of_notification"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:hint="Добавьте подробности напоминания"
+        android:textColorHint="@color/gray20"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notify_container3" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/settime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:gravity="center"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:gravity="center"
+        android:text="Добавить время напоминания"
+        android:textColor="@color/gray40"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="@+id/settime"
+        app:layout_constraintStart_toStartOf="@+id/settime"
+        app:layout_constraintTop_toBottomOf="@+id/settime" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

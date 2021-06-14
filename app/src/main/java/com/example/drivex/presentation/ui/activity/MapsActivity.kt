@@ -24,7 +24,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tracking.*
-import timber.log.Timber
 import java.util.*
 import kotlin.math.round
 
@@ -35,8 +34,6 @@ class MapsActivity : AppCompatActivity() {
     lateinit var btnToggleRun: Button
     lateinit var btnFinishRun: Button
     lateinit var tvTimer: TextView
-    //lateinit var mapView : MapView
-
     private var isTracking = false
     private var curTimeInMillis = 0L
     private var pathPoints = mutableListOf<MutableList<LatLng>>()
@@ -47,12 +44,10 @@ class MapsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.fragment_tracking)
-        btnToggleRun=findViewById<Button>(R.id.btnToggleRun)
-        btnFinishRun=findViewById<Button>(R.id.btnFinishRun)
-        tvTimer=findViewById<TextView>(R.id.tvTimer)
+        btnToggleRun=findViewById(R.id.btnToggleRun)
+        btnFinishRun=findViewById(R.id.btnFinishRun)
+        tvTimer=findViewById(R.id.tvTimer)
 
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 val viewMap = mapGoogle as SupportMapFragment
         viewMap.getMapAsync {
             mMap = it
@@ -60,20 +55,17 @@ val viewMap = mapGoogle as SupportMapFragment
         }
 
         btnToggleRun.setOnClickListener {
-            toggleRun()
+            toggleDrive()
         }
 
         btnFinishRun.setOnClickListener {
             zoomToWholeTrack()
-            endRunAndSaveToDB()
+            enDriveAndSaveToDB()
         }
         subscribeToObservers()
     }
 
 
-    /**
-     * Subscribes to changes of LiveData objects
-     */
     private fun subscribeToObservers() {
         TrackingService.isTracking.observe(this, {
             updateTracking(it)
@@ -85,16 +77,13 @@ val viewMap = mapGoogle as SupportMapFragment
             moveCameraToUser()
         })
 
-        TrackingService.timeRunInMillis.observe(this, {
+        TrackingService.timeDriveInMillis.observe(this, {
             curTimeInMillis = it
             val formattedTime = TrackingUtility.getFormattedStopWatchTime(it, true)
             tvTimer.text = formattedTime
         })
     }
 
-    /**
-     * Will move the camera to the user's location.
-     */
     private fun moveCameraToUser() {
         if (pathPoints.isNotEmpty() && pathPoints.last().isNotEmpty()) {
             mMap?.animateCamera(
@@ -106,9 +95,6 @@ val viewMap = mapGoogle as SupportMapFragment
         }
     }
 
-    /**
-     * Adds all polylines to the pathPoints list to display them after screen rotations
-     */
     private fun addAllPolylines() {
         for (polyline in pathPoints) {
             val polylineOptions = PolylineOptions()
@@ -119,11 +105,7 @@ val viewMap = mapGoogle as SupportMapFragment
         }
     }
 
-    /**
-     * Draws a polyline between the two latest points.
-     */
     private fun addLatestPolyline() {
-        // only add polyline if we have at least two elements in the last polyline
         if (pathPoints.isNotEmpty() && pathPoints.last().size > 1) {
             val preLastLatLng = pathPoints.last()[pathPoints.last().size - 2]
             val lastLatLng = pathPoints.last().last()
@@ -137,9 +119,6 @@ val viewMap = mapGoogle as SupportMapFragment
         }
     }
 
-    /**
-     * Updates the tracking variable and the UI accordingly
-     */
     private fun updateTracking(isTracking: Boolean) {
         this.isTracking = isTracking
         if (!isTracking && curTimeInMillis > 0L) {
@@ -152,41 +131,28 @@ val viewMap = mapGoogle as SupportMapFragment
         }
     }
 
-    /**
-     * Toggles the tracking state
-     */
     @SuppressLint("MissingPermission")
-    private fun toggleRun() {
+    private fun toggleDrive() {
         if (isTracking) {
             menu?.getItem(0)?.isVisible = true
             pauseTrackingService()
         } else {
             startOrResumeTrackingService()
-            Timber.d("Started service")
         }
     }
 
-    /**
-     * Starts the tracking service or resumes it if it is currently paused.
-     */
     private fun startOrResumeTrackingService() =
         Intent(applicationContext, TrackingService::class.java).also {
             it.action = Constans.ACTION_START_OR_RESUME_SERVICE
             applicationContext.startService(it)
         }
 
-    /**
-     * Pauses the tracking service
-     */
     private fun pauseTrackingService() =
         Intent(this, TrackingService::class.java).also {
             it.action = Constans.ACTION_PAUSE_SERVICE
             startService(it)
         }
 
-    /**
-     * Stops the tracking service.
-     */
     private fun stopTrackingService() =
         Intent(this, TrackingService::class.java).also {
             it.action = Constans.ACTION_STOP_SERVICE
@@ -201,10 +167,6 @@ val viewMap = mapGoogle as SupportMapFragment
         }
     }
 
-    /**
-     * Zooms out until the whole track is visible. Used to make a screenshot of the
-     * MapView to save it in the database
-     */
     private fun zoomToWholeTrack() {
         val bounds = LatLngBounds.Builder()
         for (polyline in pathPoints) {
@@ -223,10 +185,7 @@ val viewMap = mapGoogle as SupportMapFragment
         )
     }
 
-    /**
-     * Saves the recent run in the Room database and ends it
-     */
-    private fun endRunAndSaveToDB() {
+    private fun enDriveAndSaveToDB() {
         mMap?.snapshot { bmp ->
             var distanceInMeters = 0
             for (polyline in pathPoints) {
@@ -238,16 +197,12 @@ val viewMap = mapGoogle as SupportMapFragment
             val run = MapModels( bmp, timestamp, avgSpeed,  distanceInMeters, curTimeInMillis)
             viewModel.insertRun(run)
 
-            stopRun()
+            stopDrive()
         }
     }
 
-    /**
-     * Finishes the tracking.
-     */
-    private fun stopRun() {
-        Timber.d("STOPPING RUN")
-        tvTimer.text = "00:00:00:00"
+    private fun stopDrive() {
+        tvTimer.text = "00:00:00"
         stopTrackingService()
         val intentMain = Intent(this, MainActivity::class.java)
         startActivity(intentMain)

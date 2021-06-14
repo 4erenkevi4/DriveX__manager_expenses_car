@@ -19,6 +19,24 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Description_edit_text">
+        <item name="android:textColorHint">@color/text_80</item>
+        <item name="android:textColor">@color/text_80</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/text_background_alfa</item>
+    </style>
+    <style name="Notify_icon">
+        <item name="android:gravity">center</item>
+       <item name="android:layout_margin">5dp</item>
+    </style>
+    <style name="Notify_icon_desc">
+        <item name="android:gravity">center</item>
+       <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/yellow20</item>
+           </style>
+
+
+
     <style name="Theme.DriveX.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.DriveX.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

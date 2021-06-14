@@ -1,6 +1,7 @@
 package com.example.drivex.presentation.ui.activity
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.Menu
 import com.google.android.material.navigation.NavigationView
@@ -24,10 +25,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var boomMenu: BoomMenuButton
+    private lateinit var playerStart: MediaPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        playerStart = MediaPlayer.create(this, R.raw.engine_start)
+        playerStart.start()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         boomMenu = findViewById(R.id.boom_menu)
@@ -65,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         val intentFuell = Intent(this, FuelActivity::class.java)
         val intentService = Intent(this, ServiceActivity::class.java)
         val intentMap = Intent(this, MapsActivity::class.java)
-        val dialogPayment = AddPayDialogFragment(application, intentMain)
+        val dialogPayment = AddPayDialogFragment(application, intentMain,context)
         val dialogShopping = AddExpDialogFragment(application, intentMain,context)
         val buttonFuel = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_car)

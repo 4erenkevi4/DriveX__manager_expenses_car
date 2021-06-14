@@ -76,7 +76,7 @@ class ServiceActivity : AbstractActivity() {
                 showToast("Пожалуйста, добавьте текущее значение пробега",editTextMileage)
             }
             if (cost.isEmpty()) {
-                showToast("Пожалуйста, укажите стоимость текущей заправки",editTextCost)
+                showToast("Пожалуйста, укажите стоимость текущего ремонта",editTextCost)
             }
         }
     }

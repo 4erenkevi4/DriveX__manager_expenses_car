@@ -41,12 +41,15 @@ class AddExpDialogFragment(
         dateView = rootview.findViewById(R.id.date_view)
         viewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         initCalendar(dateView, contextMain)
+
         saveButton.setOnClickListener {
+            val desc: String = description.text.toString()
             val cost: String = inputCost.text.toString()
             val refuel = Refuel(
                 id = 0,
-                description = description.toString(),
+                description = desc,
                 totalSum = cost.toDouble(),
+                date = dateView.text.toString(),
                 icon = R.drawable.shoping_icon,
                 title = "Покупка"
             )

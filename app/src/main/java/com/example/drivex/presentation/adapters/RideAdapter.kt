@@ -46,24 +46,29 @@ class RideAdapter : RecyclerView.Adapter<RideAdapter.RunViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RunViewHolder, position: Int) {
-        val run = differ.currentList[position]
+        val drive = differ.currentList[position]
         holder.itemView.apply {
-            Glide.with(this).load(run.img).into(ivRunImage)
+            Glide.with(this).load(drive.img).into(ivRunImage)
 
             val calendar = Calendar.getInstance().apply {
-                timeInMillis = run.timestamp
+                timeInMillis = drive.timestamp
             }
             val dateFormat = SimpleDateFormat("dd.MM.yy", Locale.getDefault())
             tvDate.text = dateFormat.format(calendar.time)
 
-            "${run.avgSpeedInKMH}km/h".also {
+            "${drive.avgSpeedInKMH}km/h".also {
                 tvAvgSpeed.text = it
+            }
 
-                "${run.distanceInMeters / 1000f}km".also {
+                "${drive.distanceInMeters / 1000f}km".also {
                     tvDistance.text = it
                 }
 
-            }
+                "${drive.timeInMillis.toInt() / 60000}min".also {
+                    tvTime.text = it
+                }
+
+
         }
     }
 }

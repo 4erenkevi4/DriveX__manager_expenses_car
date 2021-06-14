@@ -5,23 +5,24 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.drivex.data.model.Refuel
+import com.example.drivex.domain.ExpensesDao
 
 @Database(entities = [Refuel::class], version = 1, exportSchema = false)
-abstract class RefuelRoomDatabase : RoomDatabase() {
-    abstract fun refuelDao(): RefuelDao
+abstract class ExpensesRoomDatabase : RoomDatabase() {
+    abstract fun refuelDao(): ExpensesDao
     companion object {
 
         @Volatile
-        private var INSTANCE: RefuelRoomDatabase? = null
+        private var INSTANCE: ExpensesRoomDatabase? = null
 
-        fun getInstance(context: Context): RefuelRoomDatabase {
+        fun getInstance(context: Context): ExpensesRoomDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null)
             return tempInstance
                  synchronized(this) {
                      val instance = Room.databaseBuilder(
                          context.applicationContext,
-                         RefuelRoomDatabase::class.java,
+                         ExpensesRoomDatabase::class.java,
                      "refuel database"
                      ).build()
                      INSTANCE = instance
