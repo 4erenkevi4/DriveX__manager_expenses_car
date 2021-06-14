@@ -66,9 +66,7 @@ class StatFragment : Fragment() {
         liveDataPaymentSum = viewModel.paymentsSum
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileage
-
-
-        liveDataCost.observe(viewLifecycleOwner, { allExpenses.text = "Общие расходы: $it" })
+        liveDataCost.observe(viewLifecycleOwner, { allExpenses.text = "Общие расходы : $it" })
         liveDataMileage.observe(viewLifecycleOwner, { mileage.text = "Актуальный пробег: $it Км" })
         liveDataRefuelSum.observe(viewLifecycleOwner, { expensesRefuel.text = "Расходы на топливо: $it BYN" })
         liveDataServiceSum.observe(viewLifecycleOwner, { expensesService.text = "Расходы на ТО: $it BYN" })
