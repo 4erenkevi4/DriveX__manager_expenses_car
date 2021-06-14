@@ -44,17 +44,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_notify,
                 R.id.nav_map,
                 R.id.nav_stat,
-                R.id.nav_settings,
                 R.id.nav_info
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
     }
 
     override fun onSupportNavigateUp(): Boolean {
