@@ -1,9 +1,12 @@
 package com.example.drivex.utils
 
 import android.app.Activity
+import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.util.DisplayMetrics
+import androidx.annotation.RequiresApi
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -121,18 +124,19 @@ class CameraxHelper(
         return AspectRatio.RATIO_16_9
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun takePicture() {
        // val dir = context.getExternalFilesDir("DrivexPhoto")
        // if (!dir!!.exists())
        //     dir.mkdirs()
 
         val filePath = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                .toString() + File.separator + "DrivexPhoto"
+            this.filesDirectory?.absolutePath,"DrivexPhoto"
         )
         if (!filePath.exists())
         filePath.mkdirs()
-       val file = File(filePath, UUID.randomUUID().toString() + ".jpg")
+        val file = File.createTempFile(SimpleDateFormat("yyyyMMddHHmmssZ",Locale.US).format(System.currentTimeMillis()),".jpg")
+       //val file = File(filePath, UUID.randomUUID().toString() + ".jpg")
         val metadata = ImageCapture.Metadata().apply {
             // Mirror image when using the front camera
             isReversedHorizontal = lensFacing == CameraSelector.LENS_FACING_FRONT

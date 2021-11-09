@@ -18,6 +18,7 @@ import android.widget.Toast.makeText
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
@@ -86,6 +87,7 @@ class FuelActivity : AbstractActivity() {
             cameraxHelper.start()
             cameraxHelper.changeCamera()
             buttonPhoto.setOnClickListener {
+               // containerPhoto.isVisible=true
                 cameraxHelper.takePicture() }
 
         }

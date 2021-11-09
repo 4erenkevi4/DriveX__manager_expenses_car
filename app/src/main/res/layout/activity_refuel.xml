@@ -162,7 +162,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
         tools:src="@drawable/ic_launcher_background"
-        android:contentDescription="@string/todo" />
+        android:contentDescription="@string/todo"
+        android:visibility="visible"/>
 
 
 
