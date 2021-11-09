@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +31,7 @@ class ServiceActivity : AbstractActivity() {
     lateinit var fuelViewModel: AbstractViewModel
     private lateinit var recyclerView: RecyclerView
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service)
@@ -41,7 +44,7 @@ class ServiceActivity : AbstractActivity() {
         buttonSave = findViewById(R.id.button_save_)
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
-        initPhotoButton(buttonPhoto)
+        saveFullImage(buttonPhoto)
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
         setRecyclerview()

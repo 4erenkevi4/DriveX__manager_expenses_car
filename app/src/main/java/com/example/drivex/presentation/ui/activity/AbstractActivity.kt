@@ -4,19 +4,36 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Camera
 import android.graphics.Color
+import android.hardware.Camera.*
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.Preview
+import androidx.camera.view.PreviewView
+import com.example.drivex.utils.CameraxHelper
+import timber.log.Timber
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
     private val CAMERA_PIC_REQUEST = 2
 
     companion object {
+        const val TAKE_PICTURE_REQUEST = 1
+        var outputFileUri: Uri? = null
+
         @SuppressLint("SimpleDateFormat")
          fun initCalendar(textViewDate: TextView,context: Context) {
             textViewDate.setOnClickListener {
@@ -44,12 +61,29 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
         }
     }
 
+
     override fun initPhotoButton(view: View) {
         view.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(intent, CAMERA_PIC_REQUEST)
         }
     }
+
+     @RequiresApi(Build.VERSION_CODES.R)
+     override fun saveFullImage(view: View) {
+         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+         val file = File(
+             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+             "test.jpg"
+         )
+         //outputFileUri = Uri.fromFile(file)
+         // intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri)
+
+     }
+    fun makePhoto(view: View?) {
+
+    }
+
 
 
     override fun initSaveButton(view: View) {

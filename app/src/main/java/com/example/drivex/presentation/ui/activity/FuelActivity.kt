@@ -4,18 +4,27 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Camera
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.util.Size
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.makeText
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.Preview
+import androidx.camera.view.PreviewView
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
-import com.example.drivex.utils.Constans
+import com.example.drivex.utils.CameraxHelper
+import timber.log.Timber
+import java.io.File
 
 @Suppress("UNCHECKED_CAST")
 class FuelActivity : AbstractActivity() {
@@ -27,9 +36,30 @@ class FuelActivity : AbstractActivity() {
     private lateinit var description: TextView
     private lateinit var buttonPhoto: ImageView
     private lateinit var buttonSave: ImageView
-    private lateinit var containerPhoto: ImageView
+    private lateinit var containerPhoto: PreviewView
     private lateinit var fuelViewModel: AbstractViewModel
     private val CAMERA_PIC_REQUEST = 2
+
+    private val cameraxHelper by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CameraxHelper(
+                caller = this,
+                previewView = containerPhoto,
+                onPictureTaken = { file, uri ->
+                                Timber.i("Picture taken ${file.absolutePath}, uri=$uri")
+                            },
+                onError = { Timber.e(it) },
+                builderPreview = Preview.Builder().setTargetResolution(Size(200, 200)),
+                builderImageCapture = ImageCapture.Builder().setTargetResolution(Size(200, 200)),
+                filesDirectory = File(
+                                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                                "camerax_sample"
+                            )
+            )
+        } else {
+            TODO("VERSION.SDK_INT < LOLLIPOP")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,20 +82,32 @@ class FuelActivity : AbstractActivity() {
             updateMode(id)
         }
         initCalendar(textViewDate)
-        initPhotoButton(buttonPhoto)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            cameraxHelper.start()
+            cameraxHelper.changeCamera()
+            buttonPhoto.setOnClickListener {
+                cameraxHelper.takePicture() }
+
+        }
     }
 
     override fun initCalendar(textViewDate: TextView) {
         initCalendar(textViewDate, this)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    fun onAdctivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_PIC_REQUEST) {
             val image: Bitmap? = data?.getParcelableExtra("data")
-            containerPhoto.setImageBitmap(image)
+            containerPhoto
         }
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == TAKE_PICTURE_REQUEST && resultCode == RESULT_OK) {
+
+            }
+        }
 
     @SuppressLint("SetTextI18n")
     fun updateMode(id: Long) {
