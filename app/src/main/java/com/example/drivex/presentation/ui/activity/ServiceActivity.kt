@@ -11,6 +11,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.camera.view.PreviewView
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +29,9 @@ class ServiceActivity : AbstractActivity() {
     private lateinit var editTextCost: EditText
     private lateinit var description: TextView
     private lateinit var buttonPhoto: ImageView
+    private lateinit var takePhoto: ImageView
     private lateinit var buttonSave: ImageView
+    private lateinit var photoPreview: PreviewView
     lateinit var fuelViewModel: AbstractViewModel
     private lateinit var recyclerView: RecyclerView
 
@@ -35,19 +39,32 @@ class ServiceActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service)
-        Toast.makeText(this, "Пожалуйста, добавьте данные текущего ремонта.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Пожалуйста, добавьте данные текущего ремонта.", Toast.LENGTH_SHORT)
+            .show()
         textViewDate = findViewById(R.id.textView_data)
         editTextMileage = findViewById(R.id.text_mileag)
         editTextCost = findViewById(R.id.cost_fuel)
         description = findViewById(R.id.edit_text_desc)
         buttonPhoto = findViewById(R.id.button_photo_)
         buttonSave = findViewById(R.id.button_save_)
+        takePhoto = findViewById(R.id.take_photo_)
+        photoPreview = findViewById(R.id.fuel_photo_container_)
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
-        saveFullImage(buttonPhoto)
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
         setRecyclerview()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+            buttonPhoto.setOnClickListener {
+                photoPreview.isVisible = true
+                startCamera(photoPreview)
+            }
+            takePhoto.setOnClickListener { takePicture(photoPreview) }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            outputDirectory = getOutputDirectory()
+        }
     }
 
     override fun initCalendar(textViewDate: TextView) {
@@ -64,7 +81,7 @@ class ServiceActivity : AbstractActivity() {
 
             val refuel = Refuel(
                 id = 0,
-                title="Сервис",
+                title = "Сервис",
                 mileage = mileage.toInt(),
                 description = desc,
                 totalSum = cost.toDouble(),
@@ -76,13 +93,14 @@ class ServiceActivity : AbstractActivity() {
 
         } else {
             if (mileage.isEmpty()) {
-                showToast("Пожалуйста, добавьте текущее значение пробега",editTextMileage)
+                showToast("Пожалуйста, добавьте текущее значение пробега", editTextMileage)
             }
             if (cost.isEmpty()) {
-                showToast("Пожалуйста, укажите стоимость текущего ремонта",editTextCost)
+                showToast("Пожалуйста, укажите стоимость текущего ремонта", editTextCost)
             }
         }
     }
+
     @SuppressLint("SetTextI18n")
     private fun setRecyclerview() {
         val adapter = ServiceAdapter { item, view ->
@@ -96,6 +114,7 @@ class ServiceActivity : AbstractActivity() {
     }
 
 }
+
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory(
     private val aplication: Application
