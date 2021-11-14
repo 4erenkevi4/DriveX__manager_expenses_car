@@ -44,7 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".presentation.ui.activity.CameraActivity" />
         <activity android:name=".presentation.ui.activity.FuelActivity" />
         <activity android:name=".presentation.ui.activity.AbstractActivity" />
         <activity android:name=".presentation.ui.activity.ServiceActivity" />

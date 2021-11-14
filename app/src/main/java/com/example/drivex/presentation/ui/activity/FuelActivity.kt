@@ -3,14 +3,13 @@ package com.example.drivex.presentation.ui.activity
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.makeText
-import androidx.camera.view.PreviewView
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
@@ -27,8 +26,9 @@ class FuelActivity : AbstractActivity() {
     private lateinit var description: TextView
     private lateinit var buttonPhoto: ImageView
     private lateinit var buttonSave: ImageView
-    private lateinit var containerPhoto: PreviewView
+    private lateinit var containerPhoto: ImageView
     private lateinit var fuelViewModel: AbstractViewModel
+    private var uriPhoto :Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,15 +51,14 @@ class FuelActivity : AbstractActivity() {
             updateMode(id)
         }
         initCalendar(textViewDate)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            startCamera(containerPhoto)
-            buttonPhoto.setOnClickListener {
-                // containerPhoto.isVisible=true
-                takePicture(containerPhoto)
-            }
+         uriPhoto = intent.getStringExtra(URI_PHOTO).run { Uri.parse(this) }
+        if (uriPhoto != null) {
+            containerPhoto.setImageURI(uriPhoto)
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            outputDirectory = getOutputDirectory()
+        val intentCamera = Intent(this, CameraActivity::class.java)
+        intentCamera.putExtra("Activity", localClassName)
+        buttonPhoto.setOnClickListener {
+            startActivity(intentCamera)
         }
     }
 
@@ -77,6 +76,7 @@ class FuelActivity : AbstractActivity() {
                 editTextCost.setText(desc.totalSum.toString())
                 textViewDate.text = desc.date
                 description.text = desc.description
+                containerPhoto.setImageURI(desc.photoURI)
             }
         })
         buttonSave.setOnClickListener { startActivity(intent) }
@@ -96,7 +96,8 @@ class FuelActivity : AbstractActivity() {
                 totalSum = cost.toDouble(),
                 date = textViewDate.text.toString(),
                 icon = R.drawable.fuel_icon,
-                description = "Данные выбранной заправки:"
+                description = "Данные выбранной заправки:",
+                photoURI = uriPhoto
             )
             fuelViewModel.addRefuel(refuel)
             startActivity(intent)

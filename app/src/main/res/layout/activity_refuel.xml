@@ -153,7 +153,14 @@
         app:layout_constraintStart_toStartOf="@+id/button_save"
         app:layout_constraintTop_toBottomOf="@+id/button_save" />
 
-    <androidx.camera.view.PreviewView
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentcontainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.fragment.app.FragmentContainerView>
+
+    <ImageView
         android:id="@+id/fuel_photo_container"
         android:layout_width="300dp"
         android:layout_height="300dp"
@@ -161,7 +168,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
-        tools:src="@drawable/ic_launcher_background"
         android:contentDescription="@string/todo"
         android:visibility="visible"/>
 

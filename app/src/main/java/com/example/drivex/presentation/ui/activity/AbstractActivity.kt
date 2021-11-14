@@ -32,7 +32,7 @@ import java.util.jar.Manifest
 
 
 abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
-    private val CAMERA_PIC_REQUEST = 2
+
     private val cameraExecutor = Executors.newSingleThreadExecutor()
 
     private var imagePreview: Preview? = null
@@ -53,8 +53,11 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
 
     companion object {
         private const val TAG = "MainActivity"
+        const val URI_PHOTO = "uriCurrentPhoto"
         private const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val PHOTO_EXTENSION = ".jpg"
+        const val FUEL_ACTIVITY_PACKAGE = "presentation.ui.activity.FuelActivity"
+        const val SERVICE_ACTIVITY_PACKAGE = "presentation.ui.activity.ServiceActivity"
 
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         fun createFile(baseFolder: File, format: String, extension: String) =
@@ -87,14 +90,6 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
                     ).show()
                 }
             }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun initPhotoButton(view: View) {
-        view.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, CAMERA_PIC_REQUEST)
         }
     }
 
@@ -133,7 +128,7 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun takePicture(previewView: PreviewView) {
+    fun takePicture(previewView: PreviewView, intent: Intent) {
         val file = createFile(
             outputDirectory,
             FILENAME,
@@ -146,6 +141,8 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
                 previewView.post {
                     Toast.makeText(baseContext, msg, Toast.LENGTH_LONG).show()
                 }
+                intent.putExtra(URI_PHOTO,file.absoluteFile.toString() )
+                startActivity(intent)
             }
 
             override fun onError(exception: ImageCaptureException) {

@@ -11,16 +11,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.camera.view.PreviewView
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
-import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
-import com.example.drivex.utils.Constans
 import com.example.drivex.presentation.adapters.ServiceAdapter
+import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 
 class ServiceActivity : AbstractActivity() {
 
@@ -31,7 +28,7 @@ class ServiceActivity : AbstractActivity() {
     private lateinit var buttonPhoto: ImageView
     private lateinit var takePhoto: ImageView
     private lateinit var buttonSave: ImageView
-    private lateinit var photoPreview: PreviewView
+    private lateinit var photoPreview: ImageView
     lateinit var fuelViewModel: AbstractViewModel
     private lateinit var recyclerView: RecyclerView
 
@@ -54,16 +51,10 @@ class ServiceActivity : AbstractActivity() {
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
         setRecyclerview()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-
-            buttonPhoto.setOnClickListener {
-                photoPreview.isVisible = true
-                startCamera(photoPreview)
-            }
-            takePhoto.setOnClickListener { takePicture(photoPreview) }
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            outputDirectory = getOutputDirectory()
+        val intentCamera = Intent(this, CameraActivity::class.java)
+        intentCamera.putExtra("Activity",localClassName)
+        buttonPhoto.setOnClickListener {
+            startActivity(intentCamera)
         }
     }
 
