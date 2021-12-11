@@ -16,5 +16,5 @@ data class Refuel(
     var totalSum: Double = 0.0,
     var date: String = "",
     var icon: Int = 0,
-    val photoURI: Uri? = null
+    val photoURI: String? = null
 ) : Serializable

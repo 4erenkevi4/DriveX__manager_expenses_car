@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.makeText
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
@@ -76,7 +77,7 @@ class FuelActivity : AbstractActivity() {
                 editTextCost.setText(desc.totalSum.toString())
                 textViewDate.text = desc.date
                 description.text = desc.description
-                containerPhoto.setImageURI(desc.photoURI)
+                     containerPhoto.setImageURI(desc.photoURI?.toUri())
             }
         })
         buttonSave.setOnClickListener { startActivity(intent) }
@@ -97,7 +98,7 @@ class FuelActivity : AbstractActivity() {
                 date = textViewDate.text.toString(),
                 icon = R.drawable.fuel_icon,
                 description = "Данные выбранной заправки:",
-                photoURI = uriPhoto
+                photoURI = uriPhoto.toString()
             )
             fuelViewModel.addRefuel(refuel)
             startActivity(intent)
