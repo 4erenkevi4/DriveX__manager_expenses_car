@@ -30,6 +30,7 @@ class FuelActivity : AbstractActivity() {
     private lateinit var containerPhoto: ImageView
     private lateinit var fuelViewModel: AbstractViewModel
     private var uriPhoto :Uri? = null
+    val URI_PHOTOS = "uriCurrentPhoto"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,7 @@ class FuelActivity : AbstractActivity() {
             updateMode(id)
         }
         initCalendar(textViewDate)
-         uriPhoto = intent.getStringExtra(URI_PHOTO).run { Uri.parse(this) }
+         uriPhoto = intent?.getStringExtra(URI_PHOTOS).let { Uri.parse(this.toString())  }
         if (uriPhoto != null) {
             containerPhoto.setImageURI(uriPhoto)
         }
@@ -98,7 +99,7 @@ class FuelActivity : AbstractActivity() {
                 date = textViewDate.text.toString(),
                 icon = R.drawable.fuel_icon,
                 description = "Данные выбранной заправки:",
-                photoURI = uriPhoto.toString()
+                photoURI = uriPhoto?.toString()
             )
             fuelViewModel.addRefuel(refuel)
             startActivity(intent)
