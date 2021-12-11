@@ -3,7 +3,6 @@ package com.example.drivex.presentation.ui.activity
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
@@ -29,8 +28,7 @@ class FuelActivity : AbstractActivity() {
     private lateinit var buttonSave: ImageView
     private lateinit var containerPhoto: ImageView
     private lateinit var fuelViewModel: AbstractViewModel
-    private var uriPhoto :Uri? = null
-    val URI_PHOTOS = "uriCurrentPhoto"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,15 +51,7 @@ class FuelActivity : AbstractActivity() {
             updateMode(id)
         }
         initCalendar(textViewDate)
-         uriPhoto = intent?.getStringExtra(URI_PHOTOS).let { Uri.parse(this.toString())  }
-        if (uriPhoto != null) {
-            containerPhoto.setImageURI(uriPhoto)
-        }
-        val intentCamera = Intent(this, CameraActivity::class.java)
-        intentCamera.putExtra("Activity", localClassName)
-        buttonPhoto.setOnClickListener {
-            startActivity(intentCamera)
-        }
+        initCamera(containerPhoto,buttonPhoto)
     }
 
     override fun initCalendar(textViewDate: TextView) {

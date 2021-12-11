@@ -5,15 +5,11 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.hardware.Camera.*
-import android.hardware.Camera.CameraInfo
-import android.net.Uri
 import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -22,13 +18,14 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import java.io.File
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import java.util.jar.Manifest
 
 
 abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
@@ -45,11 +42,9 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
 
     private var cameraControl: CameraControl? = null
 
-    private var cameraInfo: CameraInfo? = null
-
     private var linearZoom = 0f
 
-    private var recording = false
+    var uriPhoto :String? = null
 
     companion object {
         private const val TAG = "MainActivity"
@@ -90,6 +85,20 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
                     ).show()
                 }
             }
+        }
+    }
+
+    fun initCamera(containerPhoto: ImageView, buttonPhoto: ImageView){
+
+        uriPhoto = intent?.getStringExtra(URI_PHOTO)
+        if (uriPhoto != null) {
+            containerPhoto.isVisible = true
+            containerPhoto.setImageURI(uriPhoto!!.toUri())
+        }
+        val intentCamera = Intent(this, CameraActivity::class.java)
+        intentCamera.putExtra("Activity", localClassName)
+        buttonPhoto.setOnClickListener {
+            startActivity(intentCamera)
         }
     }
 

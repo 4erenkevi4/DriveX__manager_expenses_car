@@ -26,7 +26,6 @@ class ServiceActivity : AbstractActivity() {
     private lateinit var editTextCost: EditText
     private lateinit var description: TextView
     private lateinit var buttonPhoto: ImageView
-    private lateinit var takePhoto: ImageView
     private lateinit var buttonSave: ImageView
     private lateinit var photoPreview: ImageView
     lateinit var fuelViewModel: AbstractViewModel
@@ -44,18 +43,14 @@ class ServiceActivity : AbstractActivity() {
         description = findViewById(R.id.edit_text_desc)
         buttonPhoto = findViewById(R.id.button_photo_)
         buttonSave = findViewById(R.id.button_save_)
-        takePhoto = findViewById(R.id.take_photo_)
-        photoPreview = findViewById(R.id.fuel_photo_container_)
+        photoPreview = findViewById(R.id.fuel_photo_container)
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
+        initCamera(photoPreview,buttonPhoto)
         setRecyclerview()
-        val intentCamera = Intent(this, CameraActivity::class.java)
-        intentCamera.putExtra("Activity",localClassName)
-        buttonPhoto.setOnClickListener {
-            startActivity(intentCamera)
-        }
+
     }
 
     override fun initCalendar(textViewDate: TextView) {
@@ -77,7 +72,8 @@ class ServiceActivity : AbstractActivity() {
                 description = desc,
                 totalSum = cost.toDouble(),
                 date = textViewDate.text.toString(),
-                icon = R.drawable.servicel_icon
+                icon = R.drawable.servicel_icon,
+                photoURI = uriPhoto?.toString()
             )
             fuelViewModel.addRefuel(refuel)
             startActivity(intent)
