@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.makeText
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.data.model.Refuel
@@ -25,9 +26,12 @@ class FuelActivity : AbstractActivity() {
     private lateinit var editTextVolume: EditText
     private lateinit var description: TextView
     private lateinit var buttonPhoto: ImageView
+    private lateinit var desButtonPhoto: TextView
     private lateinit var buttonSave: ImageView
     private lateinit var containerPhoto: ImageView
     private lateinit var fuelViewModel: AbstractViewModel
+    private lateinit var selectionType: TextView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +46,8 @@ class FuelActivity : AbstractActivity() {
         buttonSave = findViewById(R.id.button_save)
         containerPhoto = findViewById(R.id.fuel_photo_container)
         description = findViewById(R.id.textView_description)
+        selectionType = findViewById(R.id.selection_type)
+        desButtonPhoto = findViewById(R.id.description_button_photo)
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         val id = intent.getLongExtra("id", -1L)
@@ -63,6 +69,9 @@ class FuelActivity : AbstractActivity() {
         val intent = Intent(this, MainActivity::class.java)
         fuelViewModel.readRefuelById(id).observe(this, { desc ->
             desc?.let {
+                desButtonPhoto.isVisible = false
+                buttonPhoto.isVisible = false
+                selectionType.text = "Категория"
                 editTextMileage.setText(desc.mileage.toString())
                 editTextVolume.setText(desc.title)
                 editTextCost.setText(desc.totalSum.toString())
