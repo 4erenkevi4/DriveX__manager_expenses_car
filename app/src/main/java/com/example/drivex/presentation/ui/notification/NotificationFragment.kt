@@ -1,24 +1,21 @@
 package com.example.drivex.presentation.ui.notification
 
-import android.annotation.SuppressLint
-import android.app.AlarmManager
+import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.PendingIntent
+import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
@@ -38,11 +35,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nightonke.boommenu.BoomMenuButton
 import java.util.*
 
-class NotificationFragment : Fragment() {
-    lateinit var settime: FloatingActionButton
+
+open class NotificationFragment : Fragment() {
     val calendar = Calendar.getInstance()
     lateinit var editTextDesc: EditText
-    lateinit var textNotification: TextView
+    private var isCalendarSettUp: Boolean = false
+    private lateinit var startNotificationButton: FloatingActionButton
     private lateinit var boomMenu: BoomMenuButton
     private lateinit var notificationViewModel: NotificationViewModel
     private lateinit var buttonTO: ImageView
@@ -58,8 +56,10 @@ class NotificationFragment : Fragment() {
     private lateinit var buttonShopping: ImageView
     private lateinit var buttonOther: ImageView
     private var titleOfNotification: String = "Напоминание"
+    private var notifyId: Int = 1
     lateinit var listButton: ArrayList<ImageView>
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,8 +67,6 @@ class NotificationFragment : Fragment() {
     ): View? {
         notificationViewModel = ViewModelProvider(this).get(NotificationViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_notification, container, false)
-        val animForFab = AnimationUtils.loadAnimation(context, R.anim.fab_button)
-        settime = root.findViewById(R.id.settime)
         boomMenu = requireActivity().findViewById(R.id.boom_menu)
         buttonTO = root.findViewById(R.id.notify_to)
         buttonDrive = root.findViewById(R.id.notify_drive)
@@ -76,6 +74,7 @@ class NotificationFragment : Fragment() {
         buttonPitstop = root.findViewById(R.id.notify_pitstop)
         buttonDiagnostic = root.findViewById(R.id.notify_diagnost)
         buttonStrah = root.findViewById(R.id.notify_strah)
+        startNotificationButton = root.findViewById(R.id.settime)
         buttonLicense = root.findViewById(R.id.notify_license)
         buttonTexosm = root.findViewById(R.id.notify_texosmotr)
         buttonShopping = root.findViewById(R.id.notify_shopping)
@@ -84,17 +83,13 @@ class NotificationFragment : Fragment() {
         buttonPay = root.findViewById(R.id.notify_pay)
         editTextDesc = root.findViewById(R.id.editText_desc_of_notification)
         boomMenu.visibility = View.INVISIBLE
-        settime.setOnClickListener {
-            settime.startAnimation(animForFab)
-            openDatePickerDialog()
-        }
+        boomMenu.isVisible = false
         setTitleOfNotify()
         return root
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun setTitleOfNotify() {
-
-
         listButton = arrayListOf(
             buttonTO,
             buttonDiagnostic,
@@ -111,60 +106,60 @@ class NotificationFragment : Fragment() {
         )
 
         buttonTO.setOnClickListener {
-            onClick(buttonTO, NOTIFY1)
+            onClick(buttonTO, NOTIFY1, 1)
         }
         buttonDrive.setOnClickListener {
-            onClick(buttonDrive, NOTIFY2)
+            onClick(buttonDrive, NOTIFY2, 2)
         }
         buttonWash.setOnClickListener {
-            onClick(buttonWash, NOTIFY3)
+            onClick(buttonWash, NOTIFY3, 3)
         }
         buttonPitstop.setOnClickListener {
-            onClick(buttonWash, NOTIFY4)
+            onClick(buttonWash, NOTIFY4, 4)
         }
         buttonDiagnostic.setOnClickListener {
-            onClick(buttonDiagnostic, NOTIFY5)
+            onClick(buttonDiagnostic, NOTIFY5, 5)
         }
         buttonStrah.setOnClickListener {
-            onClick(buttonStrah, NOTIFY6)
+            onClick(buttonStrah, NOTIFY6, 6)
         }
         buttonLicense.setOnClickListener {
-            onClick(buttonLicense, NOTIFY7)
+            onClick(buttonLicense, NOTIFY7, 7)
         }
         buttonOil.setOnClickListener {
-            onClick(buttonOil, NOTIFY8)
+            onClick(buttonOil, NOTIFY8, 8)
         }
         buttonPay.setOnClickListener {
-            onClick(buttonPay, NOTIFY9)
+            onClick(buttonPay, NOTIFY9, 9)
         }
         buttonTexosm.setOnClickListener {
-            onClick(buttonTexosm, NOTIFY10)
+            onClick(buttonTexosm, NOTIFY10, 10)
         }
         buttonShopping.setOnClickListener {
-            onClick(buttonShopping, NOTIFY11)
+            onClick(buttonShopping, NOTIFY11, 11)
         }
         buttonOther.setOnClickListener {
-            onClick(buttonOther, NOTIFY12)
+            onClick(buttonOther, NOTIFY12, 12)
         }
-    }
-
-    private fun onClick(button: ImageView, title: String) {
-        val animForButton = AnimationUtils.loadAnimation(context, R.anim.fab_go)
-        titleOfNotification = title
-        button.startAnimation(animForButton)
-        listButton.forEach { it.isClickable = false }
-        listButton.forEach { it.isFocusable = false }
+        startNotificationButton.setOnClickListener {
+            if (isCalendarSettUp)
+                startNotification()
+            else
+                openDatePickerDialog()
+            
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    private fun startAlarm(calendar: Calendar) {
-        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        var intent = Intent(context, AlarmReceiver::class.java)
-        intent.putExtra("Title", titleOfNotification)
-        intent.putExtra("Description", editTextDesc.text.toString())
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT)
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+    private fun onClick(button: ImageView, title: String, notificationId: Int) {
+        listButton.forEach { it.clearAnimation() }
+        val animForButton = AnimationUtils.loadAnimation(context, R.anim.fab_go)
+        titleOfNotification = title
+        notifyId = notificationId
+        button.startAnimation(animForButton)
+        isCalendarSettUp = false
     }
+
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun openDatePickerDialog() {
@@ -200,15 +195,48 @@ class NotificationFragment : Fragment() {
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             openTimePickerDialog()
         }
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private var onTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
         calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE, minute)
         calendar.set(Calendar.SECOND, 0)
-       Toast.makeText(context,"Создано напоминание: $titleOfNotification",Toast.LENGTH_SHORT).show()
-        listButton.forEach { it.clearAnimation() }
-        startAlarm(calendar)
+        if (editTextDesc.text.isEmpty()) {
+            isCalendarSettUp = true
+            openDialog()
+        } else {
+            startNotification()
+        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    private fun startNotification() {
+        isCalendarSettUp = false
+        Toast.makeText(context, "Создано напоминание: $titleOfNotification", Toast.LENGTH_SHORT)
+            .show()
+        notificationViewModel.makeActiveButtons(listButton)
+        notificationViewModel.startAlarm(
+            requireContext(),
+            calendar,
+            notifyId,
+            titleOfNotification,
+            editTextDesc.text.toString()
+        )
+    }
+
+    private fun openDialog() {
+        val myDialogFragment =
+            MyDialogFragment(
+                calendar,
+                notifyId,
+                titleOfNotification,
+                editTextDesc.text.toString(),
+                listButton,
+                startNotificationButton
+            )
+        val manager = childFragmentManager
+        myDialogFragment.show(manager, "dialog")
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -217,3 +245,52 @@ class NotificationFragment : Fragment() {
         listButton.forEach { it.isFocusable = true }
     }
 }
+
+class MyDialogFragment(
+    private val calendar: Calendar,
+    private val notifyId: Int,
+    private val titleOfNotification: String,
+    private val editTextDesc: String,
+    private val listButton: ArrayList<ImageView>,
+    private val startNotificationButton: FloatingActionButton
+) : DialogFragment() {
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val notificationViewModel = ViewModelProvider(this).get(NotificationViewModel::class.java)
+        val title = "Продолжить без описания напоминания?"
+        val message =
+            "Вы не заполнили описание напоминания. Создать уведомление без описания, или добавить подробности? "
+        val button1String = "Продолжить"
+        val button2String = "Добавить"
+        val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
+        builder.setTitle(title) // заголовок
+        builder.setMessage(message) // сообщение
+        builder.setPositiveButton(
+            button1String
+        ) { dialog, id ->
+            notificationViewModel.makeActiveButtons(listButton)
+            Toast.makeText(
+                activity, "Создано напоминание: ",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            notificationViewModel.startAlarm(
+                requireContext(),
+                calendar,
+                notifyId,
+                titleOfNotification,
+                editTextDesc
+            )
+        }
+        builder.setNegativeButton(
+            button2String
+        ) { dialog, id ->
+            startNotificationButton.isVisible = true
+            Toast.makeText(activity, "Введите описание напоминания", Toast.LENGTH_SHORT)
+                .show()
+        }
+        builder.setCancelable(true)
+        return builder.create()
+    }
+}
+

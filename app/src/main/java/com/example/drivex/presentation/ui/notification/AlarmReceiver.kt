@@ -19,11 +19,12 @@ class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
-        val title: String = intent.getStringExtra("Title")!!
-        val description: String = intent.getStringExtra("Description")!!
+        val title: String? = intent.getStringExtra("Title")
+        val description: String? = intent.getStringExtra("Description")
+        val id: Int = intent.getIntExtra("id",1)
         val notificationUtils = NotificationUtils(context)
         val notification = notificationUtils.getNotificationBuilder(title, description).build()
-        notificationUtils.getManager().notify(150, notification)
+        notificationUtils.getManager().notify(id, notification)
     }
 }
 
@@ -51,7 +52,7 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
         return manager as NotificationManager
     }
 
-    fun getNotificationBuilder(title: String, description: String): NotificationCompat.Builder {
+    fun getNotificationBuilder(title: String?, description: String?): NotificationCompat.Builder {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
