@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.drivex.data.model.Refuel
+import com.example.drivex.data.model.Expenses
 import com.example.drivex.domain.ExpensesDao
 
-@Database(entities = [Refuel::class], version = 1, exportSchema = false)
+@Database(entities = [Expenses::class], version = 1, exportSchema = false)
 abstract class ExpensesRoomDatabase : RoomDatabase() {
     abstract fun refuelDao(): ExpensesDao
     companion object {

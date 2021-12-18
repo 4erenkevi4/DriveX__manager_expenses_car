@@ -2,32 +2,31 @@ package com.example.drivex.domain
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.drivex.data.model.MapModels
-import com.example.drivex.data.model.Refuel
+import com.example.drivex.data.model.Expenses
 
 @Dao
 interface ExpensesDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun addRefuel(refuel: Refuel)
+    fun addRefuel(expenses: Expenses)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(refuel: Refuel)
+    fun insert(expenses: Expenses)
 
     @Delete
-    suspend fun delete(refuel: Refuel)
+    suspend fun delete(expenses: Expenses)
 
     @Query("DELETE FROM refuel WHERE id = :id")
     suspend fun deleteById(id: Long)
 
     @Query("SELECT * FROM refuel ORDER BY date ASC")
-    fun getAllRefuel(): List<Refuel>
+    fun getAllRefuel(): List<Expenses>
 
     @Query("SELECT * FROM refuel ORDER BY id ASC")
-    fun getAllExpensesBydate(): LiveData<List<Refuel>>
+    fun getAllExpensesBydate(): LiveData<List<Expenses>>
 
     @Query("SELECT * FROM refuel WHERE id = :id")
-    fun getRefuelById(id: Long): LiveData<Refuel>
+    fun getRefuelById(id: Long): LiveData<Expenses>
 
     @Query("SELECT SUM(totalSum) FROM refuel")
     fun getSumOfExpenses(): LiveData<Double>

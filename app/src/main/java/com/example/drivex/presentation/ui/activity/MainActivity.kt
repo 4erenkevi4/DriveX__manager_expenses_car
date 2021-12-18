@@ -3,7 +3,6 @@ package com.example.drivex.presentation.ui.activity
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.view.Menu
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,8 +13,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.drivex.R
-import com.example.drivex.presentation.ui.dialogs.AddExpDialogFragment
-import com.example.drivex.presentation.ui.dialogs.AddPayDialogFragment
+import com.example.drivex.utils.Constans.IS_PAYMENT
+import com.example.drivex.utils.Constans.IS_REFUEL
+import com.example.drivex.utils.Constans.IS_SHOPPING
+import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,12 +63,10 @@ class MainActivity : AppCompatActivity() {
         val intentFuell = Intent(this, FuelActivity::class.java)
         val intentService = Intent(this, ServiceActivity::class.java)
         val intentMap = Intent(this, MapsActivity::class.java)
-        val dialogPayment = AddPayDialogFragment(application, intentMain,context)
-        val dialogShopping = AddExpDialogFragment(application, intentMain,context)
         val buttonFuel = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_car)
             .normalText("Заправка")
-            .listener { startActivity(intentFuell) }
+            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_REFUEL)) }
         val buttonService = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_service)
             .normalText("Добавить ТО")
@@ -75,11 +74,11 @@ class MainActivity : AppCompatActivity() {
         val buttonPayments = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_money)
             .normalText("Платеж")
-            .listener { dialogPayment.show(supportFragmentManager, "payments_dialog") }
+            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_PAYMENT)) }
         val buttonExpenses = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_shopping)
             .normalText("Покупка")
-            .listener { dialogShopping.show(supportFragmentManager, "shopping_dialog") }
+            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_SHOPPING)) }
         val buttonDriving = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_map)
             .normalText("Поездка")

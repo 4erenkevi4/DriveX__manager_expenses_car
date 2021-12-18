@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.drivex.domain.ExpensesDao
 import com.example.drivex.data.ExpensesRoomDatabase
-import com.example.drivex.data.model.Refuel
+import com.example.drivex.data.model.Expenses
 import com.example.drivex.data.repository.ExpensesRepository
 import com.example.drivex.data.repository.ExpensesRepositoryImpl
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,7 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
     init {
         expensesRepository = ExpensesRepositoryImpl(application)
     }
-    val expenses = MediatorLiveData<List<Refuel>>()
+    val expenses = MediatorLiveData<List<Expenses>>()
     private val runsSortedByDate = expensesRepository.getAllExpensesBydate()
 
     init {
@@ -35,7 +35,7 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
         db.refuelDao()
     }
 
-    suspend fun readAllDataByDate(): List<Refuel> {
+    suspend fun readAllDataByDate(): List<Expenses> {
         return expensesRepository.getAllRefuel()
     }
 
@@ -43,24 +43,24 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
         return expensesRepository.getSUmExpensesIntById(key)
     }
 
-    fun readRefuelById(id: Long): LiveData<Refuel> {
+    fun readRefuelById(id: Long): LiveData<Expenses> {
         return expensesRepository.getRefuelById(id)
     }
 
-    fun addRefuel(refuel: Refuel) {
+    fun addRefuel(expenses: Expenses) {
         viewModelScope.launch(Dispatchers.IO) {
-            expensesRepository.addRefuel(refuel)
+            expensesRepository.addRefuel(expenses)
         }
     }
 
-    fun insert(refuel: Refuel) {
+    fun insert(expenses: Expenses) {
         viewModelScope.launch(Dispatchers.IO) {
-            expensesRepository.insert(refuel)
+            expensesRepository.insert(expenses)
         }
     }
 
-    fun delete(refuel: Refuel) = viewModelScope.launch {
-        refuelDao.delete(refuel)
+    fun delete(expenses: Expenses) = viewModelScope.launch {
+        refuelDao.delete(expenses)
     }
 
 

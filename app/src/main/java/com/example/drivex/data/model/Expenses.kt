@@ -1,12 +1,11 @@
 package com.example.drivex.data.model
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(tableName = "refuel")
-data class Refuel(
+data class Expenses(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     var title: String,
@@ -15,6 +14,6 @@ data class Refuel(
     var volume: Int = 0,
     var totalSum: Double = 0.0,
     var date: String = "",
-    var icon: Int = 0,
+    var icon: Int? = null,
     val photoURI: String? = null
 ) : Serializable

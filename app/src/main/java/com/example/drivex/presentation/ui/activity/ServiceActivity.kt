@@ -6,18 +6,22 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
-import com.example.drivex.data.model.Refuel
+import com.example.drivex.data.model.Expenses
 import com.example.drivex.presentation.adapters.ServiceAdapter
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
+
 
 class ServiceActivity : AbstractActivity() {
 
@@ -30,6 +34,8 @@ class ServiceActivity : AbstractActivity() {
     private lateinit var photoPreview: ImageView
     lateinit var fuelViewModel: AbstractViewModel
     private lateinit var recyclerView: RecyclerView
+    private lateinit var descRecyclerView: View
+    private lateinit var constraintLayout: ConstraintLayout
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,13 +50,25 @@ class ServiceActivity : AbstractActivity() {
         buttonPhoto = findViewById(R.id.button_photo_)
         buttonSave = findViewById(R.id.button_save_)
         photoPreview = findViewById(R.id.fuel_photo_container)
+        descRecyclerView = findViewById(R.id.desc_recyclerview)
+        constraintLayout = findViewById(R.id.constraintLayout)
+        recyclerView = findViewById(R.id.recycler_view_service)
         val viewModelFactory = ViewModelFactory(application)
         fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
-        initCamera(photoPreview,buttonPhoto)
+        initCamera(photoPreview, buttonPhoto, recyclerView, descRecyclerView)
         setRecyclerview()
-
+        description.setOnClickListener {
+            recyclerView.isVisible = true
+            descRecyclerView.isVisible = true
+            photoPreview.isVisible = false
+        }
+        if (intent.getBooleanExtra("RESTART_AFTER_CAMERA", false)) {
+            recyclerView.isVisible = false
+            descRecyclerView.isVisible = false
+            photoPreview.isVisible = true
+        }
     }
 
     override fun initCalendar(textViewDate: TextView) {
@@ -65,7 +83,7 @@ class ServiceActivity : AbstractActivity() {
         val intent = Intent(this, MainActivity::class.java)
         if (mileage.isNotEmpty() && cost.isNotEmpty()) {
 
-            val refuel = Refuel(
+            val refuel = Expenses(
                 id = 0,
                 title = "Сервис",
                 mileage = mileage.toInt(),
@@ -94,7 +112,6 @@ class ServiceActivity : AbstractActivity() {
             description.text = description.text.toString() + " " + item + ";"
             view.setBackgroundColor(Color.GRAY)
         }
-        recyclerView = findViewById(R.id.recycler_view_service)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 

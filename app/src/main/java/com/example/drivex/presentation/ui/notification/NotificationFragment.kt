@@ -146,7 +146,7 @@ open class NotificationFragment : Fragment() {
                 startNotification()
             else
                 openDatePickerDialog()
-            
+
         }
     }
 

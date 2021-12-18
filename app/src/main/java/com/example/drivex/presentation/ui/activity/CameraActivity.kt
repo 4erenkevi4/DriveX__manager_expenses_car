@@ -21,13 +21,25 @@ class CameraActivity : AbstractActivity() {
         buttonPhoto = findViewById(R.id.take_photo_button)
         backButton = findViewById(R.id.button_back)
         previewView = findViewById(R.id.fuel_preview_view)
-        val callingActivity =intent.getStringExtra("Activity")
+        val callingActivity = intent.getStringExtra("Activity")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             startCamera(previewView)
             buttonPhoto.setOnClickListener {
-                when(callingActivity){
-                    FUEL_ACTIVITY_PACKAGE -> {takePicture(previewView, Intent(this, FuelActivity::class.java))}
-                    SERVICE_ACTIVITY_PACKAGE -> {takePicture(previewView, Intent(this, ServiceActivity::class.java))}
+                when (callingActivity) {
+                    FUEL_ACTIVITY_PACKAGE -> {
+                        takePicture(
+                            previewView,
+                            Intent(this, FuelActivity::class.java)
+                        )
+                    }
+                    SERVICE_ACTIVITY_PACKAGE -> {
+                        takePicture(
+                            previewView, Intent(this, ServiceActivity::class.java).putExtra(
+                                "RESTART_AFTER_CAMERA",
+                                true
+                            )
+                        )
+                    }
                 }
 
             }

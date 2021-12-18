@@ -10,30 +10,28 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
-import com.example.drivex.data.model.MapModels
-import com.example.drivex.data.model.Refuel
+import com.example.drivex.data.model.Expenses
 import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SERVICE
 import com.example.drivex.utils.Constans.SHOPPING
-import kotlin.math.exp
 
 class MainAdapter(private val click: (Long) -> Unit) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
-    private val diffCallback = object : DiffUtil.ItemCallback<Refuel>() {
-        override fun areItemsTheSame(oldItem: Refuel, newItem: Refuel): Boolean {
+    private val diffCallback = object : DiffUtil.ItemCallback<Expenses>() {
+        override fun areItemsTheSame(oldItem: Expenses, newItem: Expenses): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Refuel, newItem: Refuel): Boolean {
+        override fun areContentsTheSame(oldItem: Expenses, newItem: Expenses): Boolean {
             return oldItem.hashCode() == newItem.hashCode()
         }
     }
 
     var listExp = AsyncListDiffer(this, diffCallback)
 
-    fun submitList(list: List<Refuel>) = listExp.submitList(list)
+    fun submitList(list: List<Expenses>) = listExp.submitList(list)
 
     class ViewHolder(
         view: View,
@@ -46,10 +44,10 @@ class MainAdapter(private val click: (Long) -> Unit) :
         private val cost: TextView = root.findViewById(R.id.cost)
 
         @SuppressLint("SetTextI18n")
-        fun bind(expenss: Refuel) {
+        fun bind(expenss: Expenses) {
             date.text = expenss.date
             cost.text = expenss.totalSum.toString() + " BYN"
-            iconType.setImageResource(expenss.icon)
+            iconType.setImageResource(expenss.icon?:R.drawable.ic_car)
             nameType.text = expenss.title
 when(expenss.title){
     REFUEL-> nameType.setTextColor(R.color.yellow20.toInt())

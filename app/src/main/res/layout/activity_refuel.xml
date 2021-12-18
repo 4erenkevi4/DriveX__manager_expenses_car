@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/fuel_image">
 
-    <TextView
+    <EditText
         android:id="@+id/textView_description"
         android:layout_width="300dp"
         android:layout_height="70dp"
@@ -16,7 +16,9 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColorHint="@color/gray20"
+        />
 
     <TextView
         android:id="@+id/textView_date"
@@ -51,6 +53,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView_date" />
 
     <TextView
+        android:id="@+id/mileage_desc"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -65,12 +68,12 @@
     <EditText
         android:id="@+id/cost_fuell"
         style="@style/Description_edit_text"
-        android:layout_width="180dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/edit_text_volume"
-        app:layout_constraintTop_toTopOf="@+id/edit_text_volume"
+        app:layout_constraintTop_toBottomOf="@+id/mileage_desc"
+        android:layout_margin="16dp"
         />
 
     <TextView
@@ -89,13 +92,12 @@
     <EditText
         android:id="@+id/edit_text_volume"
         style="@style/Description_edit_text"
-        android:layout_width="180dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_date" />
+        app:layout_constraintTop_toBottomOf="@+id/mileage_desc"
+        android:layout_margin="16dp"/>
 
     <TextView
         android:id="@+id/selection_type"
@@ -114,12 +116,11 @@
         android:id="@+id/button_photo"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="18dp"
         android:src="@drawable/ic_baseline_camera_alt_24"
         app:layout_constraintEnd_toStartOf="@+id/button_save"
         app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selection_type" />
+        app:layout_constraintTop_toTopOf="@+id/button_save" />
 
     <TextView
         android:id="@+id/description_button_photo"

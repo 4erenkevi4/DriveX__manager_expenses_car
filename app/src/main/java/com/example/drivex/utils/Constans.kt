@@ -9,6 +9,13 @@ object Constans {
     const val ACTIVITY_FUEL: Long = 11
     const val ACTIVITY_SERVICE: Long = 12
     const val MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey"
+    const val PAYMENT_TYPE = "PaymentType"
+    const val IS_SHOPPING = "shopping"
+    const val IS_PAYMENT = "payment"
+    const val IS_REFUEL = "refuel"
+
+
+
     // Service Intent Actions
     const val ACTION_SHOW_TRACKING_FRAGMENT = "ACTION_SHOW_TRACKING_FRAGMENT"
     const val ACTION_START_OR_RESUME_SERVICE = "ACTION_START_SERVICE"

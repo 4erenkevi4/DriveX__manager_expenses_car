@@ -20,6 +20,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
@@ -28,7 +29,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
+abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
 
     private val cameraExecutor = Executors.newSingleThreadExecutor()
 
@@ -44,7 +45,7 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
 
     private var linearZoom = 0f
 
-    var uriPhoto :String? = null
+    var uriPhoto: String? = null
 
     companion object {
         private const val TAG = "MainActivity"
@@ -62,7 +63,7 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
             )
 
         @SuppressLint("SimpleDateFormat")
-         fun initCalendar(textViewDate: TextView,context: Context) {
+        fun initCalendar(textViewDate: TextView, context: Context) {
             textViewDate.setOnClickListener {
                 textViewDate.text =
                     SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis())
@@ -88,7 +89,12 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
         }
     }
 
-    fun initCamera(containerPhoto: ImageView, buttonPhoto: ImageView){
+    fun initCamera(
+        containerPhoto: ImageView,
+        buttonPhoto: ImageView,
+        recyclerView: View? = null,
+        descRecyclerView: View? = null
+    ) {
 
         uriPhoto = intent?.getStringExtra(URI_PHOTO)
         if (uriPhoto != null) {
@@ -98,6 +104,10 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
         val intentCamera = Intent(this, CameraActivity::class.java)
         intentCamera.putExtra("Activity", localClassName)
         buttonPhoto.setOnClickListener {
+            if (recyclerView !== null && descRecyclerView !== null) {
+                recyclerView.isVisible = false
+                descRecyclerView.isVisible = false
+            }
             startActivity(intentCamera)
         }
     }
@@ -105,7 +115,8 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun startCamera(previewView: PreviewView) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+        val cameraSelector =
+            CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
         cameraProviderFuture.addListener({
             imagePreview = Preview.Builder().apply {
                 setTargetAspectRatio(AspectRatio.RATIO_16_9)
@@ -144,23 +155,26 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
             PHOTO_EXTENSION
         )
         val outputFileOptions = ImageCapture.OutputFileOptions.Builder(file).build()
-        imageCapture?.takePicture(outputFileOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
-            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                val msg = "Photo capture succeeded: ${file.absolutePath}"
-                previewView.post {
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_LONG).show()
+        imageCapture?.takePicture(
+            outputFileOptions,
+            cameraExecutor,
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    val msg = "Photo capture succeeded: ${file.absolutePath}"
+                    previewView.post {
+                        Toast.makeText(baseContext, msg, Toast.LENGTH_LONG).show()
+                    }
+                    intent.putExtra(URI_PHOTO, file.absoluteFile.toString())
+                    startActivity(intent)
                 }
-                intent.putExtra(URI_PHOTO,file.absoluteFile.toString() )
-                startActivity(intent)
-            }
 
-            override fun onError(exception: ImageCaptureException) {
-                val msg = "Photo capture failed: ${exception.message}"
-                previewView.post {
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_LONG).show()
+                override fun onError(exception: ImageCaptureException) {
+                    val msg = "Photo capture failed: ${exception.message}"
+                    previewView.post {
+                        Toast.makeText(baseContext, msg, Toast.LENGTH_LONG).show()
+                    }
                 }
-            }
-        })
+            })
     }
 
 
@@ -185,6 +199,7 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
             else -> super.onKeyDown(keyCode, event)
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private class LuminosityAnalyzer : ImageAnalysis.Analyzer {
         private var lastAnalyzedTimestamp = 0L
@@ -199,6 +214,7 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
             get(data)   // Copy the buffer into a byte array
             return data // Return the byte array
         }
+
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         override fun analyze(image: ImageProxy) {
             image.imageInfo.rotationDegrees
@@ -229,12 +245,13 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @JvmName("getOutputDirectory1")
     fun getOutputDirectory(): File {
         // TODO: 29/01/2021 Remove externalMediaDirs (deprecated)
         val mediaDir = externalMediaDirs.firstOrNull()?.let {
-            File(it,"DrivexCam").apply { mkdirs() }
+            File(it, "DrivexCam").apply { mkdirs() }
         }
         return if (mediaDir != null && mediaDir.exists())
             mediaDir else filesDir
@@ -246,7 +263,7 @@ abstract class AbstractActivity: AppCompatActivity(), ScreenManager {
         }
     }
 
-    override fun showToast(text: String,view: View ) {
+    override fun showToast(text: String, view: View) {
         view.setBackgroundColor(Color.RED)
         Toast.makeText(
             this,

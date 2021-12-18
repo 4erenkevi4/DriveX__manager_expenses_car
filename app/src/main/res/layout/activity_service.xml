@@ -1,103 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/servicel_image">
 
-    <TextView
-        android:id="@+id/textView_data"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:hint="@string/date"
-        android:textColorHint="#78F3FF"
-        android:textColor="#78F3FF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/text_mileag"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:hint="@string/mileage"
-        android:textColorHint="#78F3FF"
-        android:textColor="#78F3FF"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView_data"
-        app:layout_constraintTop_toTopOf="@+id/textView_data" />
-
-    <EditText
-        android:id="@+id/cost_fuel"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:hint="@string/summ"
-        android:inputType="numberDecimal"
-        android:textColor="#78F3FF"
-        android:textColorHint="#78F3FF"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_desc" />
-
-    <TextView
-        android:id="@+id/edit_text_desc"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:gravity="center"
-        android:hint="Описание ремонта"
-        android:textColor="#78F3FF"
-        android:textColorHint="#EAAC48"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_data" />
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/button_photo_"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_baseline_camera_alt_24"
-        app:layout_constraintEnd_toStartOf="@+id/button_save_"
-        app:layout_constraintStart_toEndOf="@+id/cost_fuel"
-        app:layout_constraintTop_toTopOf="@+id/cost_fuel" />
+        <TextView
+            android:id="@+id/textView_data"
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:hint="@string/date"
+            android:textColor="#78F3FF"
+            android:textColorHint="#78F3FF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_desc" />
 
-    <ImageView
-        android:id="@+id/button_save_"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="40dp"
-        android:src="@drawable/ic_baseline_save_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_photo_" />
+        <EditText
+            android:id="@+id/text_mileag"
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:hint="@string/mileage"
+            android:inputType="number"
+            android:textColor="#78F3FF"
+            android:textColorHint="#78F3FF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView_data"
+            app:layout_constraintTop_toTopOf="@+id/textView_data" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_service"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fuel_photo_container" />
+        <EditText
+            android:id="@+id/cost_fuel"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:hint="@string/summ"
+            android:inputType="numberDecimal"
+            android:textColor="#78F3FF"
+            android:textColorHint="#78F3FF"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_data" />
 
-    <ImageView
-        android:id="@+id/fuel_photo_container"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:contentDescription="@string/todo"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_photo_" />
+        <TextView
+            android:id="@+id/edit_text_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:hint="Описание ремонта"
+            android:textColor="#78F3FF"
+            android:textColorHint="#EAAC48"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/button_photo_"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_baseline_camera_alt_24"
+            app:layout_constraintEnd_toStartOf="@+id/button_save_"
+            app:layout_constraintStart_toEndOf="@+id/cost_fuel"
+            app:layout_constraintTop_toTopOf="@+id/cost_fuel" />
+
+        <ImageView
+            android:id="@+id/button_save_"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="40dp"
+            android:src="@drawable/ic_baseline_save_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/button_photo_" />
+
+        <TextView
+            android:id="@+id/desc_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:text="Выберите тип ремонта"
+            android:textColor="@color/gray20"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_view_service"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_photo_" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginTop="60dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/desc_recyclerview" />
+
+        <ImageView
+            android:id="@+id/fuel_photo_container"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_margin="32dp"
+            android:contentDescription="@string/todo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_photo_" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
