@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -69,6 +70,13 @@ class ServiceActivity : AbstractActivity() {
             descRecyclerView.isVisible = false
             photoPreview.isVisible = true
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        uriPhoto = data?.getStringExtra(URI_PHOTO)
+        photoPreview.isVisible = true
+        photoPreview.setImageURI(uriPhoto!!.toUri())
     }
 
     override fun initCalendar(textViewDate: TextView) {

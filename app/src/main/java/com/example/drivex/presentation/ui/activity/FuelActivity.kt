@@ -19,6 +19,7 @@ import com.example.drivex.utils.Constans.IS_PAYMENT
 import com.example.drivex.utils.Constans.IS_REFUEL
 import com.example.drivex.utils.Constans.IS_SHOPPING
 import com.example.drivex.utils.Constans.PAYMENT_TYPE
+import java.net.URI
 
 
 @Suppress("UNCHECKED_CAST")
@@ -70,17 +71,25 @@ class FuelActivity : AbstractActivity() {
         makeText(this, startToast, Toast.LENGTH_SHORT).show()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+            uriPhoto = data?.getStringExtra(URI_PHOTO)
+        containerPhoto.isVisible = true
+        containerPhoto.setImageURI(uriPhoto!!.toUri())
+    }
+
     override fun initCalendar(textViewDate: TextView) {
         initCalendar(textViewDate, this)
     }
 
-    private fun initTypePayment(){
+    private fun initTypePayment() {
 
         when (paymentType) {
             IS_REFUEL -> {
                 titte = "Заправка"
                 desc = "Информация о выбранной заправке:"
-                icon = R.drawable.fuel_icon; startToast = "Пожалуйста, добавьте данные текущей заправки"
+                icon = R.drawable.fuel_icon; startToast =
+                    "Пожалуйста, добавьте данные текущей заправки"
             }
             IS_SHOPPING -> {
                 titte = "Покупка"
@@ -93,7 +102,8 @@ class FuelActivity : AbstractActivity() {
             IS_PAYMENT -> {
                 titte = "Платеж"
                 desc = "Информация о выбранном платеже:"
-                icon = R.drawable.pay_icon; startToast = "Пожалуйста, добавьте информацию о вашем платеже"
+                icon = R.drawable.pay_icon; startToast =
+                    "Пожалуйста, добавьте информацию о вашем платеже"
                 editTextVolume.isVisible = false
                 selectionType.isVisible = false
             }
@@ -140,17 +150,17 @@ class FuelActivity : AbstractActivity() {
                 totalSum = cost.toDouble(),
                 date = textViewDate.text.toString(),
                 icon = icon,
-                description =descriptionValue,
+                description = descriptionValue,
                 photoURI = uriPhoto?.toString()
             )
             fuelViewModel.addRefuel(expenses)
             startActivity(intent)
 
         } else {
-            if (mileage.isEmpty()&& paymentType == IS_REFUEL) {
+            if (mileage.isEmpty() && paymentType == IS_REFUEL) {
                 showToast("Пожалуйста, добавьте текущее значение пробега", editTextMileage)
             }
-            if (volume.isEmpty()&& paymentType == IS_REFUEL) {
+            if (volume.isEmpty() && paymentType == IS_REFUEL) {
                 showToast("Пожалуйста, добавьте обьем заправленного топлива", editTextVolume)
             }
             if (cost.isEmpty()) {
@@ -161,7 +171,7 @@ class FuelActivity : AbstractActivity() {
     }
 
     class ViewModelFactory(
-        private val aplication: Application
+        private val aplication: Application,
     ) : ViewModelProvider.Factory {
         override fun <T : androidx.lifecycle.ViewModel?> create(modelClass: Class<T>): T {
             return AbstractViewModel(aplication) as T
