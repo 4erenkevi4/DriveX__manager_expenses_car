@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_notify,
                 R.id.nav_map,
                 R.id.nav_stat,
+                R.id.nav_settings,
                 R.id.nav_info
             ), drawerLayout
         )
@@ -58,8 +59,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setBoomMenu() {
-        val intentMain = Intent(this, MainActivity::class.java)
-        val context = this
         val intentFuell = Intent(this, FuelActivity::class.java)
         val intentService = Intent(this, ServiceActivity::class.java)
         val intentMap = Intent(this, MapsActivity::class.java)

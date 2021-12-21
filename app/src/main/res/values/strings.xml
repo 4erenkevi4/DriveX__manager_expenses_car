@@ -34,11 +34,36 @@
     <string name="description_pay">Назначение платежа</string>
     <string name="stop_driving">Завершить поездку</string>
     <string name="start_driving">Начать поездку</string>
-
+    //SettingFragment
+    <string name="units">Units</string>
+    <string name="volume_settings">volume</string>
+    <string name="liter">liter</string>
+    <string name="Gallon">Gallon</string>
+    <string name="Fuel_consumption">Fuel consumption</string>
+    <string name="Notifications_settings">Notifications</string>
+    <string name="other_settings">Other</string>
+    <string name="pressure_notification">Tire pressure notification</string>
+    <string name="Vibration_on_notification">Vibration on notification</string>
+    <string name="Currency_selection">Currency selection</string>
+    <string name="launch_sound">launch sound </string>
+    <string name="Dark_theme">Dark theme</string>
+    <string name="push_notifications">Push notifications</string>
+    <string name="country">Country</string>
+    <string name="day_notifications">Day of notification</string>
+    <string name="value_time_of_notifications">12.00</string>
+    <string name="value_date_of_notifications">22</string>
+    <string name="time_notification">Time of notification</string>
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>
         <item>Сортировать по длительности</item>
         <item>Сортировать по расстоянию</item>
     </string-array>
+    <string-array name="Fuel_consumption">
+        <item>liter / 100 km</item>
+        <item>liter /100 mile</item>
+        <item>gallon / 100 km</item>
+        <item>gallon /100 mile</item>
+    </string-array>
+
 </resources>
