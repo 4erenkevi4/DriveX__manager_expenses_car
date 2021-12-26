@@ -7,8 +7,6 @@
     android:layout_marginTop="?attr/actionBarSize"
     tools:context=".presentation.ui.home.HomeFragment">
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
@@ -25,7 +23,7 @@
             android:textColorHint="@color/black"
             android:textSize="24sp"
             android:gravity="center"
-            android:entries="@array/country_options"
+            android:entries="@array/vehicles"
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

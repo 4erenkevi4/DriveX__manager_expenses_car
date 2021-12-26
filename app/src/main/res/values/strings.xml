@@ -53,17 +53,21 @@
     <string name="value_time_of_notifications">12.00</string>
     <string name="value_date_of_notifications">22</string>
     <string name="time_notification">Time of notification</string>
+    <string name="car_model">Car model</string>
+    <string name="l_km">liter / 100 km</string>
+    <string name="l_mile">liter /100 mile</string>
+    <string name="g_km">gallon / 100 km</string>
+    <string name="g_mile">gallon /100 mile</string>
+    <string name="select_unit_settings">Select the unit of measure</string>
+    Selected
+    <string name="selected_general">Selected : </string>
+    <string name="cancel_general">Cancel </string>
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>
         <item>Сортировать по длительности</item>
         <item>Сортировать по расстоянию</item>
     </string-array>
-    <string-array name="Fuel_consumption">
-        <item>liter / 100 km</item>
-        <item>liter /100 mile</item>
-        <item>gallon / 100 km</item>
-        <item>gallon /100 mile</item>
-    </string-array>
+
 
 </resources>
