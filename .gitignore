@@ -2,3 +2,6 @@
 .gradle/6.5/executionHistory/executionHistory.lock
 *.lock
 .idea/libraries
+.idea/modules/app/DriveX.app.iml
+.idea/misc.xml
+local.properties
