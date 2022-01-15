@@ -19,6 +19,7 @@ class SettingsDialog(var arrayItems: Array<String>, val type : String) : DialogF
         const val TYPE_VOLUME= "volume"
         const val TYPE_CONSUMPTION= "consumption"
         const val TYPE_CURENCY= "currency"
+        const val TYPE_SOUND= "sound"
     }
 
     val prefs: SharedPreferences? = context?.getSharedPreferences(

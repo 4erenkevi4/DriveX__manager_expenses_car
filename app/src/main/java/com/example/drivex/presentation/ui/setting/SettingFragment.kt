@@ -73,7 +73,7 @@ class SettingFragment : Fragment() {
         if (prefs != null)
             applySettingsToSP(prefs)
 
-        soundStartApp.setOnCheckedChangeListener { buttonView, isChecked ->
+        soundStartApp.setOnCheckedChangeListener { _, isChecked ->
                saveToSP(type = TYPE_SOUND, boolean = isChecked)
         }
         utilsVolume.setOnClickListener {

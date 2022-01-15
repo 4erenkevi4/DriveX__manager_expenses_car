@@ -1,7 +1,46 @@
-﻿*.bin
-.gradle/6.5/executionHistory/executionHistory.lock
-*.lock
-.idea/libraries
-.idea/modules/app/DriveX.app.iml
-.idea/misc.xml
+# Built application files
+/*/build/
+build/
+
+# Crashlytics configuations
+com_crashlytics_export_strings.xml
+
+# Local configuration file (sdk path, etc)
 local.properties
+
+
+
+# Gradle generated files
+.gradle/
+/script/bundle/
+/script/apk/
+/whoosh/schemas/group.flowbird.mpp.db.*/
+
+# Signing files
+.signing/
+
+# User-specific configurations
+.idea
+./.idea/
+*.iml
+.build/intermediates/
+.build/codeStyles/Project.xml
+
+#Localization
+/localizationAutomation/Result/
+/localizationAutomation/Localization_DBBahn.xlsx
+/localizationAutomation/Localization_Whoosh.xlsx
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/copyright/
+whoosh/mapping.txt
+.idea/gradle.xml
+whoosh/mapping.txt
+whoosh/schemas
