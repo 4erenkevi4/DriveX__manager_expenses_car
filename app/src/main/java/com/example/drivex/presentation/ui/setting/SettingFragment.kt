@@ -22,7 +22,9 @@ import com.example.drivex.R
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CONSUMPTION
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CURENCY
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_SOUND
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
+import kotlinx.android.synthetic.main.fragment_setting.*
 import java.util.*
 
 
@@ -70,6 +72,10 @@ class SettingFragment : Fragment() {
         consumption = utilsFuel.findViewById(R.id.fuel_settings)
         if (prefs != null)
             applySettingsToSP(prefs)
+
+        soundStartApp.setOnCheckedChangeListener { buttonView, isChecked ->
+               saveToSP(type = TYPE_SOUND, boolean = isChecked)
+        }
         utilsVolume.setOnClickListener {
             createDialog(
                 arrayOf(
@@ -103,13 +109,17 @@ class SettingFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun applySettingsToSP(prefs: SharedPreferences) {
-        if (prefs.contains(TYPE_VOLUME))
-            volume.text = prefs.getString(TYPE_VOLUME, getString(R.string.volume))
-        if (prefs.contains(TYPE_CONSUMPTION))
-            consumption.text = prefs.getString(TYPE_CONSUMPTION, getString(R.string.l_km))
-        if (prefs.contains(TYPE_CURENCY))
-            currency.text = prefs.getString(TYPE_CURENCY, getCurrency(Locale.getDefault()))
+        when {
+            prefs.contains(TYPE_VOLUME) -> volume.text =
+                prefs.getString(TYPE_VOLUME, getString(R.string.volume))
+            prefs.contains(TYPE_CONSUMPTION) -> consumption.text =
+                prefs.getString(TYPE_CONSUMPTION, getString(R.string.l_km))
+            prefs.contains(TYPE_CURENCY) -> currency.text =
+                prefs.getString(TYPE_CURENCY, getCurrency(Locale.getDefault()))
+            prefs.contains(TYPE_SOUND) -> switch_sound.isChecked = prefs.getBoolean(TYPE_SOUND,false)
+        }
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -134,12 +144,15 @@ class SettingFragment : Fragment() {
     }
 
     @SuppressLint("CommitPrefEdits")
-    fun saveToSP(string: String, type: String) {
+    fun saveToSP(string: String? = null, type: String, boolean: Boolean = false) {
         val prefs: SharedPreferences? = context?.getSharedPreferences(
             APP_PREFERENCES, Context.MODE_PRIVATE
         )
         val editor: SharedPreferences.Editor? = prefs?.edit()
-        editor?.putString(type, string)
+        if (string!=null)
+            editor?.putString(type, string)
+        else
+            editor?.putBoolean(type, boolean)
         editor?.apply()
     }
 
