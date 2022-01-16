@@ -52,23 +52,19 @@ class MainAdapter(val context: Context?, val currency: String?, private val clic
             cost.text = expenss.totalSum.toString() + " " + currency
             iconType.setImageResource(expenss.icon ?: R.drawable.ic_car)
             context.let {
+                nameType.setTextColor(it!!.getColor(R.color.orange20))
                 when (expenss.title) {
                     REFUEL -> {
                         nameType.text = it!!.getText(R.string.refuel)
-                        nameType.setTextColor(it.getColor(R.color.yellow20))
                     }
-
                     SERVICE -> {
                         nameType.text = it!!.getText(R.string.service)
-                        nameType.setTextColor(it.getColor(R.color.orange20))
                     }
                     SHOPPING -> {
                         nameType.text = it!!.getText(R.string.your_buy)
-                        nameType.setTextColor(it.getColor(R.color.purple20))
                     }
                     PAYMENT -> {
                         nameType.text = it!!.getText(R.string.payment)
-                        nameType.setTextColor(it.getColor(R.color.green20))
                     }
                 }
             }
