@@ -28,7 +28,7 @@ import kotlinx.coroutines.*
 
 class StatFragment : Fragment() {
 
-    lateinit var liveDataCost: LiveData<String>
+    lateinit var liveDataCost: LiveData<Double>
     lateinit var liveDataMileage: LiveData<Int>
     lateinit var liveDataRefuelSum: LiveData<Int>
     lateinit var liveDataServiceSum: LiveData<Int>

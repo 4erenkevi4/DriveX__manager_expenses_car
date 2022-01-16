@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/DriveX.iml" filepath="$PROJECT_DIR$/.idea/modules/DriveX.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DriveX.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DriveX.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/DriveX__manager_expenses_car.DriveX.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/DriveX__manager_expenses_car.DriveX.app.iml" />
     </modules>
   </component>

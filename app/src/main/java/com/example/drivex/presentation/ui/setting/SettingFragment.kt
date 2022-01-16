@@ -8,20 +8,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
+import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CAR
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CONSUMPTION
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CURENCY
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_DISTANCE
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_SOUND
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
 import kotlinx.android.synthetic.main.fragment_setting.*
@@ -40,10 +42,12 @@ class SettingFragment : Fragment() {
     private lateinit var utilsVolume: LinearLayout
     private lateinit var utilsFuel: LinearLayout
     private lateinit var utilsCurrency: LinearLayout
+    private lateinit var utilsDistance: LinearLayout
     private lateinit var currency: TextView
     private lateinit var volume: TextView
     private lateinit var consumption: TextView
-
+    private lateinit var distance: TextView
+    private lateinit var buttonSave: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,21 +71,46 @@ class SettingFragment : Fragment() {
         utilsVolume = view.findViewById(R.id.volume_picker_setting)
         utilsFuel = view.findViewById(R.id.fuel_picker_setting)
         utilsCurrency = view.findViewById(R.id.currency_picker_setting)
+        utilsDistance = view.findViewById(R.id.distance_picker_setting)
         currency = utilsCurrency.findViewById(R.id.curency)
         volume = utilsVolume.findViewById(R.id.volume)
         consumption = utilsFuel.findViewById(R.id.fuel_settings)
+        distance = utilsDistance.findViewById(R.id.dist)
+        buttonSave = view.findViewById(R.id.button_save_car)
         if (prefs != null)
             applySettingsToSP(prefs)
 
         soundStartApp.setOnCheckedChangeListener { _, isChecked ->
-               saveToSP(type = TYPE_SOUND, boolean = isChecked)
+            saveToSP(type = TYPE_SOUND, boolean = isChecked)
         }
+        carVendor.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                itemSelected: View, selectedItemPosition: Int, selectedId: Long
+            ) {
+                val choose = resources.getStringArray(R.array.vehicles)
+                buttonSave.setImageResource(R.drawable.ic_baseline_check_24)
+                buttonSave.setOnClickListener { createCarModel(choose[selectedItemPosition] + " " + carModel.text.toString()) }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+
         utilsVolume.setOnClickListener {
             createDialog(
                 arrayOf(
                     getString(R.string.liter),
                     getString(R.string.Gallon)
                 ), TYPE_VOLUME
+            )
+        }
+        utilsDistance.setOnClickListener {
+            createDialog(
+                arrayOf(
+                    getString(R.string.km),
+                    getString(R.string.mile),
+                ), TYPE_DISTANCE
             )
         }
         utilsFuel.setOnClickListener {
@@ -105,18 +134,34 @@ class SettingFragment : Fragment() {
                 ), TYPE_CURENCY
             )
         }
+        buttonSave
+    }
+
+    private fun createCarModel(carVendor: String?) {
+        if (carVendor.isNullOrEmpty().not() && carVendor != " ")
+            saveToSP(carVendor, TYPE_CAR)
+        Toast.makeText(context, "Your car $carVendor is successfully saved", Toast.LENGTH_SHORT)
+            .show()
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun applySettingsToSP(prefs: SharedPreferences) {
-        when {
-            prefs.contains(TYPE_VOLUME) -> volume.text =
-                prefs.getString(TYPE_VOLUME, getString(R.string.volume))
-            prefs.contains(TYPE_CONSUMPTION) -> consumption.text =
-                prefs.getString(TYPE_CONSUMPTION, getString(R.string.l_km))
-            prefs.contains(TYPE_CURENCY) -> currency.text =
-                prefs.getString(TYPE_CURENCY, getCurrency(Locale.getDefault()))
-            prefs.contains(TYPE_SOUND) -> switch_sound.isChecked = prefs.getBoolean(TYPE_SOUND,false)
+        if (prefs.contains(TYPE_VOLUME))
+            volume.text = prefs.getString(TYPE_VOLUME, getString(R.string.volume))
+        if (prefs.contains(TYPE_CONSUMPTION))
+            consumption.text = prefs.getString(TYPE_CONSUMPTION, getString(R.string.l_km))
+        if (prefs.contains(TYPE_CURENCY))
+            currency.text = prefs.getString(TYPE_CURENCY, getCurrency(Locale.getDefault()))
+        if (prefs.contains(TYPE_SOUND))
+            switch_sound.isChecked = prefs.getBoolean(TYPE_SOUND, false)
+        if (prefs.contains(TYPE_CAR)) {
+            carModel.setText(prefs.getString(TYPE_CAR, ""))
+            carVendor.isVisible = false
+            buttonSave.setImageResource(R.drawable.ic_baseline_create_24)
+            buttonSave.setOnClickListener {
+                carVendor.isVisible = true
+                buttonSave.setImageResource(R.drawable.ic_baseline_check_24)
+            }
         }
     }
 
@@ -132,6 +177,9 @@ class SettingFragment : Fragment() {
             }
             bundle.getString(TYPE_CONSUMPTION).let {
                 it?.setText(consumption, TYPE_CONSUMPTION)
+            }
+            bundle.getString(TYPE_DISTANCE).let {
+                it?.setText(distance, TYPE_DISTANCE)
             }
         }
     }
@@ -149,7 +197,7 @@ class SettingFragment : Fragment() {
             APP_PREFERENCES, Context.MODE_PRIVATE
         )
         val editor: SharedPreferences.Editor? = prefs?.edit()
-        if (string!=null)
+        if (string != null)
             editor?.putString(type, string)
         else
             editor?.putBoolean(type, boolean)
@@ -159,7 +207,7 @@ class SettingFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun getCurrency(locale: Locale): String {
         val currency: Currency = Currency.getInstance(locale)
-        return currency.displayName + " " + currency.symbol
+        return currency.currencyCode
     }
 
     private fun createDialog(array: Array<String>, type: String) {

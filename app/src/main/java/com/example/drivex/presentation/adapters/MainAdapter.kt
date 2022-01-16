@@ -1,11 +1,14 @@
 package com.example.drivex.presentation.adapters
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +19,7 @@ import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SERVICE
 import com.example.drivex.utils.Constans.SHOPPING
 
-class MainAdapter(private val click: (Long) -> Unit) :
+class MainAdapter(val context: Context?, val currency: String?, private val click: (Long) -> Unit) :
     RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
     private val diffCallback = object : DiffUtil.ItemCallback<Expenses>() {
@@ -30,7 +33,6 @@ class MainAdapter(private val click: (Long) -> Unit) :
     }
 
     var listExp = AsyncListDiffer(this, diffCallback)
-
     fun submitList(list: List<Expenses>) = listExp.submitList(list)
 
     class ViewHolder(
@@ -43,18 +45,33 @@ class MainAdapter(private val click: (Long) -> Unit) :
         private val date: TextView = root.findViewById(R.id.date)
         private val cost: TextView = root.findViewById(R.id.cost)
 
+        @RequiresApi(Build.VERSION_CODES.M)
         @SuppressLint("SetTextI18n")
-        fun bind(expenss: Expenses) {
+        fun bind(context: Context?, expenss: Expenses, currency: String?) {
             date.text = expenss.date
-            cost.text = expenss.totalSum.toString() + " BYN"
-            iconType.setImageResource(expenss.icon?:R.drawable.ic_car)
-            nameType.text = expenss.title
-when(expenss.title){
-    REFUEL-> nameType.setTextColor(R.color.yellow20.toInt())
-    SERVICE-> nameType.setTextColor(R.color.orange20.toInt())
-    SHOPPING-> nameType.setTextColor(R.color.purple20.toInt())
-    PAYMENT-> nameType.setTextColor(R.color.green20.toInt())
-}
+            cost.text = expenss.totalSum.toString() + " " + currency
+            iconType.setImageResource(expenss.icon ?: R.drawable.ic_car)
+            context.let {
+                when (expenss.title) {
+                    REFUEL -> {
+                        nameType.text = it!!.getText(R.string.refuel)
+                        nameType.setTextColor(it.getColor(R.color.yellow20))
+                    }
+
+                    SERVICE -> {
+                        nameType.text = it!!.getText(R.string.service)
+                        nameType.setTextColor(it.getColor(R.color.orange20))
+                    }
+                    SHOPPING -> {
+                        nameType.text = it!!.getText(R.string.your_buy)
+                        nameType.setTextColor(it.getColor(R.color.purple20))
+                    }
+                    PAYMENT -> {
+                        nameType.text = it!!.getText(R.string.payment)
+                        nameType.setTextColor(it.getColor(R.color.green20))
+                    }
+                }
+            }
         }
 
         fun oClick(position: Long) {
@@ -74,9 +91,10 @@ when(expenss.title){
         return ViewHolder(view, click)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = listExp.currentList[position]
-        holder.bind(item)
+        holder.bind(context, item, currency)
         holder.oClick(item.id)
 
     }

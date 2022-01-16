@@ -18,8 +18,10 @@ class SettingsDialog(var arrayItems: Array<String>, val type : String) : DialogF
     companion object{
         const val TYPE_VOLUME= "volume"
         const val TYPE_CONSUMPTION= "consumption"
+        const val TYPE_DISTANCE= "distance"
         const val TYPE_CURENCY= "currency"
         const val TYPE_SOUND= "sound"
+        const val TYPE_CAR= "car"
     }
 
     val prefs: SharedPreferences? = context?.getSharedPreferences(
@@ -28,12 +30,11 @@ class SettingsDialog(var arrayItems: Array<String>, val type : String) : DialogF
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val selectedItems = ArrayList<Int>() // Where we track the selected items
             val builder = AlertDialog.Builder(it)
             builder.setTitle(R.string.select_unit_settings)
                 .setSingleChoiceItems(
                     arrayItems, -1
-                ) { dialog, item ->
+                ) { _, item ->
                     parentFragmentManager.setFragmentResult("requestKey", bundleOf(type to arrayItems[item]))
                     Toast.makeText(
                         activity, "${R.string.selected_general} ${arrayItems[item]}",
@@ -42,11 +43,9 @@ class SettingsDialog(var arrayItems: Array<String>, val type : String) : DialogF
                 }
                 .setPositiveButton(
                     "OK"
-                ) { dialog, id ->
+                ) { _, id ->
                     // User clicked OK, so save the selectedItems results somewhere
                     // or return them to the component that opened the dialog
-                }
-                .setNegativeButton(R.string.cancel_general) { dialog, id ->
                 }
 
             builder.create()

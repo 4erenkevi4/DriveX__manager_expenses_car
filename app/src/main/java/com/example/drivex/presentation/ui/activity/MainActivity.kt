@@ -1,6 +1,8 @@
 package com.example.drivex.presentation.ui.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import com.google.android.material.navigation.NavigationView
@@ -13,6 +15,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.drivex.R
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_SOUND
+import com.example.drivex.presentation.ui.setting.SettingFragment
 import com.example.drivex.utils.Constans.IS_PAYMENT
 import com.example.drivex.utils.Constans.IS_REFUEL
 import com.example.drivex.utils.Constans.IS_SHOPPING
@@ -30,8 +34,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        playerStart = MediaPlayer.create(this, R.raw.engine_start)
-        playerStart.start()
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         boomMenu = findViewById(R.id.boom_menu)
@@ -51,6 +54,19 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        val prefs: SharedPreferences? = this.getSharedPreferences(
+            SettingFragment.APP_PREFERENCES, Context.MODE_PRIVATE)
+        if(prefs!=null&&prefs.contains(TYPE_SOUND)){
+            startMusic(prefs.getBoolean(TYPE_SOUND,false))
+
+        }
+    }
+
+    private fun startMusic(isNeedSound: Boolean) {
+        if (isNeedSound) {
+            playerStart = MediaPlayer.create(this, R.raw.engine_start)
+            playerStart.start()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

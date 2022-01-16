@@ -10,6 +10,7 @@
     <LinearLayout
         android:id="@+id/layout_vehicle_setting"
         android:layout_width="match_parent"
+        android:background="#111E1E1E"
         android:layout_height="@dimen/description_width"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,34 +20,41 @@
         <ImageView
             android:layout_width="@dimen/item_dimensions_32"
             android:layout_height="@dimen/item_dimensions_32"
-            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_marginHorizontal="@dimen/default_margin_8"
             android:contentDescription="@string/Notifications_settings"
             android:src="@drawable/ic_baseline_directions_car_filled_24" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin_16"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Your car" />
 
         <Spinner
             android:id="@+id/car_vendor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin_16"
+            android:layout_marginStart="@dimen/default_margin_8"
             android:entries="@array/vehicles"
             android:gravity="end"
             android:spinnerMode="dropdown" />
 
-        <EditText
-            android:id="@+id/Car_model"
+        <LinearLayout
+            android:id="@+id/car_chooser_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/default_margin_16"
-            android:hint="@string/car_model" />
+            android:layout_marginStart="@dimen/default_margin_16"
+            android:clickable="true"
+            android:focusable="true">
 
+            <EditText
+                android:id="@+id/Car_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/car_model" />
+
+            <ImageView
+                android:id="@+id/button_save_car"
+                android:layout_width="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_check_24" />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/sound_app_lounch"
@@ -220,6 +228,48 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Euro" />
+
+                <ImageView
+                    android:layout_width="@dimen/item_dimensions_32"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_down" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_distance_until"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/description_width"
+            android:gravity="start|center">
+
+            <ImageView
+                android:layout_width="@dimen/item_dimensions_32"
+                android:layout_height="@dimen/item_dimensions_32"
+                android:contentDescription="@string/Notifications_settings"
+                android:src="@drawable/ic_baseline_network_check_24" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:layout_weight="1"
+                android:text="@string/Distance_selection" />
+
+            <LinearLayout
+                android:id="@+id/distance_picker_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/dist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Km" />
 
                 <ImageView
                     android:layout_width="@dimen/item_dimensions_32"

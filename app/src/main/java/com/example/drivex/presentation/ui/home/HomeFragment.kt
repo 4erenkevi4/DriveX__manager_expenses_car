@@ -2,7 +2,9 @@ package com.example.drivex.presentation.ui.home
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +14,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,13 +21,16 @@ import com.example.drivex.R
 import com.example.drivex.presentation.adapters.MainAdapter
 import com.example.drivex.presentation.ui.activity.FuelActivity
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CAR
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CONSUMPTION
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CURENCY
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_DISTANCE
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
+import com.example.drivex.presentation.ui.setting.SettingFragment
 import com.example.drivex.utils.Constans.REQUEST_CODE_LOCATION_PERMISSION
 import com.example.drivex.utils.TrackingUtility
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -42,12 +45,17 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     lateinit var allVolume: TextView
     lateinit var allCostFuel: TextView
     lateinit var allCostService: TextView
-    lateinit var liveDataCost: LiveData<String>
+    lateinit var carModel:TextView
+    lateinit var liveDataCost: LiveData<Double>
     lateinit var liveDataMileage: LiveData<String>
-    lateinit var liveDataCostFUel: LiveData<String>
-    lateinit var liveDataVolumeFUel: LiveData<String>
-    lateinit var liveDataCostService: LiveData<String>
+    lateinit var liveDataCostFUel: LiveData<Int>
+    lateinit var liveDataVolumeFUel: LiveData<Int>
+    lateinit var liveDataCostService: LiveData<Int>
     lateinit var liveDatarefuelSum: LiveData<Int>
+    private  var currencySP:String = ""
+    private  var consumptionSP:String = ""
+    private  var volumeSP:String = ""
+    private var distanceSP: String = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,6 +70,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         allCostFuel = view.findViewById(R.id.fuel_expenses)
         allCostService = view.findViewById(R.id.service_summ)
         recyclerView = view.findViewById(R.id.recycler_view_home)
+        carModel = view.findViewById(R.id.text_model_info)
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileageStr
         liveDataCostFUel = viewModel.allFuelCostSum
@@ -73,23 +82,34 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             adapter.submitList(expenses)
         })
         setinfoView()
-        setRecyclerview(view)
         requestPermissions()
+        getSharedPref()
         return view
+    }
+
+    private fun getSharedPref() {
+        val prefs: SharedPreferences? = activity?.getSharedPreferences(
+            SettingFragment.APP_PREFERENCES, Context.MODE_PRIVATE)
+        if (prefs != null) {
+            currencySP = prefs.getString(TYPE_CURENCY, "$") ?: "$"
+            consumptionSP = prefs.getString(TYPE_CONSUMPTION, "L/100km") ?: "L/100km"
+            volumeSP = prefs.getString(TYPE_VOLUME, "L") ?: "L"
+            distanceSP = prefs.getString(TYPE_DISTANCE, "Km") ?: "Km"
+            carModel.text = (prefs.getString(TYPE_CAR,""))?: "Your Car"
+        }
+        setRecyclerview(currencySP)
     }
 
     @SuppressLint("SetTextI18n")
     private fun setinfoView() {
-        liveDataCost.observe(viewLifecycleOwner, { allExpenses.text = "Общие расходы: $it" })
-        liveDataMileage.observe(viewLifecycleOwner, { allMileage.text = "Пробег: $it" })
+        liveDataCost.observe(viewLifecycleOwner, { allExpenses.text = getString(R.string.total_expenses)+": $it $currencySP" })
+        liveDataMileage.observe(viewLifecycleOwner, { allMileage.text = getString(R.string.mileage)+": $it $distanceSP" })
         liveDatarefuelSum.observe(viewLifecycleOwner,
-            { allCostFuel.text = "Общие затраты на топливо: $it BYN" })
+            { allCostFuel.text = getString(R.string.refuel_expenses)+": $it $currencySP" })
         liveDataVolumeFUel.observe(viewLifecycleOwner,
-            { allVolume.text = "Общий обьем топлива: $it" })
+            { allVolume.text = getString(R.string.total_fuel_volume)+": $it $volumeSP" })
         liveDataCostService.observe(viewLifecycleOwner,
-            { allCostService.text = "Общие затраты на сервис: $it" })
-
-
+            { allCostService.text = getString(R.string.total_expenses_for_service)+": $it $currencySP" })
     }
 
     private val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
@@ -107,8 +127,8 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             val position = viewHolder.layoutPosition
             val expenses = adapter.listExp.currentList[position]
             viewModel.delete(expenses)
-            Snackbar.make(requireView(), "Запись удалена", Snackbar.LENGTH_LONG).apply {
-                setAction("Отменить") {
+            Snackbar.make(requireView(), getText(R.string.entry_deleted), Snackbar.LENGTH_LONG).apply {
+                setAction(getText(R.string.cancel_general)) {
                     viewModel.insert(expenses)
                 }
                 show()
@@ -116,16 +136,13 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         }
     }
 
-    private fun setRecyclerview(view: View) {
-        adapter = MainAdapter { id ->
+    private fun setRecyclerview(currencySP: String) {
+        adapter = MainAdapter (context, currency = currencySP) { id ->
             startActivity(Intent(context, FuelActivity::class.java).putExtra("id", id))
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
-
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
-
-
     }
 
     private fun requestPermissions() {
@@ -151,6 +168,7 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             )
         }
     }
+
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             AppSettingsDialog.Builder(this).setThemeResId(R.style.Base_Theme_AppCompat_Dialog_Alert).build().show()

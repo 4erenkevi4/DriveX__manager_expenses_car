@@ -1,12 +1,16 @@
 package com.example.drivex.presentation.ui.activity.viewModels
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.*
 import com.example.drivex.domain.ExpensesDao
 import com.example.drivex.data.ExpensesRoomDatabase
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.data.repository.ExpensesRepository
 import com.example.drivex.data.repository.ExpensesRepositoryImpl
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog
+import com.example.drivex.presentation.ui.setting.SettingFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -63,35 +67,16 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
         refuelDao.delete(expenses)
     }
 
-
-    val allExpensesSum: LiveData<String> =
-        Transformations.map(refuelDao.getSumOfExpenses()) { sumOfCosts ->
-            NumberFormat.getCurrencyInstance(Locale("ru", "BY")).format(sumOfCosts ?: 0.0)
-        }
-    val allFuelCostSum: LiveData<String> =
-        Transformations.map(refuelDao.getSUmExpensesById("Заправка")) { sumOfCosts ->
-            NumberFormat.getCurrencyInstance(Locale("ru", "BY")).format(sumOfCosts ?: 0.0)
-        }
-
-    val allServiceCostSum: LiveData<String> =
-        Transformations.map(refuelDao.getSUmExpensesById("Сервис")) { sumOfCosts ->
-            NumberFormat.getCurrencyInstance(Locale("ru", "BY")).format(sumOfCosts ?: 0.0)
-        }
-
+    val allExpensesSum: LiveData<Double> = refuelDao.getSumOfExpenses()
+    val allFuelCostSum: LiveData<Int> = refuelDao.getSUmExpensesById("Заправка")
+    val allServiceCostSum: LiveData<Int> = refuelDao.getSUmExpensesById("Сервис")
     val refuelSum: LiveData<Int> = refuelDao.getSUmExpensesById("Заправка")
     val serviceSum: LiveData<Int> = refuelDao.getSUmExpensesById("Сервис")
     val shoppingSum: LiveData<Int> = refuelDao.getSUmExpensesById("Покупка")
     val paymentsSum: LiveData<Int> = refuelDao.getSUmExpensesById("Платеж")
-
-     val allFuelVolumeSumInt: LiveData<Int> = refuelDao.getSummVolumeById("Заправка")
-    val allFuelVolumeSum: LiveData<String> = Transformations.map(allFuelVolumeSumInt) { summ ->
-        (summ?.toString() ?: "0") + " Л."
-    }
-
+    val allFuelVolumeSum: LiveData<Int> = refuelDao.getSummVolumeById("Заправка")
     val lastMileage: LiveData<Int> = refuelDao.getLastMileage()
     val lastMileageStr: LiveData<String> = Transformations.map(lastMileage) { checkpoint ->
-        (checkpoint?.toString() ?: "0") + " Km."
+        (checkpoint?.toString() ?: "0")
     }
-
-
 }

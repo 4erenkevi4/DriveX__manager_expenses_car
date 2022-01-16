@@ -7,9 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
 
-class ServiceAdapter(private val click: (String,View) -> Unit):
+class ServiceAdapter(private val listOfMaintenance: Array<String> = arrayOf(), private val click: (String, View) -> Unit):
     RecyclerView.Adapter<ServiceAdapter.ViewHolder>() {
-
     class ViewHolder(
         view: View,
         val onClick: (String,View) -> Unit
@@ -38,44 +37,13 @@ class ServiceAdapter(private val click: (String,View) -> Unit):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = listService[position]
+        val item = listOfMaintenance[position]
         holder.bind(item)
         holder.oClick(item,holder.itemView)
     }
 
     override fun getItemCount(): Int {
-        return listService.size
+        return listOfMaintenance.size
     }
-
-    var listService:List<String> = listOf(
-        "Шиномонтаж",
-        "Мойка автомобиля",
-        "Замена масла двигателя",
-        "Замена масла в КПП",
-        "Замена воздушного фильтра",
-        "Замена маслянного фильтра",
-        "Замена салонного фильтра",
-        "Замена топливного фильтра",
-        "Замена тормозной жидкости",
-        "Замена передних тормозных колодок",
-        "Замена задних тормозных колодок",
-        "Замена передних тормозных дисков",
-        "Замена задних тормозных дисков",
-        "Замена свечей зажигания",
-        "Замена высоковольтных проводов",
-        "Замена катушек зажигания,",
-        "Заправка кондиционера",
-        "Обслуживание кондиционера",
-        "Замена охлаждающей жидкости",
-        "Развал-схождение",
-        "Обслуживание подвески",
-        "Замена ремня ГРМ",
-        "Замена АКБ",
-        "Замена жидкости ГУР",
-        "Обслуживание КПП",
-        "Обслуживание ДВС",
-        "Обслуживание топливной системы",
-        "Обслуживание Рулевого управлления",
-        "Прочее"
-    )
+    
 }

@@ -43,10 +43,10 @@ object Constans {
     const val NOTIFICATION_ID = 1
     const val REQUEST_CODE_LOCATION_PERMISSION = 0
 
-    const val REFUEL = "Заправка"
-    const val SERVICE = "Сервис"
-    const val SHOPPING = "Покупка"
-    const val PAYMENT = "Платеж"
+    const val REFUEL = "Refuel"
+    const val SERVICE = "Service"
+    const val SHOPPING = "Buying"
+    const val PAYMENT = "Payment"
 
 
     const val NOTIFY1 = "У Вас запланировано ТО"

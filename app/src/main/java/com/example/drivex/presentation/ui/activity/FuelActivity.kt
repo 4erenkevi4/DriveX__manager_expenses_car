@@ -18,7 +18,10 @@ import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.utils.Constans.IS_PAYMENT
 import com.example.drivex.utils.Constans.IS_REFUEL
 import com.example.drivex.utils.Constans.IS_SHOPPING
+import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.PAYMENT_TYPE
+import com.example.drivex.utils.Constans.REFUEL
+import com.example.drivex.utils.Constans.SHOPPING
 import java.net.URI
 
 
@@ -73,7 +76,7 @@ class FuelActivity : AbstractActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-            uriPhoto = data?.getStringExtra(URI_PHOTO)
+        uriPhoto = data?.getStringExtra(URI_PHOTO)
         containerPhoto.isVisible = true
         containerPhoto.setImageURI(uriPhoto!!.toUri())
     }
@@ -86,24 +89,25 @@ class FuelActivity : AbstractActivity() {
 
         when (paymentType) {
             IS_REFUEL -> {
-                titte = "Заправка"
-                desc = "Информация о выбранной заправке:"
-                icon = R.drawable.fuel_icon; startToast =
-                    "Пожалуйста, добавьте данные текущей заправки"
+                titte = REFUEL
+                desc = getString(R.string.info_about_refuel)
+                icon = R.drawable.fuel_icon;
+                startToast =
+                    getString(R.string.please_add_refuel_data)
             }
             IS_SHOPPING -> {
-                titte = "Покупка"
-                desc = "Информация о выбранной покупке:"
+                titte = SHOPPING
+                desc = getString(R.string.info_of_your_buy)
                 icon = R.drawable.shoping_icon
-                startToast = "Пожалуйста, добавьте информацию о вашей покупке"
+                startToast = getString(R.string.please_add_info_of_your_buy)
                 editTextVolume.isVisible = false
                 selectionType.isVisible = false
             }
             IS_PAYMENT -> {
-                titte = "Платеж"
-                desc = "Информация о выбранном платеже:"
+                titte = PAYMENT
+                desc = getString(R.string.payment_info)
                 icon = R.drawable.pay_icon; startToast =
-                    "Пожалуйста, добавьте информацию о вашем платеже"
+                    getString(R.string.please_add_payment_info)
                 editTextVolume.isVisible = false
                 selectionType.isVisible = false
             }
@@ -111,15 +115,13 @@ class FuelActivity : AbstractActivity() {
         }
     }
 
-
-    @SuppressLint("SetTextI18n")
-    fun updateMode(id: Long) {
+    private fun updateMode(id: Long) {
         val intent = Intent(this, MainActivity::class.java)
         fuelViewModel.readRefuelById(id).observe(this, { desc ->
             desc?.let {
                 desButtonPhoto.isVisible = false
                 buttonPhoto.isVisible = false
-                selectionType.text = "Категория"
+                selectionType.text = getText(R.string.category)
                 editTextMileage.setText(desc.mileage.toString())
                 editTextVolume.setText(desc.title)
                 editTextCost.setText(desc.totalSum.toString())
@@ -134,14 +136,16 @@ class FuelActivity : AbstractActivity() {
     override fun putData() {
 
         val mileage: String = editTextMileage.text.toString()
-        val volume: String = editTextVolume.text.toString()
+        var volume: String = editTextVolume.text.toString()
         val cost: String = editTextCost.text.toString()
         var descriptionValue: String = description.text.toString()
         if (descriptionValue.isEmpty())
             descriptionValue = desc
 
         val intent = Intent(this, MainActivity::class.java)
-        if (mileage.isNotEmpty() && volume.isNotEmpty() && cost.isNotEmpty()) {
+        if (mileage.isNotEmpty() && cost.isNotEmpty()) {
+            if (volume.isNullOrEmpty())
+                volume = "0"
             val expenses = Expenses(
                 id = 0,
                 title = titte,
@@ -158,13 +162,13 @@ class FuelActivity : AbstractActivity() {
 
         } else {
             if (mileage.isEmpty() && paymentType == IS_REFUEL) {
-                showToast("Пожалуйста, добавьте текущее значение пробега", editTextMileage)
+                showToast(getString(R.string.please_add_mileage), editTextMileage)
             }
             if (volume.isEmpty() && paymentType == IS_REFUEL) {
-                showToast("Пожалуйста, добавьте обьем заправленного топлива", editTextVolume)
+                showToast(getString(R.string.please_add_volume_fuel), editTextVolume)
             }
             if (cost.isEmpty()) {
-                showToast("Пожалуйста, укажите стоимость", editTextCost)
+                showToast(getString(R.string.please_add_cost_fuel), editTextCost)
             }
 
         }

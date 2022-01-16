@@ -22,6 +22,7 @@ import com.example.drivex.R
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.presentation.adapters.ServiceAdapter
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
+import com.example.drivex.utils.Constans.SERVICE
 
 
 class ServiceActivity : AbstractActivity() {
@@ -42,7 +43,7 @@ class ServiceActivity : AbstractActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_service)
-        Toast.makeText(this, "Пожалуйста, добавьте данные текущего ремонта.", Toast.LENGTH_SHORT)
+        Toast.makeText(this, getText(R.string.add_data_repair), Toast.LENGTH_SHORT)
             .show()
         textViewDate = findViewById(R.id.textView_data)
         editTextMileage = findViewById(R.id.text_mileag)
@@ -93,7 +94,7 @@ class ServiceActivity : AbstractActivity() {
 
             val refuel = Expenses(
                 id = 0,
-                title = "Сервис",
+                title = SERVICE,
                 mileage = mileage.toInt(),
                 description = desc,
                 totalSum = cost.toDouble(),
@@ -106,25 +107,23 @@ class ServiceActivity : AbstractActivity() {
 
         } else {
             if (mileage.isEmpty()) {
-                showToast("Пожалуйста, добавьте текущее значение пробега", editTextMileage)
+                showToast(getString(R.string.add_current_mileage), editTextMileage)
             }
             if (cost.isEmpty()) {
-                showToast("Пожалуйста, укажите стоимость текущего ремонта", editTextCost)
+                showToast(getString(R.string.add_cost_current_repare), editTextCost)
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun setRecyclerview() {
-        val adapter = ServiceAdapter { item, view ->
+        val adapter = ServiceAdapter(resources.getStringArray(R.array.maintenance_options)) { item, view ->
             description.text = description.text.toString() + " " + item + ";"
             view.setBackgroundColor(Color.GRAY)
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
-
     }
-
 }
 
 @Suppress("UNCHECKED_CAST")
