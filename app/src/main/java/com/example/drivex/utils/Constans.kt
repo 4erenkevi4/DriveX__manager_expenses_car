@@ -48,7 +48,6 @@ object Constans {
     const val SHOPPING = "Buying"
     const val PAYMENT = "Payment"
 
-
     const val NOTIFY1 = "У Вас запланировано ТО"
     const val NOTIFY2 = "У Вас запланирована поездка"
     const val NOTIFY3 = "У Вас запланирована мойка авто"

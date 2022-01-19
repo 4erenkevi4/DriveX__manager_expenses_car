@@ -1,9 +1,12 @@
 package com.example.drivex.presentation.ui.map
 
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -19,6 +22,10 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 import kotlinx.android.synthetic.main.fragment_ride.*
+import android.content.DialogInterface
+import android.content.Intent
+import com.example.drivex.presentation.ui.activity.MapsActivity
+
 
 @AndroidEntryPoint
 class RideFragment: Fragment(R.layout.fragment_ride) {
@@ -26,6 +33,7 @@ class RideFragment: Fragment(R.layout.fragment_ride) {
     lateinit var rideAdapter: RideAdapter
 
     private lateinit var viewModel: MapViewModel
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,6 +48,25 @@ class RideFragment: Fragment(R.layout.fragment_ride) {
             SortType.DISTANCE -> spFilter.setSelection(2)
         }
         viewModel.runs.observe(viewLifecycleOwner, Observer { runs ->
+            if(runs.isEmpty()) {
+                val intentMap = Intent(activity, MapsActivity::class.java)
+                spFilter.isGone = true
+                val builder = AlertDialog.Builder(context)
+                builder
+                    //.setTitle("Важное сообщение! Пожалуйста, прочитайте его! Очень прошу!")
+                    .setTitle(R.string.warning)
+                    .setMessage(R.string.create_trip_nothing)
+                    .setIcon(R.drawable.ic_warning)
+                    .setPositiveButton(R.string.create_trip) { dialog, id ->
+                        startActivity(intentMap)
+                    }
+                    .setNegativeButton(R.string.cancel_general) { dialog, id ->
+                        dialog.cancel()
+                    }
+                builder.create()
+                builder.show()
+            }
+            else
             rideAdapter.submitList(runs)
         })
 

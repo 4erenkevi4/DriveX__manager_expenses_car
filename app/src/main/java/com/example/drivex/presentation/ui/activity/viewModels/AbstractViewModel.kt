@@ -11,6 +11,10 @@ import com.example.drivex.data.repository.ExpensesRepository
 import com.example.drivex.data.repository.ExpensesRepositoryImpl
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog
 import com.example.drivex.presentation.ui.setting.SettingFragment
+import com.example.drivex.utils.Constans.PAYMENT
+import com.example.drivex.utils.Constans.REFUEL
+import com.example.drivex.utils.Constans.SERVICE
+import com.example.drivex.utils.Constans.SHOPPING
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -68,13 +72,13 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
     }
 
     val allExpensesSum: LiveData<Double> = refuelDao.getSumOfExpenses()
-    val allFuelCostSum: LiveData<Int> = refuelDao.getSUmExpensesById("Заправка")
-    val allServiceCostSum: LiveData<Int> = refuelDao.getSUmExpensesById("Сервис")
-    val refuelSum: LiveData<Int> = refuelDao.getSUmExpensesById("Заправка")
-    val serviceSum: LiveData<Int> = refuelDao.getSUmExpensesById("Сервис")
-    val shoppingSum: LiveData<Int> = refuelDao.getSUmExpensesById("Покупка")
-    val paymentsSum: LiveData<Int> = refuelDao.getSUmExpensesById("Платеж")
-    val allFuelVolumeSum: LiveData<Int> = refuelDao.getSummVolumeById("Заправка")
+    val allFuelCostSum: LiveData<Int> = refuelDao.getSUmExpensesById(REFUEL)
+    val allServiceCostSum: LiveData<Int> = refuelDao.getSUmExpensesById(SERVICE)
+    val refuelSum: LiveData<Int> = refuelDao.getSUmExpensesById(REFUEL)
+    val serviceSum: LiveData<Int> = refuelDao.getSUmExpensesById(SERVICE)
+    val shoppingSum: LiveData<Int> = refuelDao.getSUmExpensesById(SHOPPING)
+    val paymentsSum: LiveData<Int> = refuelDao.getSUmExpensesById(PAYMENT)
+    val allFuelVolumeSum: LiveData<Int> = refuelDao.getSummVolumeById(REFUEL)
     val lastMileage: LiveData<Int> = refuelDao.getLastMileage()
     val lastMileageStr: LiveData<String> = Transformations.map(lastMileage) { checkpoint ->
         (checkpoint?.toString() ?: "0")

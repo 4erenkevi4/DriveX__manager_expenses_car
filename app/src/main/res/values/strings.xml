@@ -37,8 +37,8 @@
     //SettingFragment
     <string name="units">Units</string>
     <string name="volume_settings">volume</string>
-    <string name="liter">liter</string>
-    <string name="Gallon">Gallon</string>
+    <string name="liter">liters</string>
+    <string name="Gallon">Gallons</string>
     <string name="Fuel_consumption">Fuel consumption</string>
     <string name="Notifications_settings">Notifications</string>
     <string name="other_settings">Other</string>
@@ -61,6 +61,10 @@
     <string name="g_mile">gallon /100 mile</string>
     <string name="km">Km.</string>
     <string name="mile">Mil.</string>
+    <string name="warning">Warning</string>
+    <string name="create_trip">Create trip</string>
+    <string name="create_trip_nothing">You have no recorded trips</string>
+
 
     <string name="select_unit_settings">Select the unit of measure</string>
     // Selected
