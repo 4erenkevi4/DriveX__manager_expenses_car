@@ -1,11 +1,9 @@
 package com.example.drivex.presentation.ui.home
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,15 +26,12 @@ import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_DISTANCE
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
 import com.example.drivex.presentation.ui.setting.SettingFragment
-import com.example.drivex.utils.Constans.REQUEST_CODE_LOCATION_PERMISSION
-import com.example.drivex.utils.TrackingUtility
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import pub.devrel.easypermissions.AppSettingsDialog
-import pub.devrel.easypermissions.EasyPermissions
+
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
+class HomeFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewModel: AbstractViewModel
@@ -83,7 +78,6 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             adapter.submitList(expenses)
         })
         setinfoView()
-        requestPermissions()
         getSharedPref()
         return view
     }
@@ -105,31 +99,31 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     @SuppressLint("SetTextI18n")
     private fun setinfoView() {
         liveDataCost.observe(viewLifecycleOwner, {
-            chekVisibilyty(it,allExpenses)
+            chekVisibilyty(it, allExpenses)
             allExpenses.text = getString(R.string.total_expenses) + ": $it $currencySP"
         })
         liveDataMileage.observe(viewLifecycleOwner, {
-            chekVisibilyty(it,allMileage)
+            chekVisibilyty(it, allMileage)
             allMileage.text = getString(R.string.mileage) + ": $it $distanceSP"
         })
         liveDatarefuelSum.observe(viewLifecycleOwner, {
-            chekVisibilyty(it,allCostFuel)
+            chekVisibilyty(it, allCostFuel)
             allCostFuel.text = getString(R.string.refuel_expenses) + ": $it $currencySP"
         })
         liveDataVolumeFUel.observe(viewLifecycleOwner, {
-            chekVisibilyty(it,allVolume)
+            chekVisibilyty(it, allVolume)
             allVolume.text = getString(R.string.total_fuel_volume) + ": $it $volumeSP"
         })
         liveDataCostService.observe(viewLifecycleOwner, {
-            chekVisibilyty(it,allCostService)
+            chekVisibilyty(it, allCostService)
             allCostService.text =
                 getString(R.string.total_expenses_for_service) + ": $it $currencySP"
         })
     }
 
-    private fun chekVisibilyty(value: Any?, allExpenses: TextView) {
+    private fun chekVisibilyty(value: Any?, expenses: TextView) {
         if (value == null)
-            allExpenses.isGone = true
+            expenses.isGone = true
     }
 
     private val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
@@ -141,10 +135,6 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
             target: RecyclerView.ViewHolder
         ): Boolean {
             return true
-        }
-
-        private fun chekVisibilyty(view: View) {
-            view.isGone = true
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -169,50 +159,4 @@ class HomeFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         recyclerView.adapter = adapter
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
     }
-
-    private fun requestPermissions() {
-        if (TrackingUtility.hasLocationPermissions(requireContext())) {
-            return
-        }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            EasyPermissions.requestPermissions(
-                this,
-                "You need to accept location permission to use this app",
-                REQUEST_CODE_LOCATION_PERMISSION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        } else {
-            EasyPermissions.requestPermissions(
-                this,
-                "You need to accept location permissions to use this app",
-                REQUEST_CODE_LOCATION_PERMISSION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            )
-        }
-    }
-
-    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            AppSettingsDialog.Builder(this).setThemeResId(R.style.Base_Theme_AppCompat_Dialog_Alert)
-                .build().show()
-        } else {
-            requestPermissions()
-        }
-    }
-
-    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {}
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
-    }
-
-
 }

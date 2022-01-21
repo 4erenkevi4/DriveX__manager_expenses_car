@@ -41,7 +41,7 @@ object Constans {
     const val NOTIFICATION_CHANNEL_ID = "tracking_channel"
     const val NOTIFICATION_CHANNEL_NAME = "Tracking"
     const val NOTIFICATION_ID = 1
-    const val REQUEST_CODE_LOCATION_PERMISSION = 0
+    const val REQUEST_CODE_GET_PERMISSION = 1
 
     const val REFUEL = "Refuel"
     const val SERVICE = "Service"

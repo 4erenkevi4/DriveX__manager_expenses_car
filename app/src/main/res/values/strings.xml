@@ -91,7 +91,7 @@
     <string name="your_buy">Buying</string>
     <string name="info_of_your_buy">Information about the selected purchase:</string>
     <string name="please_add_info_of_your_buy">Please add information about your purchase</string>
-    <string name="payment">Payment:</string>
+    <string name="payment">Payment</string>
     <string name="payment_info">Information about the selected payment:</string>
     <string name="please_add_payment_info">Please add your payment information:</string>
     <string name="category">Category:</string>

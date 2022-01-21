@@ -90,7 +90,7 @@
     <string name="your_buy">Покупка</string>
     <string name="info_of_your_buy">Информация о выбранной покупке:</string>
     <string name="please_add_info_of_your_buy">Пожалуйста, добавьте информацию о вашей покупке</string>
-    <string name="payment">Платеж:</string>
+    <string name="payment">Платеж</string>
     <string name="payment_info">Информация о выбранном платеже:</string>
     <string name="please_add_payment_info">Пожалуйста, добавьте информацию о вашем платеже:</string>
     <string name="category">Категория:</string>

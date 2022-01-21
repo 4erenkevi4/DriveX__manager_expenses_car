@@ -1,5 +1,6 @@
 package com.example.drivex.presentation.ui.activity
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -24,6 +25,14 @@ import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 import dagger.hilt.android.AndroidEntryPoint
+import android.widget.Toast
+
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.example.drivex.utils.Constans
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -59,6 +68,72 @@ class MainActivity : AppCompatActivity() {
         if(prefs!=null&&prefs.contains(TYPE_SOUND)){
             startMusic(prefs.getBoolean(TYPE_SOUND,false))
 
+        }
+        requestPermissions()
+    }
+
+    private fun requestPermissions() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.FOREGROUND_SERVICE),
+                    Constans.REQUEST_CODE_GET_PERMISSION
+                )
+            }
+            else {
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION),
+                    Constans.REQUEST_CODE_GET_PERMISSION
+                )
+            }
+        }
+    }
+
+   override fun onRequestPermissionsResult(
+       requestCode: Int,
+       permissions: Array<out String>,
+       grantResults: IntArray
+   ) {
+        when (requestCode) {
+            1 -> {
+
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        " Permissions was granted.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Permission denied to read your External storage",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                return
+            }
         }
     }
 
@@ -104,7 +179,7 @@ class MainActivity : AppCompatActivity() {
         boomMenu.addBuilder(buttonExpenses)
         boomMenu.addBuilder(buttonDriving)
     }
-    
+
 
 
 
