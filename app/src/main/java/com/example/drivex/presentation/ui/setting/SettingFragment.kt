@@ -2,7 +2,11 @@ package com.example.drivex.presentation.ui.setting
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +16,7 @@ import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
-import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -20,17 +24,19 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_AVATAR
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CAR
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CONSUMPTION
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CURENCY
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_DISTANCE
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_SOUND
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
+import com.example.drivex.presentation.ui.fragments.AbstractFragment
 import kotlinx.android.synthetic.main.fragment_setting.*
 import java.util.*
 
 
-class SettingFragment : Fragment() {
+class SettingFragment : AbstractFragment() {
     companion object {
         const val APP_PREFERENCES = "com.drivex.app"
     }
@@ -48,6 +54,7 @@ class SettingFragment : Fragment() {
     private lateinit var consumption: TextView
     private lateinit var distance: TextView
     private lateinit var buttonSave: ImageView
+    private lateinit var buttonSetAvatar: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,8 +84,20 @@ class SettingFragment : Fragment() {
         consumption = utilsFuel.findViewById(R.id.fuel_settings)
         distance = utilsDistance.findViewById(R.id.dist)
         buttonSave = view.findViewById(R.id.button_save_car)
+        buttonSetAvatar = view.findViewById(R.id.set_avatar_button)
         if (prefs != null)
             applySettingsToSP(prefs)
+
+        buttonSetAvatar.setOnClickListener {
+            val photoPickeIintent = Intent(Intent.ACTION_PICK)
+            photoPickeIintent.type = "image/*"
+            requireActivity().startActivityForResult(photoPickeIintent, 3)
+        }
+        if (arguments?.containsKey("IMAGE_URI") == true) {
+            imageCarUri = requireArguments().get("IMAGE_URI") as Uri?
+            saveToSP(imageCarUri.toString(), TYPE_AVATAR)
+            buttonSetAvatar.setImageBitmap(createBitmapFile(imageCarUri!!))
+        }
 
         soundStartApp.setOnCheckedChangeListener { _, isChecked ->
             saveToSP(type = TYPE_SOUND, boolean = isChecked)
@@ -144,23 +163,35 @@ class SettingFragment : Fragment() {
             .show()
     }
 
+
+
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun applySettingsToSP(prefs: SharedPreferences) {
-        if (prefs.contains(TYPE_VOLUME))
-            volume.text = prefs.getString(TYPE_VOLUME, getString(R.string.volume))
-        if (prefs.contains(TYPE_CONSUMPTION))
-            consumption.text = prefs.getString(TYPE_CONSUMPTION, getString(R.string.l_km))
-        if (prefs.contains(TYPE_CURENCY))
-            currency.text = prefs.getString(TYPE_CURENCY, getCurrency(Locale.getDefault()))
-        if (prefs.contains(TYPE_SOUND))
-            switch_sound.isChecked = prefs.getBoolean(TYPE_SOUND, false)
-        if (prefs.contains(TYPE_CAR)) {
-            carModel.setText(prefs.getString(TYPE_CAR, ""))
-            carVendor.isVisible = false
-            buttonSave.setImageResource(R.drawable.ic_baseline_create_24)
-            buttonSave.setOnClickListener {
-                carVendor.isVisible = true
-                buttonSave.setImageResource(R.drawable.ic_baseline_check_24)
+        when {
+            (prefs.contains(TYPE_AVATAR)) -> {
+                prefs.getString(TYPE_AVATAR, "").also { imageCarUri = it!!.toUri() }
+                buttonSetAvatar.setImageBitmap(createBitmapFile(imageCarUri!!))
+            }
+            (prefs.contains(TYPE_VOLUME)) -> {
+                volume.text = prefs.getString(TYPE_VOLUME, getString(R.string.volume))
+            }
+            (prefs.contains(TYPE_CONSUMPTION)) -> {
+                consumption.text = prefs.getString(TYPE_CONSUMPTION, getString(R.string.l_km))
+            }
+            (prefs.contains(TYPE_CURENCY)) -> {
+                currency.text = prefs.getString(TYPE_CURENCY, getCurrency(Locale.getDefault()))
+            }
+            (prefs.contains(TYPE_SOUND)) -> {
+                switch_sound.isChecked = prefs.getBoolean(TYPE_SOUND, false)
+            }
+            (prefs.contains(TYPE_CAR)) -> {
+                carModel.setText(prefs.getString(TYPE_CAR, ""))
+                carVendor.isVisible = false
+                buttonSave.setImageResource(R.drawable.ic_baseline_create_24)
+                buttonSave.setOnClickListener {
+                    carVendor.isVisible = true
+                    buttonSave.setImageResource(R.drawable.ic_baseline_check_24)
+                }
             }
         }
     }

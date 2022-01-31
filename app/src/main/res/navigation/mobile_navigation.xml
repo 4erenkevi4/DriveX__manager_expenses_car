@@ -39,7 +39,7 @@
         android:id="@+id/nav_info"
         android:name="com.example.drivex.presentation.ui.info.InfoFragment"
         android:label="@string/menu_info"
-        tools:layout="@layout/fragment_info" />
+        tools:layout="@layout/fragment_info" /><action android:id="@+id/action_global_nav_settings" app:destination="@id/nav_settings"/>
 
 
 

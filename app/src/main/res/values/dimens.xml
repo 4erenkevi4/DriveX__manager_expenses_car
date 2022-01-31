@@ -7,5 +7,7 @@
     <dimen name="default_margin_16">16dp</dimen>
     <dimen name="default_margin_8">8dp</dimen>
     <dimen name="description_width">60dp</dimen>
+    <dimen name="description_width_big">80dp</dimen>
+    <dimen name="avatar_card_big">220dp</dimen>
     <dimen name="item_dimensions_32">32dp</dimen>
 </resources>

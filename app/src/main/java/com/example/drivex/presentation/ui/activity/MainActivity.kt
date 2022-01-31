@@ -26,11 +26,19 @@ import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 import dagger.hilt.android.AndroidEntryPoint
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Build
+import android.view.SurfaceControl
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentContainer
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
+import com.example.drivex.presentation.ui.home.HomeFragment
 import com.example.drivex.utils.Constans
 
 
@@ -71,126 +79,126 @@ class MainActivity : AppCompatActivity() {
         }
         requestPermissions()
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    private fun requestPermissions() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.FOREGROUND_SERVICE),
-                    Constans.REQUEST_CODE_GET_PERMISSION
-                )
-            }
-            else {
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION),
-                    Constans.REQUEST_CODE_GET_PERMISSION
-                )
-            }
+        if (requestCode == 3 && resultCode == RESULT_OK) {
+            val imageUri = data?.data
+            //val inputStream = imageUri?.let { contentResolver.openInputStream(it) }
+            //imageCar = BitmapFactory.decodeStream(inputStream)
+            val transaction = supportFragmentManager.beginTransaction()
+            val args = bundleOf(Pair("IMAGE_URI",imageUri))
+            transaction.add(R.id.nav_host_fragment,SettingFragment::class.java,args)
+            transaction.commit()
         }
     }
 
-   override fun onRequestPermissionsResult(
-       requestCode: Int,
-       permissions: Array<out String>,
-       grantResults: IntArray
-   ) {
-        when (requestCode) {
-            1 -> {
-
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty()
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        " Permissions was granted.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+        private fun requestPermissions() {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_DENIED
+            ) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    ActivityCompat.requestPermissions(
+                        this, arrayOf(
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.FOREGROUND_SERVICE
+                        ),
+                        Constans.REQUEST_CODE_GET_PERMISSION
+                    )
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Permission denied to read your External storage",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    ActivityCompat.requestPermissions(
+                        this, arrayOf(
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ),
+                        Constans.REQUEST_CODE_GET_PERMISSION
+                    )
                 }
-                return
             }
         }
-    }
 
-    private fun startMusic(isNeedSound: Boolean) {
-        if (isNeedSound) {
-            playerStart = MediaPlayer.create(this, R.raw.engine_start)
-            playerStart.start()
+        override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+        ) {
+            when (requestCode) {
+                1 -> {
+
+
+                    // If request is cancelled, the result arrays are empty.
+                    if (grantResults.isNotEmpty()
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        Toast.makeText(
+                            this@MainActivity,
+                            " Permissions was granted.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // permission was granted, yay! Do the
+                        // contacts-related task you need to do.
+                    } else {
+
+                        // permission denied, boo! Disable the
+                        // functionality that depends on this permission.
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Permission denied to read your External storage",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    return
+                }
+            }
+        }
+
+        private fun startMusic(isNeedSound: Boolean) {
+            if (isNeedSound) {
+                playerStart = MediaPlayer.create(this, R.raw.engine_start)
+                playerStart.start()
+            }
+        }
+
+        override fun onSupportNavigateUp(): Boolean {
+            val navController = findNavController(R.id.nav_host_fragment)
+            return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        }
+
+        private fun setBoomMenu() {
+            val intentFuell = Intent(this, FuelActivity::class.java)
+            val intentService = Intent(this, ServiceActivity::class.java)
+            val intentMap = Intent(this, MapsActivity::class.java)
+            val buttonFuel = TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_car)
+                .normalText("Заправка")
+                .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_REFUEL)) }
+            val buttonService = TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_service)
+                .normalText("Добавить ТО")
+                .listener { startActivity(intentService) }
+            val buttonPayments = TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_money)
+                .normalText("Платеж")
+                .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_PAYMENT)) }
+            val buttonExpenses = TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_shopping)
+                .normalText("Покупка")
+                .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_SHOPPING)) }
+            val buttonDriving = TextOutsideCircleButton.Builder()
+                .normalImageRes(R.drawable.ic_map)
+                .normalText("Поездка")
+                .listener { startActivity(intentMap) }
+            boomMenu.addBuilder(buttonFuel)
+            boomMenu.addBuilder(buttonService)
+            boomMenu.addBuilder(buttonPayments)
+            boomMenu.addBuilder(buttonExpenses)
+            boomMenu.addBuilder(buttonDriving)
         }
     }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    private fun setBoomMenu() {
-        val intentFuell = Intent(this, FuelActivity::class.java)
-        val intentService = Intent(this, ServiceActivity::class.java)
-        val intentMap = Intent(this, MapsActivity::class.java)
-        val buttonFuel = TextOutsideCircleButton.Builder()
-            .normalImageRes(R.drawable.ic_car)
-            .normalText("Заправка")
-            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_REFUEL)) }
-        val buttonService = TextOutsideCircleButton.Builder()
-            .normalImageRes(R.drawable.ic_service)
-            .normalText("Добавить ТО")
-            .listener { startActivity(intentService) }
-        val buttonPayments = TextOutsideCircleButton.Builder()
-            .normalImageRes(R.drawable.ic_money)
-            .normalText("Платеж")
-            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_PAYMENT)) }
-        val buttonExpenses = TextOutsideCircleButton.Builder()
-            .normalImageRes(R.drawable.ic_shopping)
-            .normalText("Покупка")
-            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_SHOPPING)) }
-        val buttonDriving = TextOutsideCircleButton.Builder()
-            .normalImageRes(R.drawable.ic_map)
-            .normalText("Поездка")
-            .listener { startActivity(intentMap) }
-        boomMenu.addBuilder(buttonFuel)
-        boomMenu.addBuilder(buttonService)
-        boomMenu.addBuilder(buttonPayments)
-        boomMenu.addBuilder(buttonExpenses)
-        boomMenu.addBuilder(buttonDriving)
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}

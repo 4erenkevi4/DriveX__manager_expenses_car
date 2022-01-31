@@ -5,10 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.set
+import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -17,21 +22,25 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
+import com.example.drivex.domain.MapDao
 import com.example.drivex.presentation.adapters.MainAdapter
 import com.example.drivex.presentation.ui.activity.FuelActivity
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_AVATAR
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CAR
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CONSUMPTION
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CURENCY
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_DISTANCE
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
+import com.example.drivex.presentation.ui.fragments.AbstractFragment
 import com.example.drivex.presentation.ui.setting.SettingFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : AbstractFragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewModel: AbstractViewModel
@@ -41,6 +50,7 @@ class HomeFragment : Fragment() {
     lateinit var allVolume: TextView
     lateinit var allCostFuel: TextView
     lateinit var allCostService: TextView
+    lateinit var avatarCard: ImageView
     lateinit var carModel: TextView
     lateinit var liveDataCost: LiveData<Double>
     lateinit var liveDataMileage: LiveData<String>
@@ -67,6 +77,7 @@ class HomeFragment : Fragment() {
         allCostService = view.findViewById(R.id.service_summ)
         recyclerView = view.findViewById(R.id.recycler_view_home)
         carModel = view.findViewById(R.id.text_model_info)
+        avatarCard = view.findViewById(R.id.avatarCardImage)
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileageStr
         liveDataCostFUel = viewModel.allFuelCostSum
@@ -74,9 +85,9 @@ class HomeFragment : Fragment() {
         liveDataCostService = viewModel.allServiceCostSum
         liveDatarefuelSum = viewModel.refuelSum
 
-        viewModel.expenses.observe(viewLifecycleOwner, { expenses ->
+        viewModel.expenses.observe(viewLifecycleOwner) { expenses ->
             adapter.submitList(expenses)
-        })
+        }
         setinfoView()
         getSharedPref()
         return view
@@ -92,33 +103,35 @@ class HomeFragment : Fragment() {
             volumeSP = prefs.getString(TYPE_VOLUME, "L") ?: "L"
             distanceSP = prefs.getString(TYPE_DISTANCE, "Km") ?: "Km"
             carModel.text = (prefs.getString(TYPE_CAR, "")) ?: "Your Car"
+            prefs.getString(TYPE_AVATAR, "").also { imageCarUri = it!!.toUri() }
+            avatarCard.setImageBitmap(createBitmapFile(imageCarUri!!))
         }
         setRecyclerview(currencySP)
     }
 
     @SuppressLint("SetTextI18n")
     private fun setinfoView() {
-        liveDataCost.observe(viewLifecycleOwner, {
+        liveDataCost.observe(viewLifecycleOwner) {
             chekVisibilyty(it, allExpenses)
             allExpenses.text = getString(R.string.total_expenses) + ": $it $currencySP"
-        })
-        liveDataMileage.observe(viewLifecycleOwner, {
+        }
+        liveDataMileage.observe(viewLifecycleOwner) {
             chekVisibilyty(it, allMileage)
             allMileage.text = getString(R.string.mileage) + ": $it $distanceSP"
-        })
-        liveDatarefuelSum.observe(viewLifecycleOwner, {
+        }
+        liveDatarefuelSum.observe(viewLifecycleOwner) {
             chekVisibilyty(it, allCostFuel)
             allCostFuel.text = getString(R.string.refuel_expenses) + ": $it $currencySP"
-        })
-        liveDataVolumeFUel.observe(viewLifecycleOwner, {
+        }
+        liveDataVolumeFUel.observe(viewLifecycleOwner) {
             chekVisibilyty(it, allVolume)
             allVolume.text = getString(R.string.total_fuel_volume) + ": $it $volumeSP"
-        })
-        liveDataCostService.observe(viewLifecycleOwner, {
+        }
+        liveDataCostService.observe(viewLifecycleOwner) {
             chekVisibilyty(it, allCostService)
             allCostService.text =
                 getString(R.string.total_expenses_for_service) + ": $it $currencySP"
-        })
+        }
     }
 
     private fun chekVisibilyty(value: Any?, expenses: TextView) {

@@ -11,18 +11,20 @@
         android:id="@+id/layout_vehicle_setting"
         android:layout_width="match_parent"
         android:background="#111E1E1E"
-        android:layout_height="@dimen/description_width"
+        android:layout_height="@dimen/description_width_big"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="@dimen/item_dimensions_32"
-            android:layout_height="@dimen/item_dimensions_32"
+            android:id="@+id/set_avatar_button"
+            android:layout_width="@dimen/description_width"
+            android:layout_height="@dimen/description_width"
             android:layout_marginHorizontal="@dimen/default_margin_8"
             android:contentDescription="@string/Notifications_settings"
-            android:src="@drawable/ic_baseline_directions_car_filled_24" />
+            android:src="@drawable/ic_baseline_directions_car_filled_24"
+            android:background="@drawable/shape_avatar"/>
 
         <Spinner
             android:id="@+id/car_vendor"

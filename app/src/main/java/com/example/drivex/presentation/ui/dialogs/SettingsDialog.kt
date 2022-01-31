@@ -22,6 +22,7 @@ class SettingsDialog(var arrayItems: Array<String>, val type : String) : DialogF
         const val TYPE_CURENCY= "currency"
         const val TYPE_SOUND= "sound"
         const val TYPE_CAR= "car"
+        const val TYPE_AVATAR= "avatar"
     }
 
     val prefs: SharedPreferences? = context?.getSharedPreferences(

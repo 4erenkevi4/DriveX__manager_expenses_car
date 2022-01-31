@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 
 class MapRepository @Inject constructor(
-    val mapDao: MapDao
+    private val mapDao: MapDao
 ) {
 
     suspend fun insertMap(mapModels: MapModels) = mapDao.insertRun(mapModels)
