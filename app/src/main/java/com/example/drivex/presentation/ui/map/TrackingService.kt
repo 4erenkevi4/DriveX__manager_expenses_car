@@ -116,7 +116,6 @@ class TrackingService : LifecycleService() {
     @SuppressLint("MissingPermission")
     private fun updateLocationChecking(isTracking: Boolean) {
         if (isTracking) {
-            if (TrackingUtility.hasLocationPermissions(this)) {
                 val request = LocationRequest().apply {
                     interval = LOCATION_UPDATE_INTERVAL
                     fastestInterval = FASTEST_LOCATION_UPDATE_INTERVAL
@@ -124,10 +123,8 @@ class TrackingService : LifecycleService() {
                 }
                 fusedLocationProviderClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper())
             }
-        } else {
-            fusedLocationProviderClient.removeLocationUpdates(locationCallback)
         }
-    }
+
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult?) {

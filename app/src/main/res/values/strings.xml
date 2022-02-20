@@ -78,6 +78,9 @@
     <string name="total_fuel_volume">Total fuel volume</string>
     <string name="total_expenses_for_service">Total service costs</string>
     <string name="entry_deleted">Entry deleted</string>
+    <string name="welcome_text_home_fragment"> Welcome to Drivex!</string>
+    <string name="welcome_text_home_fragment_2"> Click to add information about your vehicle</string>
+    <string name="welcome_text_home_fragment_3"> The story is blank. Add an expense to display! </string>
 
     //ServiceActivity
     <string name="add_data_repair">Please add current repair data</string>

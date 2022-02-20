@@ -1,11 +1,11 @@
 package com.example.drivex.presentation.ui.setting
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.*
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,7 +18,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
@@ -96,7 +95,7 @@ class SettingFragment : AbstractFragment() {
         if (arguments?.containsKey("IMAGE_URI") == true) {
             imageCarUri = requireArguments().get("IMAGE_URI") as Uri?
             saveToSP(imageCarUri.toString(), TYPE_AVATAR)
-            buttonSetAvatar.setImageBitmap(createBitmapFile(imageCarUri!!))
+            buttonSetAvatar.setImageBitmap(getCroppedBitmap(imageCarUri!!))
         }
 
         soundStartApp.setOnCheckedChangeListener { _, isChecked ->
@@ -164,34 +163,31 @@ class SettingFragment : AbstractFragment() {
     }
 
 
-
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun applySettingsToSP(prefs: SharedPreferences) {
-        when {
-            (prefs.contains(TYPE_AVATAR)) -> {
-                prefs.getString(TYPE_AVATAR, "").also { imageCarUri = it!!.toUri() }
-                buttonSetAvatar.setImageBitmap(createBitmapFile(imageCarUri!!))
-            }
-            (prefs.contains(TYPE_VOLUME)) -> {
-                volume.text = prefs.getString(TYPE_VOLUME, getString(R.string.volume))
-            }
-            (prefs.contains(TYPE_CONSUMPTION)) -> {
-                consumption.text = prefs.getString(TYPE_CONSUMPTION, getString(R.string.l_km))
-            }
-            (prefs.contains(TYPE_CURENCY)) -> {
-                currency.text = prefs.getString(TYPE_CURENCY, getCurrency(Locale.getDefault()))
-            }
-            (prefs.contains(TYPE_SOUND)) -> {
-                switch_sound.isChecked = prefs.getBoolean(TYPE_SOUND, false)
-            }
-            (prefs.contains(TYPE_CAR)) -> {
-                carModel.setText(prefs.getString(TYPE_CAR, ""))
-                carVendor.isVisible = false
-                buttonSave.setImageResource(R.drawable.ic_baseline_create_24)
-                buttonSave.setOnClickListener {
-                    carVendor.isVisible = true
-                    buttonSave.setImageResource(R.drawable.ic_baseline_check_24)
-                }
+        if (prefs.contains(TYPE_AVATAR)) {
+            prefs.getString(TYPE_AVATAR, "").also { imageCarUri = it!!.toUri() }
+            buttonSetAvatar.setImageBitmap(getCroppedBitmap(imageCarUri!!))
+        }
+        if (prefs.contains(TYPE_VOLUME)) {
+            volume.text = prefs.getString(TYPE_VOLUME, getString(R.string.volume))
+        }
+        if (prefs.contains(TYPE_CONSUMPTION)) {
+            consumption.text = prefs.getString(TYPE_CONSUMPTION, getString(R.string.l_km))
+        }
+        if (prefs.contains(TYPE_CURENCY)) {
+            currency.text = prefs.getString(TYPE_CURENCY, getCurrency(Locale.getDefault()))
+        }
+        if (prefs.contains(TYPE_SOUND)) {
+            switch_sound.isChecked = prefs.getBoolean(TYPE_SOUND, false)
+        }
+        if (prefs.contains(TYPE_CAR)) {
+            carModel.setText(prefs.getString(TYPE_CAR, ""))
+            carVendor.isVisible = false
+            buttonSave.setImageResource(R.drawable.ic_baseline_create_24)
+            buttonSave.setOnClickListener {
+                carVendor.isVisible = true
+                buttonSave.setImageResource(R.drawable.ic_baseline_check_24)
             }
         }
     }

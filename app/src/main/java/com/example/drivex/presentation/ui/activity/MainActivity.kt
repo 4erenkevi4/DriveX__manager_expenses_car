@@ -26,19 +26,13 @@ import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 import dagger.hilt.android.AndroidEntryPoint
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
 
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.os.Build
-import android.view.SurfaceControl
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentContainer
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.fragment.findNavController
-import com.example.drivex.presentation.ui.home.HomeFragment
+import androidx.navigation.Navigation
 import com.example.drivex.utils.Constans
 
 
@@ -81,15 +75,10 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == 3 && resultCode == RESULT_OK) {
             val imageUri = data?.data
-            //val inputStream = imageUri?.let { contentResolver.openInputStream(it) }
-            //imageCar = BitmapFactory.decodeStream(inputStream)
-            val transaction = supportFragmentManager.beginTransaction()
             val args = bundleOf(Pair("IMAGE_URI",imageUri))
-            transaction.add(R.id.nav_host_fragment,SettingFragment::class.java,args)
-            transaction.commit()
+            replaceFragment(R.id.action_global_nav_settings,args)
         }
     }
 
@@ -116,7 +105,8 @@ class MainActivity : AppCompatActivity() {
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.CAMERA,
                             Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
                         ),
                         Constans.REQUEST_CODE_GET_PERMISSION
                     )
@@ -129,11 +119,9 @@ class MainActivity : AppCompatActivity() {
             permissions: Array<out String>,
             grantResults: IntArray
         ) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             when (requestCode) {
                 1 -> {
-
-
-                    // If request is cancelled, the result arrays are empty.
                     if (grantResults.isNotEmpty()
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     ) {
@@ -142,12 +130,8 @@ class MainActivity : AppCompatActivity() {
                             " Permissions was granted.",
                             Toast.LENGTH_SHORT
                         ).show()
-                        // permission was granted, yay! Do the
-                        // contacts-related task you need to do.
                     } else {
 
-                        // permission denied, boo! Disable the
-                        // functionality that depends on this permission.
                         Toast.makeText(
                             this@MainActivity,
                             "Permission denied to read your External storage",
@@ -201,4 +185,10 @@ class MainActivity : AppCompatActivity() {
             boomMenu.addBuilder(buttonExpenses)
             boomMenu.addBuilder(buttonDriving)
         }
+    fun replaceFragment(navID: Int, args: Bundle? = null){
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        navController.navigate(navID,args)
+    }
+
+
     }

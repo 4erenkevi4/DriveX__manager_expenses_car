@@ -4,27 +4,24 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.graphics.set
 import androidx.core.net.toUri
 import androidx.core.view.isGone
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
-import com.example.drivex.domain.MapDao
 import com.example.drivex.presentation.adapters.MainAdapter
 import com.example.drivex.presentation.ui.activity.FuelActivity
+import com.example.drivex.presentation.ui.activity.MainActivity
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_AVATAR
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CAR
@@ -36,7 +33,6 @@ import com.example.drivex.presentation.ui.fragments.AbstractFragment
 import com.example.drivex.presentation.ui.setting.SettingFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -48,6 +44,8 @@ class HomeFragment : AbstractFragment() {
     lateinit var allExpenses: TextView
     lateinit var allMileage: TextView
     lateinit var allVolume: TextView
+    lateinit var welcomeText: TextView
+    lateinit var historyDescription: TextView
     lateinit var allCostFuel: TextView
     lateinit var allCostService: TextView
     lateinit var avatarCard: ImageView
@@ -70,11 +68,19 @@ class HomeFragment : AbstractFragment() {
         val view: View = inflater
             .inflate(R.layout.fragment_home, container, false)
         viewModel = ViewModelProvider(this).get(AbstractViewModel::class.java)
-        allExpenses = view.findViewById(R.id.all_expencess_car)
-        allMileage = view.findViewById(R.id.text_mileage_info)
-        allVolume = view.findViewById(R.id.volume_summ)
-        allCostFuel = view.findViewById(R.id.fuel_expenses)
-        allCostService = view.findViewById(R.id.service_summ)
+        allExpenses = view.findViewById<TextView?>(R.id.all_expencess_car)
+            .also { it.setTextColor(resources.getColor(R.color.white20)) }
+        allMileage = view.findViewById<TextView?>(R.id.text_mileage_info)
+            .also { it.setTextColor(resources.getColor(R.color.white20)) }
+        welcomeText = view.findViewById<TextView?>(R.id.welcome_text)
+            .also { it.setTextColor(resources.getColor(R.color.white20)) }
+        historyDescription = view.findViewById<TextView?>(R.id.history_description)
+        allVolume = view.findViewById<TextView?>(R.id.volume_summ)
+            .also { it.setTextColor(resources.getColor(R.color.white20)) }
+        allCostFuel = view.findViewById<TextView?>(R.id.fuel_expenses)
+            .also { it.setTextColor(resources.getColor(R.color.white20)) }
+        allCostService = view.findViewById<TextView?>(R.id.service_summ)
+            .also { it.setTextColor(resources.getColor(R.color.white20)) }
         recyclerView = view.findViewById(R.id.recycler_view_home)
         carModel = view.findViewById(R.id.text_model_info)
         avatarCard = view.findViewById(R.id.avatarCardImage)
@@ -87,6 +93,8 @@ class HomeFragment : AbstractFragment() {
 
         viewModel.expenses.observe(viewLifecycleOwner) { expenses ->
             adapter.submitList(expenses)
+            if (expenses.size == 1)
+                historyDescription.text = getString(R.string.general_history)
         }
         setinfoView()
         getSharedPref()
@@ -94,17 +102,26 @@ class HomeFragment : AbstractFragment() {
     }
 
     private fun getSharedPref() {
-        val prefs: SharedPreferences? = activity?.getSharedPreferences(
+        val activity = activity as MainActivity ?: return
+        val prefs: SharedPreferences? = activity.getSharedPreferences(
             SettingFragment.APP_PREFERENCES, Context.MODE_PRIVATE
         )
-        if (prefs != null) {
-            currencySP = prefs.getString(TYPE_CURENCY, "$") ?: "$"
+        if (prefs?.all.isNullOrEmpty().not()) {
+            currencySP = prefs!!.getString(TYPE_CURENCY, "$") ?: "$"
             consumptionSP = prefs.getString(TYPE_CONSUMPTION, "L/100km") ?: "L/100km"
             volumeSP = prefs.getString(TYPE_VOLUME, "L") ?: "L"
             distanceSP = prefs.getString(TYPE_DISTANCE, "Km") ?: "Km"
             carModel.text = (prefs.getString(TYPE_CAR, "")) ?: "Your Car"
+            carModel.setTextColor(Color.WHITE)
             prefs.getString(TYPE_AVATAR, "").also { imageCarUri = it!!.toUri() }
-            avatarCard.setImageBitmap(createBitmapFile(imageCarUri!!))
+            if (imageCarUri.toString().isNotEmpty())
+                avatarCard.setImageBitmap(createBitmapFile(imageCarUri!!))
+        } else {
+            carModel.text = getString(R.string.welcome_text_home_fragment)
+            welcomeText.text = getString(R.string.welcome_text_home_fragment_2)
+            avatarCard.setOnClickListener {
+               activity.replaceFragment(R.id.action_global_nav_settings)
+            }
         }
         setRecyclerview(currencySP)
     }
@@ -135,7 +152,7 @@ class HomeFragment : AbstractFragment() {
     }
 
     private fun chekVisibilyty(value: Any?, expenses: TextView) {
-        if (value == null)
+        if (value == null || value.toString() == "0")
             expenses.isGone = true
     }
 
@@ -171,5 +188,7 @@ class HomeFragment : AbstractFragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
+        if (adapter.itemCount == 0)
+            historyDescription.text = getString(R.string.welcome_text_home_fragment_3)
     }
 }

@@ -10,4 +10,5 @@
     <dimen name="description_width_big">80dp</dimen>
     <dimen name="avatar_card_big">220dp</dimen>
     <dimen name="item_dimensions_32">32dp</dimen>
+    <dimen name="car_model_widht">32dp</dimen>
 </resources>

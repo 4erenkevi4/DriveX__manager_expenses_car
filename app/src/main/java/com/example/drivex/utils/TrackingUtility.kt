@@ -12,30 +12,7 @@ import java.util.concurrent.TimeUnit
 class TrackingUtility {
 
     companion object {
-        /**
-         * Checks if the user accepted the necessary location permissions or not
-         */
-        fun hasLocationPermissions(context: Context): Boolean {
-            return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                EasyPermissions.hasPermissions(
-                    context,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            } else {
-                EasyPermissions.hasPermissions(
-                    context,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                )
-            }
-        }
 
-        /**
-         * Takes an amount of milliseconds and converts it to a formatted string, optionally
-         * with milliseconds
-         */
         fun getFormattedStopWatchTime(ms: Long, includeMillis: Boolean = false): String {
             var milliseconds = ms
             val hours = TimeUnit.MILLISECONDS.toHours(milliseconds)

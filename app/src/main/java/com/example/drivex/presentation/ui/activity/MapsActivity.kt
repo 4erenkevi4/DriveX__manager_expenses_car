@@ -67,21 +67,21 @@ val viewMap = mapGoogle as SupportMapFragment
 
 
     private fun subscribeToObservers() {
-        TrackingService.isTracking.observe(this, {
+        TrackingService.isTracking.observe(this) {
             updateTracking(it)
-        })
+        }
 
-        TrackingService.pathPoints.observe(this, {
+        TrackingService.pathPoints.observe(this) {
             pathPoints = it
             addLatestPolyline()
             moveCameraToUser()
-        })
+        }
 
-        TrackingService.timeDriveInMillis.observe(this, {
+        TrackingService.timeDriveInMillis.observe(this) {
             curTimeInMillis = it
             val formattedTime = TrackingUtility.getFormattedStopWatchTime(it, true)
             tvTimer.text = formattedTime
-        })
+        }
     }
 
     private fun moveCameraToUser() {

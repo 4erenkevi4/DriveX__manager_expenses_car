@@ -77,6 +77,9 @@
     <string name="total_fuel_volume">Общий обьем топлива</string>
     <string name="total_expenses_for_service">Общие затраты на сервис</string>
     <string name="entry_deleted">Запись удалена</string>
+    <string name="welcome_text_home_fragment"> Добро пожаловать в Drivex!</string>
+    <string name="welcome_text_home_fragment_2">Нажмите, чтобы добавить информацию о вашем автомобиле.</string>
+    <string name="welcome_text_home_fragment_3"> История пуста. Добавьте Ваш первый расход. </string>
 
     //ServiceActivity
     <string name="add_data_repair">Пожалуйста, добавьте данные текущего ремонта</string>
