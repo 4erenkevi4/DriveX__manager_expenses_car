@@ -7,6 +7,16 @@
     tools:context=".presentation.ui.info.InfoFragment"
     android:background="@color/background_blue_new">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/background_blue_new"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_24"
+        app:popupTheme="@style/Theme.DriveX.PopupOverlay" />
 
     <TextView
         android:layout_width="wrap_content"

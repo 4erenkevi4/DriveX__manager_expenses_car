@@ -19,6 +19,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
+import com.example.drivex.presentation.ui.fragments.AbstractFragment
 import com.example.drivex.utils.Constans.NOTIFY1
 import com.example.drivex.utils.Constans.NOTIFY10
 import com.example.drivex.utils.Constans.NOTIFY11
@@ -36,12 +37,11 @@ import com.nightonke.boommenu.BoomMenuButton
 import java.util.*
 
 
-open class NotificationFragment : Fragment() {
+open class NotificationFragment : AbstractFragment() {
     val calendar = Calendar.getInstance()
     lateinit var editTextDesc: EditText
     private var isCalendarSettUp: Boolean = false
     private lateinit var startNotificationButton: FloatingActionButton
-    private lateinit var boomMenu: BoomMenuButton
     private lateinit var notificationViewModel: NotificationViewModel
     private lateinit var buttonTO: ImageView
     private lateinit var buttonDrive: ImageView
@@ -67,7 +67,6 @@ open class NotificationFragment : Fragment() {
     ): View? {
         notificationViewModel = ViewModelProvider(this).get(NotificationViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_notification, container, false)
-        boomMenu = requireActivity().findViewById(R.id.boom_menu)
         buttonTO = root.findViewById(R.id.notify_to)
         buttonDrive = root.findViewById(R.id.notify_drive)
         buttonWash = root.findViewById(R.id.notify_wash)
@@ -82,8 +81,7 @@ open class NotificationFragment : Fragment() {
         buttonOil = root.findViewById(R.id.notify_oil)
         buttonPay = root.findViewById(R.id.notify_pay)
         editTextDesc = root.findViewById(R.id.editText_desc_of_notification)
-        boomMenu.visibility = View.INVISIBLE
-        boomMenu.isVisible = false
+        setFloatingMenuVisibility(false)
         setTitleOfNotify()
         return root
     }
@@ -240,7 +238,6 @@ open class NotificationFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        boomMenu.visibility = View.VISIBLE
         listButton.forEach { it.isClickable = true }
         listButton.forEach { it.isFocusable = true }
     }

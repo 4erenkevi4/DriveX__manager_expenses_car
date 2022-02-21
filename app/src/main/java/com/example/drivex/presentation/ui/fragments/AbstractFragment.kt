@@ -1,21 +1,42 @@
 package com.example.drivex.presentation.ui.fragments
 
+import android.annotation.SuppressLint
 import android.graphics.*
 import android.net.Uri
+import android.os.Build
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.Toolbar
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.drivex.R
+import com.example.drivex.presentation.ui.activity.MainActivity
 import com.example.drivex.presentation.ui.setting.SettingFragment
+import kotlinx.android.synthetic.main.app_bar_main.*
 
-abstract class AbstractFragment:Fragment() {
+abstract class AbstractFragment : Fragment() {
     var imageCarUri: Uri? = null
 
-     fun createBitmapFile(uri: Uri): Bitmap? {
+    @SuppressLint("UseCompatLoadingForDrawables")
+    fun setToolbar(toolbar: androidx.appcompat.widget.Toolbar?) {
+        val activity = activity as MainActivity? ?: return
+            activity.setSupportActionBar(toolbar)
+    }
+
+    fun setFloatingMenuVisibility(visibility: Boolean){
+        val activity = activity as MainActivity? ?: return
+        activity.boomMenu?.isVisible = visibility
+    }
+
+    fun createBitmapFile(uri: Uri): Bitmap? {
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         return BitmapFactory.decodeStream(inputStream)
 
     }
+
     fun getCroppedBitmap(uri: Uri): Bitmap? {
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         val bitmap = BitmapFactory.decodeStream(inputStream)

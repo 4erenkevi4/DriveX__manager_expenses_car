@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
+import com.example.drivex.presentation.ui.fragments.AbstractFragment
 import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SERVICE
@@ -26,7 +27,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.coroutines.*
 
 
-class StatFragment : Fragment() {
+class StatFragment : AbstractFragment() {
 
     lateinit var liveDataCost: LiveData<Double>
     lateinit var liveDataMileage: LiveData<Int>
@@ -60,6 +61,7 @@ class StatFragment : Fragment() {
         pieChart = root.findViewById(R.id.pieChart)
         setupPieChart()
         loadPieChartData()
+        setFloatingMenuVisibility(false)
         liveDataRefuelSum = viewModel.refuelSum
         liveDataServiceSum = viewModel.serviceSum
         liveDataShoppingSum = viewModel.shoppingSum

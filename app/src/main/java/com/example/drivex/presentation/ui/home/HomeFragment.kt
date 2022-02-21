@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.lifecycle.LiveData
@@ -60,6 +61,7 @@ class HomeFragment : AbstractFragment() {
     private var consumptionSP: String = ""
     private var volumeSP: String = ""
     private var distanceSP: String = ""
+    lateinit var toolbarHome: Toolbar
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -84,6 +86,7 @@ class HomeFragment : AbstractFragment() {
         recyclerView = view.findViewById(R.id.recycler_view_home)
         carModel = view.findViewById(R.id.text_model_info)
         avatarCard = view.findViewById(R.id.avatarCardImage)
+        toolbarHome = view.findViewById(R.id.toolbar)
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileageStr
         liveDataCostFUel = viewModel.allFuelCostSum
@@ -99,6 +102,12 @@ class HomeFragment : AbstractFragment() {
         setinfoView()
         getSharedPref()
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setFloatingMenuVisibility(true)
+        setToolbar(toolbarHome)
     }
 
     private fun getSharedPref() {

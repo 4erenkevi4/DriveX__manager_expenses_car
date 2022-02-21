@@ -4,50 +4,49 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
-import com.google.android.material.navigation.NavigationView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_SOUND
 import com.example.drivex.presentation.ui.setting.SettingFragment
+import com.example.drivex.utils.Constans
 import com.example.drivex.utils.Constans.IS_PAYMENT
 import com.example.drivex.utils.Constans.IS_REFUEL
 import com.example.drivex.utils.Constans.IS_SHOPPING
 import com.example.drivex.utils.Constans.PAYMENT_TYPE
+import com.google.android.material.navigation.NavigationView
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 import dagger.hilt.android.AndroidEntryPoint
-import android.widget.Toast
-
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
-import androidx.navigation.Navigation
-import com.example.drivex.utils.Constans
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var boomMenu: BoomMenuButton
+    var boomMenu: BoomMenuButton? = null
+
     private lateinit var playerStart: MediaPlayer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
         boomMenu = findViewById(R.id.boom_menu)
         setBoomMenu()
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -73,6 +72,15 @@ class MainActivity : AppCompatActivity() {
         }
         requestPermissions()
     }
+    override fun onBackPressed() {
+        val count = supportFragmentManager.backStackEntryCount
+        if (count == 0) {
+            super.onBackPressed()
+        } else {
+            supportFragmentManager.popBackStack()
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 3 && resultCode == RESULT_OK) {
@@ -179,12 +187,9 @@ class MainActivity : AppCompatActivity() {
                 .normalImageRes(R.drawable.ic_map)
                 .normalText("Поездка")
                 .listener { startActivity(intentMap) }
-            boomMenu.addBuilder(buttonFuel)
-            boomMenu.addBuilder(buttonService)
-            boomMenu.addBuilder(buttonPayments)
-            boomMenu.addBuilder(buttonExpenses)
-            boomMenu.addBuilder(buttonDriving)
-        }
+                boomMenu!!.builders =
+                    arrayListOf(buttonFuel,buttonService,buttonPayments,buttonExpenses,buttonDriving )
+            }
     fun replaceFragment(navID: Int, args: Bundle? = null){
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         navController.navigate(navID,args)

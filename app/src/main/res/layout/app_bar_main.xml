@@ -8,22 +8,7 @@
     android:background="@drawable/mainback"
     tools:context=".presentation.ui.activity.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.DriveX.AppBarOverlay"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.DriveX.PopupOverlay" />
-
-    </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_main" />
 
@@ -37,6 +22,4 @@
         app:bmb_piecePlaceEnum="piecePlace_dot_5_1"
         app:bmb_buttonPlaceEnum="buttonPlace_sc_5_1"
         />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,7 +38,7 @@ class SettingsDialog(var arrayItems: Array<String>, val type : String) : DialogF
                 ) { _, item ->
                     parentFragmentManager.setFragmentResult("requestKey", bundleOf(type to arrayItems[item]))
                     Toast.makeText(
-                        activity, "${R.string.selected_general} ${arrayItems[item]}",
+                        activity, "${getString(R.string.selected_general)} ${arrayItems[item]}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

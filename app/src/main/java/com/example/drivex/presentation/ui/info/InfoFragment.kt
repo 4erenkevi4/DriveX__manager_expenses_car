@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
+import com.example.drivex.presentation.ui.fragments.AbstractFragment
 
-class InfoFragment : Fragment() {
+class InfoFragment : AbstractFragment() {
 
 
     override fun onCreateView(
@@ -18,6 +19,7 @@ class InfoFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        setFloatingMenuVisibility(false)
         return inflater.inflate(R.layout.fragment_info, container, false)
     }
 }

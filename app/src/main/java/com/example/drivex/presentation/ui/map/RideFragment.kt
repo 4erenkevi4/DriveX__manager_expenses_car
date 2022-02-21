@@ -25,15 +25,23 @@ import kotlinx.android.synthetic.main.fragment_ride.*
 import android.content.DialogInterface
 import android.content.Intent
 import com.example.drivex.presentation.ui.activity.MapsActivity
+import com.example.drivex.presentation.ui.fragments.AbstractFragment
 
 
 @AndroidEntryPoint
-class RideFragment: Fragment(R.layout.fragment_ride) {
+class RideFragment : AbstractFragment() {
 
-    lateinit var rideAdapter: RideAdapter
-
+    private lateinit var rideAdapter: RideAdapter
     private lateinit var viewModel: MapViewModel
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        setFloatingMenuVisibility(false)
+        return inflater.inflate(R.layout.fragment_ride, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +56,7 @@ class RideFragment: Fragment(R.layout.fragment_ride) {
             SortType.DISTANCE -> spFilter.setSelection(2)
         }
         viewModel.runs.observe(viewLifecycleOwner, Observer { runs ->
-            if(runs.isEmpty()) {
+            if (runs.isEmpty()) {
                 val intentMap = Intent(activity, MapsActivity::class.java)
                 spFilter.isGone = true
                 val builder = AlertDialog.Builder(context)
@@ -65,9 +73,8 @@ class RideFragment: Fragment(R.layout.fragment_ride) {
                     }
                 builder.create()
                 builder.show()
-            }
-            else
-            rideAdapter.submitList(runs)
+            } else
+                rideAdapter.submitList(runs)
         })
 
         spFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

@@ -1,7 +1,6 @@
 package com.example.drivex.presentation.ui.setting
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -39,7 +38,6 @@ class SettingFragment : AbstractFragment() {
     companion object {
         const val APP_PREFERENCES = "com.drivex.app"
     }
-
     private lateinit var settingViewModel: SettingViewModel
     private lateinit var carVendor: Spinner
     private lateinit var carModel: EditText
@@ -68,6 +66,8 @@ class SettingFragment : AbstractFragment() {
     @SuppressLint("ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+       // setToolbar(false)
+        setFloatingMenuVisibility(false)
         val prefs: SharedPreferences? = context?.getSharedPreferences(
             APP_PREFERENCES, Context.MODE_PRIVATE
         )
@@ -86,7 +86,6 @@ class SettingFragment : AbstractFragment() {
         buttonSetAvatar = view.findViewById(R.id.set_avatar_button)
         if (prefs != null)
             applySettingsToSP(prefs)
-
         buttonSetAvatar.setOnClickListener {
             val photoPickeIintent = Intent(Intent.ACTION_PICK)
             photoPickeIintent.type = "image/*"
@@ -107,8 +106,11 @@ class SettingFragment : AbstractFragment() {
                 itemSelected: View, selectedItemPosition: Int, selectedId: Long
             ) {
                 val choose = resources.getStringArray(R.array.vehicles)
-                buttonSave.setImageResource(R.drawable.ic_baseline_check_24)
-                buttonSave.setOnClickListener { createCarModel(choose[selectedItemPosition] + " " + carModel.text.toString()) }
+
+                buttonSave.setOnClickListener {
+                    createCarModel(choose[selectedItemPosition] + " " + carModel.text.toString())
+
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -152,12 +154,13 @@ class SettingFragment : AbstractFragment() {
                 ), TYPE_CURENCY
             )
         }
-        buttonSave
     }
 
     private fun createCarModel(carVendor: String?) {
         if (carVendor.isNullOrEmpty().not() && carVendor != " ")
             saveToSP(carVendor, TYPE_CAR)
+        buttonSave.setImageResource(R.drawable.ic_baseline_check_24)
+        buttonSave.setColorFilter(Color.GREEN)
         Toast.makeText(context, "Your car $carVendor is successfully saved", Toast.LENGTH_SHORT)
             .show()
     }
