@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/background_blue_lite">
 
+    <include layout="@layout/main_toolbar" />
+
     <Spinner
         android:id="@+id/spFilter"
         android:layout_width="wrap_content"

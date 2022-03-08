@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
@@ -61,7 +62,9 @@ class HomeFragment : AbstractFragment() {
     private var consumptionSP: String = ""
     private var volumeSP: String = ""
     private var distanceSP: String = ""
-    lateinit var toolbarHome: Toolbar
+   private lateinit var toolbarHome: Toolbar
+   private lateinit var searshButton : View
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -86,7 +89,10 @@ class HomeFragment : AbstractFragment() {
         recyclerView = view.findViewById(R.id.recycler_view_home)
         carModel = view.findViewById(R.id.text_model_info)
         avatarCard = view.findViewById(R.id.avatarCardImage)
-        toolbarHome = view.findViewById(R.id.toolbar)
+        toolbarHome = view.findViewById(R.id.toolbar_home)
+        searshButton = view.findViewById(R.id.search_button_toolbar)
+        searshButton.setOnClickListener {
+        }
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileageStr
         liveDataCostFUel = viewModel.allFuelCostSum
@@ -107,11 +113,11 @@ class HomeFragment : AbstractFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setFloatingMenuVisibility(true)
-        setToolbar(toolbarHome)
+        setToolbar(toolbarHome, R.string.menu_home)
     }
 
     private fun getSharedPref() {
-        val activity = activity as MainActivity ?: return
+        val activity = activity as? MainActivity ?: return
         val prefs: SharedPreferences? = activity.getSharedPreferences(
             SettingFragment.APP_PREFERENCES, Context.MODE_PRIVATE
         )

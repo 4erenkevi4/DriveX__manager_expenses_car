@@ -20,11 +20,22 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbar_home"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/Theme.DriveX.PopupOverlay" />
+                app:popupTheme="@style/Theme.DriveX.PopupOverlay"
+                >
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_button_toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/default_margin_8"
+                    android:layout_gravity="end"
+                    />
+
+            </androidx.appcompat.widget.Toolbar>
+
 
         </com.google.android.material.appbar.AppBarLayout>
 

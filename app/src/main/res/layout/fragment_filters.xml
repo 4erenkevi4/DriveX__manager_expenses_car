@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.DriveX.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_search"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_24"
+            app:popupTheme="@style/Theme.DriveX.PopupOverlay">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/default_margin_16"
+                android:text="@string/reset"
+                android:textSize="18sp" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_search_period"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/description_width"
+        android:gravity="start|center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:text="Период" />
+
+            <TextView
+                android:id="@+id/dist"
+                android:layout_weight="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:text="Не установлено" />
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/divider" />
+
+    <LinearLayout
+        android:id="@+id/layout_search_fuel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/description_width"
+        android:gravity="start|center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:text="@string/refuel" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_16"
+            />
+    </LinearLayout>
+    <include
+        layout="@layout/divider" />
+    <LinearLayout
+        android:id="@+id/layout_search_service"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/description_width"
+        android:gravity="start|center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:text="@string/service" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_16"
+            />
+    </LinearLayout>
+    <include
+        layout="@layout/divider" />
+    <LinearLayout
+        android:id="@+id/layout_search_payment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/description_width"
+        android:gravity="start|center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:text="@string/payment" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_16"
+            />
+    </LinearLayout>
+    <include
+        layout="@layout/divider" />
+
+    <LinearLayout
+        android:id="@+id/layout_search_purchaise"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/description_width"
+        android:gravity="start|center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:text="@string/your_buy" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_16"
+            />
+    </LinearLayout>
+    <include
+        layout="@layout/divider" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/default_margin_16"/>
+
+</LinearLayout>

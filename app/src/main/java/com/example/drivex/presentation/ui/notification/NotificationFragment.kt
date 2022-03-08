@@ -14,9 +14,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
@@ -33,7 +33,6 @@ import com.example.drivex.utils.Constans.NOTIFY7
 import com.example.drivex.utils.Constans.NOTIFY8
 import com.example.drivex.utils.Constans.NOTIFY9
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.nightonke.boommenu.BoomMenuButton
 import java.util.*
 
 
@@ -58,35 +57,39 @@ open class NotificationFragment : AbstractFragment() {
     private var titleOfNotification: String = "Напоминание"
     private var notifyId: Int = 1
     lateinit var listButton: ArrayList<ImageView>
+    private lateinit var toolbarNotify: Toolbar
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         notificationViewModel = ViewModelProvider(this).get(NotificationViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notification, container, false)
-        buttonTO = root.findViewById(R.id.notify_to)
-        buttonDrive = root.findViewById(R.id.notify_drive)
-        buttonWash = root.findViewById(R.id.notify_wash)
-        buttonPitstop = root.findViewById(R.id.notify_pitstop)
-        buttonDiagnostic = root.findViewById(R.id.notify_diagnost)
-        buttonStrah = root.findViewById(R.id.notify_strah)
-        startNotificationButton = root.findViewById(R.id.settime)
-        buttonLicense = root.findViewById(R.id.notify_license)
-        buttonTexosm = root.findViewById(R.id.notify_texosmotr)
-        buttonShopping = root.findViewById(R.id.notify_shopping)
-        buttonOther = root.findViewById(R.id.notify_other)
-        buttonOil = root.findViewById(R.id.notify_oil)
-        buttonPay = root.findViewById(R.id.notify_pay)
-        editTextDesc = root.findViewById(R.id.editText_desc_of_notification)
-        setFloatingMenuVisibility(false)
-        setTitleOfNotify()
-        return root
+        return inflater.inflate(R.layout.fragment_notification, container, false)
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        buttonTO = view.findViewById(R.id.notify_to)
+        buttonDrive = view.findViewById(R.id.notify_drive)
+        buttonWash = view.findViewById(R.id.notify_wash)
+        buttonPitstop = view.findViewById(R.id.notify_pitstop)
+        buttonDiagnostic = view.findViewById(R.id.notify_diagnost)
+        buttonStrah = view.findViewById(R.id.notify_strah)
+        startNotificationButton =view.findViewById(R.id.settime)
+        buttonLicense = view.findViewById(R.id.notify_license)
+        buttonTexosm = view.findViewById(R.id.notify_texosmotr)
+        buttonShopping = view.findViewById(R.id.notify_shopping)
+        buttonOther = view.findViewById(R.id.notify_other)
+        buttonOil = view.findViewById(R.id.notify_oil)
+        buttonPay = view.findViewById(R.id.notify_pay)
+        editTextDesc = view.findViewById(R.id.editText_desc_of_notification)
+        toolbarNotify = view.findViewById(R.id.main_toolbar)
+        setFloatingMenuVisibility(false)
+        setTitleOfNotify()
+        setToolbar(toolbarNotify,R.string.menu_notify)
+    }
+
     private fun setTitleOfNotify() {
         listButton = arrayListOf(
             buttonTO,
@@ -148,7 +151,6 @@ open class NotificationFragment : AbstractFragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun onClick(button: ImageView, title: String, notificationId: Int) {
         listButton.forEach { it.clearAnimation() }
         val animForButton = AnimationUtils.loadAnimation(context, R.anim.fab_go)
@@ -158,8 +160,6 @@ open class NotificationFragment : AbstractFragment() {
         isCalendarSettUp = false
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun openDatePickerDialog() {
         val dateSetListener = DatePickerDialog(
             requireContext(),
@@ -172,7 +172,6 @@ open class NotificationFragment : AbstractFragment() {
         dateSetListener.show()
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun openTimePickerDialog() {
         val timePickerDialog = TimePickerDialog(
             context,
@@ -185,7 +184,6 @@ open class NotificationFragment : AbstractFragment() {
         timePickerDialog.show()
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private val dateSetListener =
         DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
@@ -194,7 +192,6 @@ open class NotificationFragment : AbstractFragment() {
             openTimePickerDialog()
         }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private var onTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
         calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE, minute)
@@ -207,19 +204,21 @@ open class NotificationFragment : AbstractFragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
+
     private fun startNotification() {
         isCalendarSettUp = false
         Toast.makeText(context, "Создано напоминание: $titleOfNotification", Toast.LENGTH_SHORT)
             .show()
         notificationViewModel.makeActiveButtons(listButton)
-        notificationViewModel.startAlarm(
-            requireContext(),
-            calendar,
-            notifyId,
-            titleOfNotification,
-            editTextDesc.text.toString()
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            notificationViewModel.startAlarm(
+                requireContext(),
+                calendar,
+                notifyId,
+                titleOfNotification,
+                editTextDesc.text.toString()
+            )
+        }
     }
 
     private fun openDialog() {

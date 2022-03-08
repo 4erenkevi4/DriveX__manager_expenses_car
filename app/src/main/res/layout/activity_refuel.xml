@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/fuel_image">
 
+    <include layout="@layout/back_toolbar" />
+
     <EditText
         android:id="@+id/textView_description"
         android:layout_width="300dp"
@@ -157,6 +159,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentcontainer"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"

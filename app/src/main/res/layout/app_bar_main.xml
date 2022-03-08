@@ -8,8 +8,6 @@
     android:background="@drawable/mainback"
     tools:context=".presentation.ui.activity.MainActivity">
 
-
-
     <include layout="@layout/content_main" />
 
     <com.nightonke.boommenu.BoomMenuButton
@@ -21,5 +19,12 @@
         app:bmb_buttonEnum="textOutsideCircle"
         app:bmb_piecePlaceEnum="piecePlace_dot_5_1"
         app:bmb_buttonPlaceEnum="buttonPlace_sc_5_1"
-        />
+        app:bmb_dotRadius="0dp"
+       >
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_baseline_add_24"
+        android:layout_gravity="center" />
+    </com.nightonke.boommenu.BoomMenuButton>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -52,6 +53,7 @@ class SettingFragment : AbstractFragment() {
     private lateinit var distance: TextView
     private lateinit var buttonSave: ImageView
     private lateinit var buttonSetAvatar: ImageView
+    private lateinit var toolbarSetting: Toolbar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,6 +86,10 @@ class SettingFragment : AbstractFragment() {
         distance = utilsDistance.findViewById(R.id.dist)
         buttonSave = view.findViewById(R.id.button_save_car)
         buttonSetAvatar = view.findViewById(R.id.set_avatar_button)
+        toolbarSetting = view.findViewById(R.id.back_toolbar)
+        toolbarSetting.setTitle(R.string.menu_setting)
+        toolbarSetting.setTitleTextColor(Color.WHITE)
+        setToolbar(toolbarSetting,R.string.menu_setting,isBackButtonEnabled = true)
         if (prefs != null)
             applySettingsToSP(prefs)
         buttonSetAvatar.setOnClickListener {

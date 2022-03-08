@@ -3,27 +3,22 @@ package com.example.drivex.presentation.ui.fragments
 import android.annotation.SuppressLint
 import android.graphics.*
 import android.net.Uri
-import android.os.Build
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.Toolbar
-import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.activity.MainActivity
-import com.example.drivex.presentation.ui.setting.SettingFragment
-import kotlinx.android.synthetic.main.app_bar_main.*
 
 abstract class AbstractFragment : Fragment() {
     var imageCarUri: Uri? = null
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    fun setToolbar(toolbar: androidx.appcompat.widget.Toolbar?) {
+    fun setToolbar(toolbar: androidx.appcompat.widget.Toolbar?,textTitleResID:Int, isBackButtonEnabled: Boolean = false) {
         val activity = activity as MainActivity? ?: return
             activity.setSupportActionBar(toolbar)
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar?.setTitle(textTitleResID)
+        toolbar?.setTitleTextColor(Color.WHITE)
+        if(isBackButtonEnabled)
+            toolbar?.setNavigationOnClickListener { activity.onBackPressed() }
     }
 
     fun setFloatingMenuVisibility(visibility: Boolean){

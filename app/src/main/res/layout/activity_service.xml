@@ -11,6 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <include
+            android:id="@+id/include"
+            layout="@layout/back_toolbar" />
+
         <TextView
             android:id="@+id/textView_data"
             android:layout_width="180dp"
@@ -57,13 +61,12 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:hint="Описание ремонта"
+            android:hint="@string/prepare_desc"
             android:textColor="#78F3FF"
             android:textColorHint="#EAAC48"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/include"
+            app:layout_constraintStart_toEndOf="@+id/include"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
 
         <ImageView
             android:id="@+id/button_photo_"
@@ -89,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:gravity="center"
-            android:text="Выберите тип ремонта"
+            android:text="@string/repare_type"
             android:textColor="@color/gray20"
             app:layout_constraintBottom_toTopOf="@+id/recycler_view_service"
             app:layout_constraintEnd_toEndOf="parent"

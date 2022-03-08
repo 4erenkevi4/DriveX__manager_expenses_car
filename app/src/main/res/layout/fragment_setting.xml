@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="?attr/actionBarSize"
+
     tools:context=".presentation.ui.setting.SettingFragment">
+
+    <include layout="@layout/back_toolbar" />
 
     <LinearLayout
         android:id="@+id/layout_vehicle_setting"
         android:layout_width="0dp"
+        android:layout_marginTop="?attr/actionBarSize"
         android:background="#111E1E1E"
         android:layout_height="@dimen/description_width_big"
         android:gravity="center"

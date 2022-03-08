@@ -2,13 +2,10 @@ package com.example.drivex.presentation.ui.map
 
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import androidx.core.view.isGone
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,14 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
 import com.example.drivex.presentation.adapters.RideAdapter
-import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.utils.SortType
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 import kotlinx.android.synthetic.main.fragment_ride.*
-import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import androidx.appcompat.widget.Toolbar
 import com.example.drivex.presentation.ui.activity.MapsActivity
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
 
@@ -33,6 +30,7 @@ class RideFragment : AbstractFragment() {
 
     private lateinit var rideAdapter: RideAdapter
     private lateinit var viewModel: MapViewModel
+    private lateinit var toolbarRide: Toolbar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,10 +43,11 @@ class RideFragment : AbstractFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //viewModel = (activity as MainActivity).mainViewModel
         rideAdapter = RideAdapter()
         viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
+        toolbarRide = view.findViewById(R.id.main_toolbar)
         setupRecyclerView()
+        setToolbar(toolbarRide,R.string.menu_ride)
 
         when (viewModel.sortType) {
             SortType.DATE -> spFilter.setSelection(0)
@@ -61,14 +60,13 @@ class RideFragment : AbstractFragment() {
                 spFilter.isGone = true
                 val builder = AlertDialog.Builder(context)
                 builder
-                    //.setTitle("Важное сообщение! Пожалуйста, прочитайте его! Очень прошу!")
                     .setTitle(R.string.warning)
                     .setMessage(R.string.create_trip_nothing)
                     .setIcon(R.drawable.ic_warning)
                     .setPositiveButton(R.string.create_trip) { dialog, id ->
                         startActivity(intentMap)
                     }
-                    .setNegativeButton(R.string.cancel_general) { dialog, id ->
+                    .setNegativeButton(R.string.cancel_general) { dialog, _ ->
                         dialog.cancel()
                     }
                 builder.create()

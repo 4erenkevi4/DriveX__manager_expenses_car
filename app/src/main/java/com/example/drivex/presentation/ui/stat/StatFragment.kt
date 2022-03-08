@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
@@ -24,7 +24,9 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class StatFragment : AbstractFragment() {
@@ -43,40 +45,57 @@ class StatFragment : AbstractFragment() {
     lateinit var expensesService: TextView
     lateinit var expensesShopping: TextView
     lateinit var expensesPayment: TextView
+    private lateinit var toolbarStat: Toolbar
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         viewModel = ViewModelProvider(this).get(AbstractViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_stat, container, false)
-        mileage = root.findViewById(R.id.text_stat5)
-        allExpenses = root.findViewById(R.id.text_stat2)
-        expensesRefuel = root.findViewById(R.id.text_stat)
-        expensesService = root.findViewById(R.id.text_stat3)
-        expensesShopping = root.findViewById(R.id.text_stat4)
-        expensesPayment = root.findViewById(R.id.text_stat6)
-        pieChart = root.findViewById(R.id.pieChart)
-        setupPieChart()
-        loadPieChartData()
-        setFloatingMenuVisibility(false)
         liveDataRefuelSum = viewModel.refuelSum
         liveDataServiceSum = viewModel.serviceSum
         liveDataShoppingSum = viewModel.shoppingSum
         liveDataPaymentSum = viewModel.paymentsSum
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileage
-        liveDataCost.observe(viewLifecycleOwner, { allExpenses.text = "Общие расходы : $it" })
-        liveDataMileage.observe(viewLifecycleOwner, { mileage.text = "Актуальный пробег: $it Км" })
-        liveDataRefuelSum.observe(viewLifecycleOwner, { expensesRefuel.text = "Расходы на топливо: $it BYN" })
-        liveDataServiceSum.observe(viewLifecycleOwner, { expensesService.text = "Расходы на ТО: $it BYN" })
-        liveDataShoppingSum.observe(viewLifecycleOwner, { expensesShopping.text = "Расходы на платежи: $it BYN" })
-        liveDataPaymentSum.observe(viewLifecycleOwner, { expensesPayment.text = "Расходы на покупки: $it BYN" })
 
-        return root
+        return inflater.inflate(R.layout.fragment_stat, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mileage = view.findViewById(R.id.text_stat5)
+        allExpenses = view.findViewById(R.id.text_stat2)
+        expensesRefuel = view.findViewById(R.id.text_stat)
+        expensesService = view.findViewById(R.id.text_stat3)
+        expensesShopping = view.findViewById(R.id.text_stat4)
+        expensesPayment = view.findViewById(R.id.text_stat6)
+        pieChart = view.findViewById(R.id.pieChart)
+        setupPieChart()
+        loadPieChartData()
+        setFloatingMenuVisibility(false)
+        liveDataCost.observe(viewLifecycleOwner) { allExpenses.text = "Общие расходы : $it" }
+        liveDataMileage.observe(viewLifecycleOwner) { mileage.text = "Актуальный пробег: $it Км" }
+        liveDataRefuelSum.observe(
+            viewLifecycleOwner
+        ) { expensesRefuel.text = "Расходы на топливо: $it BYN" }
+        liveDataServiceSum.observe(viewLifecycleOwner) {
+            expensesService.text = "Расходы на ТО: $it BYN"
+        }
+        liveDataShoppingSum.observe(viewLifecycleOwner) {
+            expensesShopping.text = "Расходы на платежи: $it BYN"
+        }
+        liveDataPaymentSum.observe(viewLifecycleOwner) {
+            expensesPayment.text = "Расходы на покупки: $it BYN"
+        }
+        toolbarStat = view.findViewById(R.id.back_toolbar)
+        toolbarStat.setTitle(R.string.menu_setting)
+
+        setToolbar(toolbarStat, R.string.menu_stat, isBackButtonEnabled = true)
+
+    }
+
     private fun setupPieChart() {
         pieChart.isDrawHoleEnabled = true
         pieChart.setUsePercentValues(true)
@@ -92,6 +111,7 @@ class StatFragment : AbstractFragment() {
         l.setDrawInside(false)
         l.isEnabled = true
     }
+
     private fun loadPieChartData() {
         val entries: ArrayList<PieEntry> = ArrayList()
 

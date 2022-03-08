@@ -3,7 +3,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">DriveX</string>
-    <string name="nav_header_subtitle">Drive Expense Manager</string>
+    <string name="nav_header_subtitle">Менеджер расходов автомобиля</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="save_date">Сохранить данные</string>
@@ -14,14 +14,16 @@
     <string name="date">Дата</string>
     <string name="todo">TODO</string>
     <string name="title_activity_maps">Map</string>
-    <string name="menu_home">My Car</string>
+    <string name="menu_home">Мой автомобиль</string>
     <string name="menu_car">Мой автомобиль</string>
     <string name="menu_notify">Напоминания</string>
     <string name="menu_ride">Поездки</string>
+    <string name="add_ride">Поездка</string>
+    <string name="add_service">Техобслуживание</string>
     <string name="menu_stat">Статистика</string>
     <string name="menu_setting">Настройки</string>
     <string name="menu_info">О приложении</string>
-    <string name="title_activity_map">Map</string>
+    <string name="title_activity_map">Карта</string>
     <string name="start_text">Start</string>
     <string name="stop_text">Stop</string>
     <string name="deleted">Удалить</string>
@@ -49,7 +51,7 @@
     <string name="launch_sound">Звук запуска приложения </string>
     <string name="Dark_theme">Темная тема</string>
     <string name="push_notifications">Выбрать напоминание</string>
-    <string name="country">Старна</string>
+    <string name="country">Страна</string>
     <string name="day_notifications">День напоминания</string>
     <string name="value_time_of_notifications">12.00</string>
     <string name="value_date_of_notifications">22</string>
@@ -64,7 +66,7 @@
     <string name="warning">Внимание</string>
     <string name="create_trip">Создать поездку</string>
     <string name="create_trip_nothing">У вас нет записанных поездок</string>
-
+    <string name="reset">Сброс</string>
     <string name="select_unit_settings">Выбрана еденица измерения </string>
     //Selected
     <string name="selected_general">Вы выбрали : </string>
@@ -100,6 +102,8 @@
     <string name="please_add_mileage">Пожалуйста, добавьте текущее значение пробега:</string>
     <string name="please_add_volume_fuel">Пожалуйста, добавьте обьем заправленного топлива:</string>
     <string name="please_add_cost_fuel">Пожалуйста, укажите стоимость:</string>
+    <string name="prepare_desc">Описание ремонта</string>
+    <string name="repare_type">Выберите тип ремонта</string>
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>

@@ -169,23 +169,23 @@ class MainActivity : AppCompatActivity() {
             val intentMap = Intent(this, MapsActivity::class.java)
             val buttonFuel = TextOutsideCircleButton.Builder()
                 .normalImageRes(R.drawable.ic_car)
-                .normalText("Заправка")
+                .normalText(getString(R.string.refuel))
                 .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_REFUEL)) }
             val buttonService = TextOutsideCircleButton.Builder()
                 .normalImageRes(R.drawable.ic_service)
-                .normalText("Добавить ТО")
+                .normalText(getString(R.string.add_service))
                 .listener { startActivity(intentService) }
             val buttonPayments = TextOutsideCircleButton.Builder()
                 .normalImageRes(R.drawable.ic_money)
-                .normalText("Платеж")
+                .normalText(getString(R.string.payment))
                 .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_PAYMENT)) }
             val buttonExpenses = TextOutsideCircleButton.Builder()
                 .normalImageRes(R.drawable.ic_shopping)
-                .normalText("Покупка")
+                .normalText(getString(R.string.your_buy))
                 .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_SHOPPING)) }
             val buttonDriving = TextOutsideCircleButton.Builder()
                 .normalImageRes(R.drawable.ic_map)
-                .normalText("Поездка")
+                    .normalText(getString(R.string.add_ride))
                 .listener { startActivity(intentMap) }
                 boomMenu!!.builders =
                     arrayListOf(buttonFuel,buttonService,buttonPayments,buttonExpenses,buttonDriving )

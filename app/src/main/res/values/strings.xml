@@ -64,7 +64,8 @@
     <string name="warning">Warning</string>
     <string name="create_trip">Create trip</string>
     <string name="create_trip_nothing">You have no recorded trips</string>
-
+    <string name="add_ride">Trip</string>
+    <string name="add_service">Service</string>
 
     <string name="select_unit_settings">Select the unit of measure</string>
     // Selected
@@ -101,6 +102,9 @@
     <string name="please_add_mileage">Please add the current mileage value:</string>
     <string name="please_add_volume_fuel">Please add the fuel filling volume:</string>
     <string name="please_add_cost_fuel">Please state the cost:</string>
+    <string name="prepare_desc">Repare description</string>
+    <string name="repare_type">Please, select type of rapare</string>
+    <string name="reset">Reset</string>
 
 
     <string-array name="filter_options">
