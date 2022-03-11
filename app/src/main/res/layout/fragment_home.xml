@@ -26,13 +26,13 @@
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/Theme.DriveX.PopupOverlay"
                 >
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/search_button_toolbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/default_margin_8"
-                    android:layout_gravity="end"
-                    />
+                 <ImageView
+                     android:id="@+id/search_toolbar"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:src="@drawable/ic_baseline_search_24"
+                     android:layout_gravity="end"
+                     android:layout_marginEnd="@dimen/default_margin_16"/>
 
             </androidx.appcompat.widget.Toolbar>
 
