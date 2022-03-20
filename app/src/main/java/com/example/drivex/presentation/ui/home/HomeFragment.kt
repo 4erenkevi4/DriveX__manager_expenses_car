@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
@@ -32,9 +31,12 @@ import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_DISTANCE
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
+import com.example.drivex.presentation.ui.fragments.FiltersFragment
+import com.example.drivex.presentation.ui.fragments.FiltersFragment.Companion.FILTERS
 import com.example.drivex.presentation.ui.setting.SettingFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.ArrayList
 
 
 @AndroidEntryPoint
@@ -62,8 +64,8 @@ class HomeFragment : AbstractFragment() {
     private var consumptionSP: String = ""
     private var volumeSP: String = ""
     private var distanceSP: String = ""
-   private lateinit var toolbarHome: Toolbar
-   private lateinit var searshButton : View
+    private lateinit var toolbarHome: Toolbar
+    private lateinit var filterButton: View
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,8 +92,11 @@ class HomeFragment : AbstractFragment() {
         carModel = view.findViewById(R.id.text_model_info)
         avatarCard = view.findViewById(R.id.avatarCardImage)
         toolbarHome = view.findViewById(R.id.toolbar_home)
-        searshButton = view.findViewById(R.id.search_button_toolbar)
-        searshButton.setOnClickListener {
+        filterButton = view.findViewById(R.id.search_toolbar)
+        filterButton.setOnClickListener {
+            val fragmentManager = parentFragmentManager.beginTransaction()
+            fragmentManager.replace( R.id.nav_host_fragment, FiltersFragment(), )
+            fragmentManager.commit()
         }
         liveDataCost = viewModel.allExpensesSum
         liveDataMileage = viewModel.lastMileageStr
@@ -112,8 +117,14 @@ class HomeFragment : AbstractFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (arguments?.containsKey(FiltersFragment.FILTERS) == true)
+            applyfilters()
         setFloatingMenuVisibility(true)
         setToolbar(toolbarHome, R.string.menu_home)
+    }
+
+    private fun applyfilters() {
+       val filters = arguments?.getSerializable(FILTERS)
     }
 
     private fun getSharedPref() {

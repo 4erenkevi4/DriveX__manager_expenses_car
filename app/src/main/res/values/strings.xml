@@ -105,7 +105,8 @@
     <string name="prepare_desc">Repare description</string>
     <string name="repare_type">Please, select type of rapare</string>
     <string name="reset">Reset</string>
-
+    <string name="apply_filters">Apply filters</string>
+    <string name="reset_filters">reset</string>
 
     <string-array name="filter_options">
         <item>Sort by date</item>

@@ -104,6 +104,9 @@
     <string name="please_add_cost_fuel">Пожалуйста, укажите стоимость:</string>
     <string name="prepare_desc">Описание ремонта</string>
     <string name="repare_type">Выберите тип ремонта</string>
+    //FiltersFragment
+    <string name="apply_filters">применить фильтры</string>
+    <string name="reset_filters">сбросить</string>
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>

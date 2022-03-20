@@ -23,11 +23,12 @@
             app:popupTheme="@style/Theme.DriveX.PopupOverlay">
 
             <TextView
+                android:id="@+id/reset_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/default_margin_16"
-                android:text="@string/reset"
+                android:text="@string/reset_filters"
                 android:textSize="18sp" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -45,13 +46,13 @@
             android:layout_weight="1"
             android:text="Период" />
 
-            <TextView
-                android:id="@+id/dist"
-                android:layout_weight="0.5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.7"
-                android:text="Не установлено" />
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/period_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin_16"
+            android:entries="@array/periods"
+            />
 
     </LinearLayout>
 
@@ -72,6 +73,7 @@
             android:text="@string/refuel" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/refuel_switsh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin_16"
@@ -93,6 +95,7 @@
             android:text="@string/service" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/service_switsh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin_16"
@@ -114,6 +117,7 @@
             android:text="@string/payment" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/payments_switsh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin_16"
@@ -136,6 +140,7 @@
             android:text="@string/your_buy" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/byuing_switsh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin_16"
@@ -145,9 +150,10 @@
         layout="@layout/divider" />
 
     <Button
+        android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search"
+        android:text="@string/apply_filters"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/default_margin_16"/>
 

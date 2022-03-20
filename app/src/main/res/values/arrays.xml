@@ -64,4 +64,14 @@
         <item>Volvo</item>
         <item>Zotye</item>
     </string-array>
+
+    <string-array name="periods">
+        <item>all period</item>
+        <item>last day</item>
+        <item>last week</item>
+        <item>ast mount</item>
+        <item>last 3 mounts</item>
+        <item>last year</item>
+        <item>custom period</item>
+    </string-array>
 </resources>

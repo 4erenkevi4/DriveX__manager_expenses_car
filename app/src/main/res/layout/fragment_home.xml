@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -30,7 +32,7 @@
                      android:id="@+id/search_toolbar"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:src="@drawable/ic_baseline_search_24"
+                     android:src="@drawable/ic_baseline_filter_list_24"
                      android:layout_gravity="end"
                      android:layout_marginEnd="@dimen/default_margin_16"/>
 
