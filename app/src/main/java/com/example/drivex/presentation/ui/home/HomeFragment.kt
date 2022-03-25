@@ -1,7 +1,6 @@
 package com.example.drivex.presentation.ui.home
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -32,15 +31,16 @@ import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
 import com.example.drivex.presentation.ui.fragments.FiltersFragment
-import com.example.drivex.presentation.ui.setting.SettingFragment
 import com.example.drivex.utils.Constans.FILTERS
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.collections.ArrayList
-
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : AbstractFragment() {
+
+    @Inject
+    lateinit var prefs: SharedPreferences
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewModel: AbstractViewModel
@@ -137,11 +137,8 @@ class HomeFragment : AbstractFragment() {
 
     private fun getSharedPref() {
         val activity = activity as? MainActivity ?: return
-        val prefs: SharedPreferences? = activity.getSharedPreferences(
-            SettingFragment.APP_PREFERENCES, Context.MODE_PRIVATE
-        )
-        if (prefs?.all.isNullOrEmpty().not()) {
-            currencySP = prefs!!.getString(TYPE_CURENCY, "$") ?: "$"
+        if (prefs.all.isNullOrEmpty().not()) {
+            currencySP = prefs.getString(TYPE_CURENCY, "$") ?: "$"
             consumptionSP = prefs.getString(TYPE_CONSUMPTION, "L/100km") ?: "L/100km"
             volumeSP = prefs.getString(TYPE_VOLUME, "L") ?: "L"
             distanceSP = prefs.getString(TYPE_DISTANCE, "Km") ?: "Km"

@@ -13,7 +13,7 @@ import androidx.fragment.app.setFragmentResult
 import com.example.drivex.R
 
 
-class SettingsDialog(var arrayItems: Array<String>, val type : String) : DialogFragment() {
+class SettingsDialog(var arrayItems: Array<String>, val type: String, ) : DialogFragment() {
 
     companion object{
         const val TYPE_VOLUME= "volume"
@@ -24,10 +24,6 @@ class SettingsDialog(var arrayItems: Array<String>, val type : String) : DialogF
         const val TYPE_CAR= "car"
         const val TYPE_AVATAR= "avatar"
     }
-
-    val prefs: SharedPreferences? = context?.getSharedPreferences(
-        "com.drivex.app", Context.MODE_PRIVATE
-    )
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {

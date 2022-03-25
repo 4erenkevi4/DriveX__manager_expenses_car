@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import com.example.drivex.domain.MapDao
 import com.example.drivex.data.MapRoomDatabase
+import com.example.drivex.presentation.ui.setting.SettingFragment.Companion.APP_PREFERENCES
 import com.example.drivex.utils.Constans.DATABASE_NAME
 import com.example.drivex.utils.Constans.KEY_FIRST_TIME_TOGGLE
 import com.example.drivex.utils.Constans.SHARED_PREFERENCES_NAME
@@ -39,7 +40,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideSharedPreferences(app: Application) =
-        app.getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)!!
+        app.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)!!
 
     @Singleton
     @Provides

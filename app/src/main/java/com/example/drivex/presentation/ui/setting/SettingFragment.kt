@@ -31,11 +31,14 @@ import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_SOUND
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_setting.*
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
+class SettingFragment  : AbstractFragment() {
 
-class SettingFragment : AbstractFragment() {
     companion object {
         const val APP_PREFERENCES = "com.drivex.app"
     }
@@ -55,6 +58,9 @@ class SettingFragment : AbstractFragment() {
     private lateinit var buttonSetAvatar: ImageView
     private lateinit var toolbarSetting: Toolbar
 
+    @Inject
+    lateinit var prefs: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,9 +76,6 @@ class SettingFragment : AbstractFragment() {
         super.onViewCreated(view, savedInstanceState)
        // setToolbar(false)
         setFloatingMenuVisibility(false)
-        val prefs: SharedPreferences? = context?.getSharedPreferences(
-            APP_PREFERENCES, Context.MODE_PRIVATE
-        )
         carVendor = view.findViewById(R.id.car_vendor)
         carModel = view.findViewById(R.id.Car_model)
         soundStartApp = view.findViewById(R.id.switch_sound)

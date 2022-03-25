@@ -34,11 +34,14 @@ import com.google.android.material.navigation.NavigationView
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
 import com.nightonke.boommenu.BoomMenuButton
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var prefs: SharedPreferences
     private lateinit var appBarConfiguration: AppBarConfiguration
     var boomMenu: BoomMenuButton? = null
 
@@ -64,11 +67,8 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        val prefs: SharedPreferences? = this.getSharedPreferences(
-            SettingFragment.APP_PREFERENCES, Context.MODE_PRIVATE)
-        if(prefs!=null&&prefs.contains(TYPE_SOUND)){
+        if(prefs.contains(TYPE_SOUND)){
             startMusic(prefs.getBoolean(TYPE_SOUND,false))
-
         }
         requestPermissions()
     }
