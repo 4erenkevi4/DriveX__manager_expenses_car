@@ -25,6 +25,9 @@ interface ExpensesDao {
     @Query("SELECT * FROM refuel ORDER BY id ASC")
     fun getAllExpensesBydate(): LiveData<List<Expenses>>
 
+    @Query("SELECT * FROM refuel WHERE timeForMillis > :period")
+    fun getAllExpensesFromPeriod(period:Long): LiveData<List<Expenses>>
+
     @Query("SELECT * FROM refuel WHERE id = :id")
     fun getRefuelById(id: Long): LiveData<Expenses>
 

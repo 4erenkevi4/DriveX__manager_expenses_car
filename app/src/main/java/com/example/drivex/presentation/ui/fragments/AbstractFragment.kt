@@ -7,21 +7,33 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.activity.MainActivity
+import com.example.drivex.utils.Constans.PERIOD_ALL
+import com.example.drivex.utils.Constans.PERIOD_DAY
+import com.example.drivex.utils.Constans.PERIOD_MOUNTH
+import com.example.drivex.utils.Constans.PERIOD_THREE_MOUNTH
+import com.example.drivex.utils.Constans.PERIOD_WEEK
+import com.example.drivex.utils.Constans.PERIOD_YEAR
+import java.util.*
+import kotlin.collections.ArrayList
 
 abstract class AbstractFragment : Fragment() {
     var imageCarUri: Uri? = null
 
-    fun setToolbar(toolbar: androidx.appcompat.widget.Toolbar?,textTitleResID:Int, isBackButtonEnabled: Boolean = false) {
+    fun setToolbar(
+        toolbar: androidx.appcompat.widget.Toolbar?,
+        textTitleResID: Int,
+        isBackButtonEnabled: Boolean = false
+    ) {
         val activity = activity as MainActivity? ?: return
-            activity.setSupportActionBar(toolbar)
+        activity.setSupportActionBar(toolbar)
         activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar?.setTitle(textTitleResID)
         toolbar?.setTitleTextColor(Color.WHITE)
-        if(isBackButtonEnabled)
+        if (isBackButtonEnabled)
             toolbar?.setNavigationOnClickListener { activity.onBackPressed() }
     }
 
-    fun setFloatingMenuVisibility(visibility: Boolean){
+    fun setFloatingMenuVisibility(visibility: Boolean) {
         val activity = activity as MainActivity? ?: return
         activity.boomMenu?.isVisible = visibility
     }
@@ -55,4 +67,5 @@ abstract class AbstractFragment : Fragment() {
         canvas.drawBitmap(bitmap, rect, rect, paint)
         return output
     }
+
 }

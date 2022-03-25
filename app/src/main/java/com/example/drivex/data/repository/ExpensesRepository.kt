@@ -14,4 +14,5 @@ interface ExpensesRepository {
     suspend fun getLastMileage(): LiveData<Int>
     suspend fun getSUmExpensesIntById(key:String):Int
     fun getAllExpensesBydate(): LiveData<List<Expenses>>
+    fun getAllExpensesByPeriod(period: Long): LiveData<List<Expenses>>
 }

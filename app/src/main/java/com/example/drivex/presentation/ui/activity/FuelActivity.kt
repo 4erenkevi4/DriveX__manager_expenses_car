@@ -1,6 +1,5 @@
 package com.example.drivex.presentation.ui.activity
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
@@ -22,7 +21,8 @@ import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SHOPPING
-import java.net.URI
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Suppress("UNCHECKED_CAST")
@@ -37,7 +37,7 @@ class FuelActivity : AbstractActivity() {
     private lateinit var desButtonPhoto: TextView
     private lateinit var buttonSave: ImageView
     private lateinit var containerPhoto: ImageView
-    private lateinit var fuelViewModel: AbstractViewModel
+    private lateinit var abstractViewModel: AbstractViewModel
     private lateinit var selectionType: TextView
     private var paymentType: String? = ""
     var titte: String = ""
@@ -61,7 +61,7 @@ class FuelActivity : AbstractActivity() {
         selectionType = findViewById(R.id.selection_type)
         desButtonPhoto = findViewById(R.id.description_button_photo)
         val viewModelFactory = ViewModelFactory(application)
-        fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
+        abstractViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         val id = intent.getLongExtra("id", -1L)
         if (id == -1L) {
             initSaveButton(buttonSave)
@@ -117,7 +117,7 @@ class FuelActivity : AbstractActivity() {
 
     private fun updateMode(id: Long) {
         val intent = Intent(this, MainActivity::class.java)
-        fuelViewModel.readRefuelById(id).observe(this, { desc ->
+        abstractViewModel.readRefuelById(id).observe(this) { desc ->
             desc?.let {
                 desButtonPhoto.isVisible = false
                 buttonPhoto.isVisible = false
@@ -125,11 +125,11 @@ class FuelActivity : AbstractActivity() {
                 editTextMileage.setText(desc.mileage.toString())
                 editTextVolume.setText(desc.title)
                 editTextCost.setText(desc.totalSum.toString())
-                textViewDate.text = desc.date
+                textViewDate.text = desc.date.toString()
                 description.hint = desc.description
                 containerPhoto.setImageURI(desc.photoURI?.toUri())
             }
-        })
+        }
         buttonSave.setOnClickListener { startActivity(intent) }
     }
 
@@ -155,9 +155,10 @@ class FuelActivity : AbstractActivity() {
                 date = textViewDate.text.toString(),
                 icon = icon,
                 description = descriptionValue,
-                photoURI = uriPhoto?.toString()
+                photoURI = uriPhoto?.toString(),
+                timeForMillis = System.currentTimeMillis()
             )
-            fuelViewModel.addRefuel(expenses)
+            abstractViewModel.addRefuel(expenses)
             startActivity(intent)
 
         } else {

@@ -3,6 +3,7 @@ package com.example.drivex.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
+import java.util.*
 
 @Entity(tableName = "refuel")
 data class Expenses(
@@ -15,5 +16,6 @@ data class Expenses(
     var totalSum: Double = 0.0,
     var date: String = "",
     var icon: Int? = null,
-    val photoURI: String? = null
+    val photoURI: String? = null,
+    val timeForMillis : Long? = null
 ) : Serializable

@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/filter_list/baseline_filter_list_24.xml" />
+                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/filter_alt/baseline_filter_alt_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_baseline_filter_list_24" />
+                            <entry key="color" value="1da536" />
+                            <entry key="outputName" value="ic_baseline_filter_alt_24" />
                             <entry key="sourceFile" value="D:\AndroidProjects\Drivex_Car\DriveX__manager_expenses_car" />
                           </map>
                         </option>

@@ -48,7 +48,7 @@ class MainAdapter(val context: Context?, val currency: String?, private val clic
         @RequiresApi(Build.VERSION_CODES.M)
         @SuppressLint("SetTextI18n")
         fun bind(context: Context?, expenss: Expenses, currency: String?) {
-            date.text = expenss.date
+            date.text = expenss.date.toString()
             cost.text = expenss.totalSum.toString() + " " + currency
             iconType.setImageResource(expenss.icon ?: R.drawable.ic_car)
             context.let {

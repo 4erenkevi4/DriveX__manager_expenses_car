@@ -1,7 +1,6 @@
 package com.example.drivex.presentation.ui.setting
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.*
@@ -22,6 +21,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
+import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_AVATAR
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CAR
@@ -37,11 +37,13 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SettingFragment  : AbstractFragment() {
+class SettingFragment : AbstractFragment() {
 
     companion object {
         const val APP_PREFERENCES = "com.drivex.app"
     }
+
+    private lateinit var abstractViewModel: AbstractViewModel
     private lateinit var settingViewModel: SettingViewModel
     private lateinit var carVendor: Spinner
     private lateinit var carModel: EditText
@@ -67,6 +69,7 @@ class SettingFragment  : AbstractFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         settingViewModel = ViewModelProvider(this).get(SettingViewModel::class.java)
+        abstractViewModel = ViewModelProvider(this).get(AbstractViewModel::class.java)
         return inflater.inflate(R.layout.fragment_setting, container, false)
     }
 
@@ -74,7 +77,8 @@ class SettingFragment  : AbstractFragment() {
     @SuppressLint("ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // setToolbar(false)
+
+        // setToolbar(false)
         setFloatingMenuVisibility(false)
         carVendor = view.findViewById(R.id.car_vendor)
         carModel = view.findViewById(R.id.Car_model)
@@ -92,22 +96,21 @@ class SettingFragment  : AbstractFragment() {
         toolbarSetting = view.findViewById(R.id.back_toolbar)
         toolbarSetting.setTitle(R.string.menu_setting)
         toolbarSetting.setTitleTextColor(Color.WHITE)
-        setToolbar(toolbarSetting,R.string.menu_setting,isBackButtonEnabled = true)
-        if (prefs != null)
-            applySettingsToSP(prefs)
+        setToolbar(toolbarSetting, R.string.menu_setting, isBackButtonEnabled = true)
+        applySettingsToSP(prefs)
         buttonSetAvatar.setOnClickListener {
-            val photoPickeIintent = Intent(Intent.ACTION_PICK)
-            photoPickeIintent.type = "image/*"
-            requireActivity().startActivityForResult(photoPickeIintent, 3)
+            val photoPickerintent = Intent(Intent.ACTION_PICK)
+            photoPickerintent.type = "image/*"
+            requireActivity().startActivityForResult(photoPickerintent, 3)
         }
         if (arguments?.containsKey("IMAGE_URI") == true) {
             imageCarUri = requireArguments().get("IMAGE_URI") as Uri?
-            saveToSP(imageCarUri.toString(), TYPE_AVATAR)
+            abstractViewModel.saveToSP(string = imageCarUri.toString(), TYPE_AVATAR, prefs = prefs)
             buttonSetAvatar.setImageBitmap(getCroppedBitmap(imageCarUri!!))
         }
 
         soundStartApp.setOnCheckedChangeListener { _, isChecked ->
-            saveToSP(type = TYPE_SOUND, boolean = isChecked)
+            abstractViewModel.saveToSP(keyType = TYPE_SOUND, value = isChecked, prefs = prefs)
         }
         carVendor.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
@@ -167,7 +170,7 @@ class SettingFragment  : AbstractFragment() {
 
     private fun createCarModel(carVendor: String?) {
         if (carVendor.isNullOrEmpty().not() && carVendor != " ")
-            saveToSP(carVendor, TYPE_CAR)
+            abstractViewModel.saveToSP(string = carVendor, TYPE_CAR, prefs = prefs)
         buttonSave.setImageResource(R.drawable.ic_baseline_check_24)
         buttonSave.setColorFilter(Color.GREEN)
         Toast.makeText(context, "Your car $carVendor is successfully saved", Toast.LENGTH_SHORT)
@@ -226,21 +229,8 @@ class SettingFragment  : AbstractFragment() {
     private fun String.setText(textview: TextView, type: String) {
         if (this.isEmpty().not()) {
             textview.text = this
-            saveToSP(this, type)
+            abstractViewModel.saveToSP(string = this, keyType = type, prefs = prefs)
         }
-    }
-
-    @SuppressLint("CommitPrefEdits")
-    fun saveToSP(string: String? = null, type: String, boolean: Boolean = false) {
-        val prefs: SharedPreferences? = context?.getSharedPreferences(
-            APP_PREFERENCES, Context.MODE_PRIVATE
-        )
-        val editor: SharedPreferences.Editor? = prefs?.edit()
-        if (string != null)
-            editor?.putString(type, string)
-        else
-            editor?.putBoolean(type, boolean)
-        editor?.apply()
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)

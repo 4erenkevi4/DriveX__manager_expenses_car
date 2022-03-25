@@ -15,7 +15,7 @@ class ExpensesRepositoryImpl(application: Application) :
     }
 
     override suspend fun insert(expenses: Expenses) {
-       return refuelDao.insert(expenses)
+        return refuelDao.insert(expenses)
     }
 
     override suspend fun delete(expenses: Expenses) {
@@ -26,13 +26,16 @@ class ExpensesRepositoryImpl(application: Application) :
         refuelDao.deleteById(id)
     }
 
-    override suspend fun getAllRefuel(): List<Expenses> =refuelDao.getAllRefuel()
+    override suspend fun getAllRefuel(): List<Expenses> = refuelDao.getAllRefuel()
 
     override fun getAllExpensesBydate() = refuelDao.getAllExpensesBydate()
+
+    override fun getAllExpensesByPeriod(period: Long) = refuelDao.getAllExpensesFromPeriod(period)
 
     override fun getRefuelById(id: Long): LiveData<Expenses> {
         return refuelDao.getRefuelById(id)
     }
+
     override suspend fun addRefuel(expenses: Expenses) {
         refuelDao.addRefuel(expenses)
     }
@@ -48,8 +51,6 @@ class ExpensesRepositoryImpl(application: Application) :
     override suspend fun getSUmExpensesIntById(key: String): Int {
         return refuelDao.getSUmExpensesIntById(key)
     }
-
-
 
 
 }

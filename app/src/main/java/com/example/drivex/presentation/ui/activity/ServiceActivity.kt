@@ -34,7 +34,7 @@ class ServiceActivity : AbstractActivity() {
     private lateinit var buttonPhoto: ImageView
     private lateinit var buttonSave: ImageView
     private lateinit var photoPreview: ImageView
-    lateinit var fuelViewModel: AbstractViewModel
+    private lateinit var abstractViewModel: AbstractViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var descRecyclerView: View
     private lateinit var constraintLayout: ConstraintLayout
@@ -56,7 +56,7 @@ class ServiceActivity : AbstractActivity() {
         constraintLayout = findViewById(R.id.constraintLayout)
         recyclerView = findViewById(R.id.recycler_view_service)
         val viewModelFactory = ViewModelFactory(application)
-        fuelViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
+        abstractViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
         initCamera(photoPreview, buttonPhoto, recyclerView, descRecyclerView)
@@ -100,9 +100,10 @@ class ServiceActivity : AbstractActivity() {
                 totalSum = cost.toDouble(),
                 date = textViewDate.text.toString(),
                 icon = R.drawable.servicel_icon,
-                photoURI = uriPhoto?.toString()
+                photoURI = uriPhoto?.toString(),
+                timeForMillis = abstractViewModel.convertStringToDate(textViewDate.text.toString())
             )
-            fuelViewModel.addRefuel(refuel)
+            abstractViewModel.addRefuel(refuel)
             startActivity(intent)
 
         } else {

@@ -13,6 +13,7 @@ object Constans {
     const val IS_SHOPPING = "shopping"
     const val IS_PAYMENT = "payment"
     const val IS_REFUEL = "refuel"
+    const val FILTER_PERIOD_TIME = "time_filter"
 
 
 
@@ -27,7 +28,7 @@ object Constans {
     // Database
     const val DATABASE_NAME = "map_db"
     // Shared Preferences
-    const val SHARED_PREFERENCES_NAME = "sharedPref"
+    const val LIST_OF_FILTERS_SP = "list_of_filters_sp"
     const val KEY_FIRST_TIME_TOGGLE = "KEY_FIRST_TIME_TOGGLE"
     // Map Options
     const val POLYLINE_COLOR = Color.GREEN
@@ -63,4 +64,11 @@ object Constans {
     const val NOTIFY11 = "Вас запланирована покупка"
     const val NOTIFY12 = "Уведомление:"
 
+
+     const val PERIOD_ALL = "all period"
+     const val PERIOD_DAY = "last day"
+     const val PERIOD_WEEK = "last week"
+     const val PERIOD_MOUNTH = "last mount"
+     const val PERIOD_THREE_MOUNTH = "last 3 mounts"
+     const val PERIOD_YEAR = "last year"
 }

@@ -1,18 +1,23 @@
 package com.example.drivex.presentation.ui.activity.viewModels
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.lifecycle.*
 import com.example.drivex.domain.ExpensesDao
 import com.example.drivex.data.ExpensesRoomDatabase
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.data.repository.ExpensesRepository
 import com.example.drivex.data.repository.ExpensesRepositoryImpl
+import com.example.drivex.utils.Constans
 import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SERVICE
 import com.example.drivex.utils.Constans.SHOPPING
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 
 class AbstractViewModel(application: Application) : AndroidViewModel(application) {
@@ -21,23 +26,36 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
     init {
         expensesRepository = ExpensesRepositoryImpl(application)
     }
+
     var filtersExpensesLiveData = MediatorLiveData<List<Expenses>>()
 
+
+    var sortedExpensesLiveData = MediatorLiveData<List<Expenses>>()
+
+
     val expenses = MediatorLiveData<List<Expenses>>()
-    private val expensesSortedByDate = expensesRepository.getAllExpensesBydate()
+    private val getAllexpenses = expensesRepository.getAllExpensesBydate()
 
     init {
-        expenses.addSource(expensesSortedByDate) { result ->
+        expenses.addSource(getAllexpenses) { result ->
             result?.let { expenses.value = it }
         }
     }
 
-    fun getExpensesByFilters(filters:ArrayList<String>){
-        filtersExpensesLiveData.addSource(expensesSortedByDate) { result ->
+    fun getExpensesByFilters(filters: ArrayList<String>) {
+        val filtersPeriod = getPeriodOfFilter(filters)
+
+        filtersExpensesLiveData.addSource(
+            expensesRepository.getAllExpensesByPeriod(
+                filtersPeriod ?: Calendar.getInstance().timeInMillis
+            )
+        ) { result ->
             val filteredExpenses = mutableListOf<Expenses>()
             result.forEach {
-                filters.forEach { filter->
-                    if (it.title == filter)
+                filters.forEach { filter ->
+                    if (filtersPeriod != null && filters.size == 1)
+                        filteredExpenses.add(it)
+                    else if ( it.title == filter)
                         filteredExpenses.add(it)
                 }
             }
@@ -89,5 +107,55 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
     val lastMileage: LiveData<Int> = refuelDao.getLastMileage()
     val lastMileageStr: LiveData<String> = Transformations.map(lastMileage) { checkpoint ->
         (checkpoint?.toString() ?: "0")
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    fun saveToSP(
+        string: String? = null,
+        keyType: String,
+        value: Boolean = false,
+        set: Set<String>? = null,
+        prefs: SharedPreferences
+    ) {
+        val editor: SharedPreferences.Editor = prefs.edit()
+        when {
+            string != null -> editor.putString(keyType, string)
+            set != null -> editor.putStringSet(keyType, set)
+            else -> editor.putBoolean(keyType, value)
+        }
+        editor.apply()
+    }
+
+    fun convertStringToDate(stringDate: String): Long? {
+        val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.US)
+        return sdf.parse(stringDate).time
+    }
+
+    private fun getPeriodOfFilter(filters: ArrayList<String>): Long? {
+        val periodsCalendar = Calendar.getInstance()
+        var period: Long? = null
+        if (filters.contains(Constans.PERIOD_ALL))
+            period = periodsCalendar.timeInMillis
+        if (filters.contains(Constans.PERIOD_DAY)) {
+            periodsCalendar.set(Calendar.DAY_OF_YEAR, Calendar.DAY_OF_YEAR - 1)
+            period = periodsCalendar.timeInMillis
+        }
+        if (filters.contains(Constans.PERIOD_WEEK)) {
+            periodsCalendar.set(Calendar.WEEK_OF_YEAR, Calendar.WEEK_OF_YEAR - 1)
+            period = periodsCalendar.timeInMillis
+        }
+        if (filters.contains(Constans.PERIOD_MOUNTH)) {
+            periodsCalendar.set(Calendar.MONTH, Calendar.MONTH - 1)
+            period = periodsCalendar.timeInMillis
+        }
+        if (filters.contains(Constans.PERIOD_THREE_MOUNTH)) {
+            periodsCalendar.set(Calendar.MONTH, Calendar.MONTH - 3)
+            period = periodsCalendar.timeInMillis
+        }
+        if (filters.contains(Constans.PERIOD_YEAR)) {
+            periodsCalendar.set(Calendar.YEAR, Calendar.YEAR - 1)
+            period = periodsCalendar.timeInMillis
+        }
+        return period
     }
 }

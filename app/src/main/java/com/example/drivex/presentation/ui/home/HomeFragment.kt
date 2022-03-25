@@ -32,6 +32,7 @@ import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
 import com.example.drivex.presentation.ui.fragments.FiltersFragment
 import com.example.drivex.utils.Constans.FILTERS
+import com.example.drivex.utils.Constans.FILTER_PERIOD_TIME
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -43,7 +44,7 @@ class HomeFragment : AbstractFragment() {
     lateinit var prefs: SharedPreferences
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewModel: AbstractViewModel
+    private lateinit var abstractViewModel: AbstractViewModel
     lateinit var adapter: MainAdapter
     lateinit var allExpenses: TextView
     lateinit var allMileage: TextView
@@ -65,8 +66,9 @@ class HomeFragment : AbstractFragment() {
     private var volumeSP: String = ""
     private var distanceSP: String = ""
     private lateinit var toolbarHome: Toolbar
-    private lateinit var filterButton: View
+    private lateinit var filterButton: ImageView
     private var filters: ArrayList<String>? = null
+    private var timefilterPeriod: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,7 +77,7 @@ class HomeFragment : AbstractFragment() {
     ): View {
         val view: View = inflater
             .inflate(R.layout.fragment_home, container, false)
-        viewModel = ViewModelProvider(this).get(AbstractViewModel::class.java)
+        abstractViewModel = ViewModelProvider(this).get(AbstractViewModel::class.java)
         allExpenses = view.findViewById<TextView?>(R.id.all_expencess_car)
             .also { it.setTextColor(resources.getColor(R.color.white20)) }
         allMileage = view.findViewById<TextView?>(R.id.text_mileage_info)
@@ -99,30 +101,31 @@ class HomeFragment : AbstractFragment() {
             fragmentManager.replace(R.id.nav_host_fragment, FiltersFragment())
             fragmentManager.commit()
         }
-        liveDataCost = viewModel.allExpensesSum
-        liveDataMileage = viewModel.lastMileageStr
-        liveDataCostFUel = viewModel.allFuelCostSum
-        liveDataVolumeFUel = viewModel.allFuelVolumeSum
-        liveDataCostService = viewModel.allServiceCostSum
-        liveDatarefuelSum = viewModel.refuelSum
+        liveDataCost = abstractViewModel.allExpensesSum
+        liveDataMileage = abstractViewModel.lastMileageStr
+        liveDataCostFUel = abstractViewModel.allFuelCostSum
+        liveDataVolumeFUel = abstractViewModel.allFuelVolumeSum
+        liveDataCostService = abstractViewModel.allServiceCostSum
+        liveDatarefuelSum = abstractViewModel.refuelSum
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (arguments?.containsKey(FILTERS) == true)
-            filters = arguments?.getSerializable(FILTERS) as ArrayList<String>?
+        filters = arguments?.getSerializable(FILTERS) as ArrayList<String>?
+        timefilterPeriod = arguments?.getLong(FILTER_PERIOD_TIME)
         if (filters != null) {
-            viewModel.getExpensesByFilters(filters!!)
-            viewModel.filtersExpensesLiveData.observe(viewLifecycleOwner) { filtersExpenses ->
+            filterButton.setImageResource(R.drawable.ic_baseline_filter_alt_24)
+            abstractViewModel.getExpensesByFilters(filters!!)
+            abstractViewModel.filtersExpensesLiveData.observe(viewLifecycleOwner) { filtersExpenses ->
                 if (filtersExpenses.isNotEmpty())
                     historyDescription.text = getString(R.string.general_history)
                 adapter.submitList(filtersExpenses)
 
             }
         } else {
-            viewModel.expenses.observe(viewLifecycleOwner) { expenses ->
+            abstractViewModel.expenses.observe(viewLifecycleOwner) { expenses ->
                 if (expenses.isNotEmpty())
                     historyDescription.text = getString(R.string.general_history)
                 adapter.submitList(expenses)
@@ -201,11 +204,11 @@ class HomeFragment : AbstractFragment() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = viewHolder.layoutPosition
             val expenses = adapter.listExp.currentList[position]
-            viewModel.delete(expenses)
+            abstractViewModel.delete(expenses)
             Snackbar.make(requireView(), getText(R.string.entry_deleted), Snackbar.LENGTH_LONG)
                 .apply {
                     setAction(getText(R.string.cancel_general)) {
-                        viewModel.insert(expenses)
+                        abstractViewModel.insert(expenses)
                     }
                     show()
                 }

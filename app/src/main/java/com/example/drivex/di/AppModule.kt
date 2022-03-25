@@ -9,7 +9,6 @@ import com.example.drivex.data.MapRoomDatabase
 import com.example.drivex.presentation.ui.setting.SettingFragment.Companion.APP_PREFERENCES
 import com.example.drivex.utils.Constans.DATABASE_NAME
 import com.example.drivex.utils.Constans.KEY_FIRST_TIME_TOGGLE
-import com.example.drivex.utils.Constans.SHARED_PREFERENCES_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,6 +46,8 @@ object AppModule {
     fun provideFirstTimeToggle(sharedPreferences: SharedPreferences) = sharedPreferences.getBoolean(
         KEY_FIRST_TIME_TOGGLE, true
     )
+
+
 
 
 }

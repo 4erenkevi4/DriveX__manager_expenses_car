@@ -39,8 +39,7 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
                         cal.set(Calendar.YEAR, year)
                         cal.set(Calendar.MONTH, monthOfYear)
                         cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                        val myFormat = "dd.MM.yyyy"
-                        val sdf = SimpleDateFormat(myFormat, Locale.US)
+                        val sdf = SimpleDateFormat( "dd.MM.yyyy", Locale.US)
                         textViewDate.text = sdf.format(cal.time)
                     }
                 textViewDate.setOnClickListener {
