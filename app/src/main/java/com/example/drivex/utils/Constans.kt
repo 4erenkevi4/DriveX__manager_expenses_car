@@ -47,6 +47,8 @@ object Constans {
     const val SERVICE = "Service"
     const val SHOPPING = "Buying"
     const val PAYMENT = "Payment"
+    const val FILTERS = "filters"
+
 
     const val NOTIFY1 = "У Вас запланировано ТО"
     const val NOTIFY2 = "У Вас запланирована поездка"

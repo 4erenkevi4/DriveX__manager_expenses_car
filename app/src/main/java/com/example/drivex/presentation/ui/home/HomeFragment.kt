@@ -32,11 +32,11 @@ import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
 import com.example.drivex.presentation.ui.fragments.FiltersFragment
-import com.example.drivex.presentation.ui.fragments.FiltersFragment.Companion.FILTERS
 import com.example.drivex.presentation.ui.setting.SettingFragment
+import com.example.drivex.utils.Constans.FILTERS
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -66,6 +66,7 @@ class HomeFragment : AbstractFragment() {
     private var distanceSP: String = ""
     private lateinit var toolbarHome: Toolbar
     private lateinit var filterButton: View
+    private var filters: ArrayList<String>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -95,7 +96,7 @@ class HomeFragment : AbstractFragment() {
         filterButton = view.findViewById(R.id.search_toolbar)
         filterButton.setOnClickListener {
             val fragmentManager = parentFragmentManager.beginTransaction()
-            fragmentManager.replace( R.id.nav_host_fragment, FiltersFragment(), )
+            fragmentManager.replace(R.id.nav_host_fragment, FiltersFragment())
             fragmentManager.commit()
         }
         liveDataCost = viewModel.allExpensesSum
@@ -105,26 +106,33 @@ class HomeFragment : AbstractFragment() {
         liveDataCostService = viewModel.allServiceCostSum
         liveDatarefuelSum = viewModel.refuelSum
 
-        viewModel.expenses.observe(viewLifecycleOwner) { expenses ->
-            adapter.submitList(expenses)
-            if (expenses.size == 1)
-                historyDescription.text = getString(R.string.general_history)
-        }
-        setinfoView()
-        getSharedPref()
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (arguments?.containsKey(FiltersFragment.FILTERS) == true)
-            applyfilters()
+        if (arguments?.containsKey(FILTERS) == true)
+            filters = arguments?.getSerializable(FILTERS) as ArrayList<String>?
+        if (filters != null) {
+            viewModel.getExpensesByFilters(filters!!)
+            viewModel.filtersExpensesLiveData.observe(viewLifecycleOwner) { filtersExpenses ->
+                if (filtersExpenses.isNotEmpty())
+                    historyDescription.text = getString(R.string.general_history)
+                adapter.submitList(filtersExpenses)
+
+            }
+        } else {
+            viewModel.expenses.observe(viewLifecycleOwner) { expenses ->
+                if (expenses.isNotEmpty())
+                    historyDescription.text = getString(R.string.general_history)
+                adapter.submitList(expenses)
+
+            }
+        }
+        setinfoView()
+        getSharedPref()
         setFloatingMenuVisibility(true)
         setToolbar(toolbarHome, R.string.menu_home)
-    }
-
-    private fun applyfilters() {
-       val filters = arguments?.getSerializable(FILTERS)
     }
 
     private fun getSharedPref() {
@@ -146,7 +154,7 @@ class HomeFragment : AbstractFragment() {
             carModel.text = getString(R.string.welcome_text_home_fragment)
             welcomeText.text = getString(R.string.welcome_text_home_fragment_2)
             avatarCard.setOnClickListener {
-               activity.replaceFragment(R.id.action_global_nav_settings)
+                activity.replaceFragment(R.id.action_global_nav_settings)
             }
         }
         setRecyclerview(currencySP)

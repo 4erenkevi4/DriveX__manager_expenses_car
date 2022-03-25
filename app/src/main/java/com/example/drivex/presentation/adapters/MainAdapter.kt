@@ -55,16 +55,16 @@ class MainAdapter(val context: Context?, val currency: String?, private val clic
                 nameType.setTextColor(it!!.getColor(R.color.purple20))
                 when (expenss.title) {
                     REFUEL -> {
-                        nameType.text = it!!.getText(R.string.refuel)
+                        nameType.text = it.getText(R.string.refuel)
                     }
                     SERVICE -> {
-                        nameType.text = it!!.getText(R.string.service)
+                        nameType.text = it.getText(R.string.service)
                     }
                     SHOPPING -> {
-                        nameType.text = it!!.getText(R.string.your_buy)
+                        nameType.text = it.getText(R.string.your_buy)
                     }
                     PAYMENT -> {
-                        nameType.text = it!!.getText(R.string.payment)
+                        nameType.text = it.getText(R.string.payment)
                     }
                 }
             }

@@ -12,27 +12,27 @@ class MapViewModel @ViewModelInject constructor(
     private val mapRepository: MapRepository
 ) : ViewModel() {
     var totalAvgSpeed = mapRepository.getTotalAvgSpeed()
-    private val runsSortedByDate = mapRepository.getAllDriveSortedByDate()
-    private val runsSortedByDistance = mapRepository.getAllDriveSortedByDistance()
-    private val runsSortedByTimeInMillis = mapRepository.getAllDriveSortedByTimeInMillis()
+    private val tripsSortedByDate = mapRepository.getAllDriveSortedByDate()
+    private val tripsSortedByDistance = mapRepository.getAllDriveSortedByDistance()
+    private val tripsSortedByTimeInMillis = mapRepository.getAllDriveSortedByTimeInMillis()
 
     val runs = MediatorLiveData<List<MapModels>>()
 
     var sortType = SortType.DATE
 
     init {
-        runs.addSource(runsSortedByDate) { result ->
+        runs.addSource(tripsSortedByDate) { result ->
             Timber.d("RUNS SORTED BY DATE")
             if(sortType == SortType.DATE) {
                 result?.let { runs.value = it }
             }
         }
-        runs.addSource(runsSortedByDistance) { result ->
+        runs.addSource(tripsSortedByDistance) { result ->
             if(sortType == SortType.DISTANCE) {
                 result?.let { runs.value = it }
             }
         }
-        runs.addSource(runsSortedByTimeInMillis) { result ->
+        runs.addSource(tripsSortedByTimeInMillis) { result ->
             if(sortType == SortType.RUNNING_TIME) {
                 result?.let { runs.value = it }
             }
@@ -40,9 +40,9 @@ class MapViewModel @ViewModelInject constructor(
     }
 
     fun sortRuns(sortType: SortType) = when(sortType) {
-        SortType.DATE -> runsSortedByDate.value?.let { runs.value = it }
-        SortType.DISTANCE -> runsSortedByDistance.value?.let { runs.value = it }
-        SortType.RUNNING_TIME -> runsSortedByTimeInMillis.value?.let { runs.value = it }
+        SortType.DATE -> tripsSortedByDate.value?.let { runs.value = it }
+        SortType.DISTANCE -> tripsSortedByDistance.value?.let { runs.value = it }
+        SortType.RUNNING_TIME -> tripsSortedByTimeInMillis.value?.let { runs.value = it }
     }.also {
         this.sortType = sortType
     }

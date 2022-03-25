@@ -1,25 +1,19 @@
 package com.example.drivex.presentation.ui.activity.viewModels
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.*
 import com.example.drivex.domain.ExpensesDao
 import com.example.drivex.data.ExpensesRoomDatabase
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.data.repository.ExpensesRepository
 import com.example.drivex.data.repository.ExpensesRepositoryImpl
-import com.example.drivex.presentation.ui.dialogs.SettingsDialog
-import com.example.drivex.presentation.ui.setting.SettingFragment
 import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SERVICE
 import com.example.drivex.utils.Constans.SHOPPING
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.text.NumberFormat
-import java.util.*
+import kotlin.collections.ArrayList
 
 class AbstractViewModel(application: Application) : AndroidViewModel(application) {
     private val expensesRepository: ExpensesRepository
@@ -27,16 +21,29 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
     init {
         expensesRepository = ExpensesRepositoryImpl(application)
     }
+    var filtersExpensesLiveData = MediatorLiveData<List<Expenses>>()
+
     val expenses = MediatorLiveData<List<Expenses>>()
-    private val runsSortedByDate = expensesRepository.getAllExpensesBydate()
+    private val expensesSortedByDate = expensesRepository.getAllExpensesBydate()
 
     init {
-        expenses.addSource(runsSortedByDate) { result ->
-            Timber.d("RUNS SORTED BY DATE")
+        expenses.addSource(expensesSortedByDate) { result ->
             result?.let { expenses.value = it }
         }
     }
 
+    fun getExpensesByFilters(filters:ArrayList<String>){
+        filtersExpensesLiveData.addSource(expensesSortedByDate) { result ->
+            val filteredExpenses = mutableListOf<Expenses>()
+            result.forEach {
+                filters.forEach { filter->
+                    if (it.title == filter)
+                        filteredExpenses.add(it)
+                }
+            }
+            filtersExpensesLiveData.value = filteredExpenses
+        }
+    }
 
     private val refuelDao: ExpensesDao by lazy {
         val db = ExpensesRoomDatabase.getInstance(application)

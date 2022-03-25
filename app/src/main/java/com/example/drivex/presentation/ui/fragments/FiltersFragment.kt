@@ -6,27 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Button
-import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.os.bundleOf
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.activity.MainActivity
-import com.google.android.material.checkbox.MaterialCheckBox
+import com.example.drivex.utils.Constans.FILTERS
+import com.example.drivex.utils.Constans.PAYMENT
+import com.example.drivex.utils.Constans.REFUEL
+import com.example.drivex.utils.Constans.SERVICE
+import com.example.drivex.utils.Constans.SHOPPING
 import com.google.android.material.switchmaterial.SwitchMaterial
-import java.time.chrono.ChronoPeriod
 
 class FiltersFragment : AbstractFragment() {
-
-    companion object {
-        const val FILTERS = "filters"
-        const val REFUEL_FILTER = "refuel_filter"
-        const val SERVICE_FILTER = "service_filter"
-        const val PAYMENT_FILTER = "payment_filter"
-        const val BUYING_FILTER = "buying_filter"
-        const val TIME_FILTER = "time_filter"
-
-    }
 
     private lateinit var refuelSwitsh: SwitchMaterial
     private lateinit var serviceSwitsh: SwitchMaterial
@@ -70,16 +62,16 @@ class FiltersFragment : AbstractFragment() {
 
     private fun initFilters() {
         refuelSwitsh.setOnCheckedChangeListener { _, isChecked ->
-            applyFilter(isChecked, REFUEL_FILTER)
+            applyFilter(isChecked, REFUEL)
         }
         paymentsSwitsh.setOnCheckedChangeListener { _, isChecked ->
-            applyFilter(isChecked, PAYMENT_FILTER)
+            applyFilter(isChecked, PAYMENT)
         }
         serviceSwitsh.setOnCheckedChangeListener { _, isChecked ->
-            applyFilter(isChecked, SERVICE_FILTER)
+            applyFilter(isChecked, SERVICE)
         }
         buyingSwitsh.setOnCheckedChangeListener { _, isChecked ->
-            applyFilter(isChecked, BUYING_FILTER)
+            applyFilter(isChecked, SHOPPING)
         }
         periodSpinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {

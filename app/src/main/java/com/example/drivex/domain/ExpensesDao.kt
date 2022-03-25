@@ -46,4 +46,5 @@ interface ExpensesDao {
     @Query("SELECT SUM(totalSum) FROM refuel WHERE title = :titleExp")
     fun getSUmExpensesIntById(titleExp:String): Int
 
+
 }
