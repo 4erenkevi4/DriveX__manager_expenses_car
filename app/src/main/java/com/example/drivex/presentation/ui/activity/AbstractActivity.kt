@@ -91,6 +91,18 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
             Toast.LENGTH_SHORT
         ).show()
     }
+    fun setToolbar(
+        toolbar: androidx.appcompat.widget.Toolbar?,
+        textTitleResID: Int,
+        isBackButtonEnabled: Boolean = false
+    ) {
+        this.setSupportActionBar(toolbar)
+        this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar?.setTitle(textTitleResID)
+        toolbar?.setTitleTextColor(Color.WHITE)
+        if (isBackButtonEnabled)
+            toolbar?.setNavigationOnClickListener { this.onBackPressed() }
+    }
 }
 
 

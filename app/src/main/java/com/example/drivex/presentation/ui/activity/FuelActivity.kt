@@ -3,11 +3,13 @@ package com.example.drivex.presentation.ui.activity
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.Toast.makeText
+import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -39,6 +41,8 @@ class FuelActivity : AbstractActivity() {
     private lateinit var containerPhoto: ImageView
     private lateinit var abstractViewModel: AbstractViewModel
     private lateinit var selectionType: TextView
+    private lateinit var toolbar: Toolbar
+    private lateinit var root: View
     private var paymentType: String? = ""
     var titte: String = ""
     var startToast = ""
@@ -48,8 +52,10 @@ class FuelActivity : AbstractActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         paymentType = intent.getStringExtra(PAYMENT_TYPE)
         setContentView(R.layout.activity_refuel)
+        root = findViewById(R.id.refuel_root)
         textViewDate = findViewById(R.id.textView_date)
         editTextMileage = findViewById(R.id.text_mileage)
         editTextCost = findViewById(R.id.cost_fuell)
@@ -60,8 +66,10 @@ class FuelActivity : AbstractActivity() {
         description = findViewById(R.id.textView_description)
         selectionType = findViewById(R.id.selection_type)
         desButtonPhoto = findViewById(R.id.description_button_photo)
+        toolbar = findViewById(R.id.back_toolbar)
         val viewModelFactory = ViewModelFactory(application)
-        abstractViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
+        abstractViewModel =
+            ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         val id = intent.getLongExtra("id", -1L)
         if (id == -1L) {
             initSaveButton(buttonSave)
@@ -72,6 +80,7 @@ class FuelActivity : AbstractActivity() {
         initCamera(containerPhoto, buttonPhoto)
         initTypePayment()
         makeText(this, startToast, Toast.LENGTH_SHORT).show()
+        setToolbar(toolbar,R.string.refuel,true)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -96,6 +105,7 @@ class FuelActivity : AbstractActivity() {
                     getString(R.string.please_add_refuel_data)
             }
             IS_SHOPPING -> {
+                root.setBackgroundResource(R.color.gray80);
                 titte = SHOPPING
                 desc = getString(R.string.info_of_your_buy)
                 icon = R.drawable.shoping_icon
@@ -104,6 +114,7 @@ class FuelActivity : AbstractActivity() {
                 selectionType.isVisible = false
             }
             IS_PAYMENT -> {
+                root.setBackgroundResource(R.color.black20);
                 titte = PAYMENT
                 desc = getString(R.string.payment_info)
                 icon = R.drawable.pay_icon; startToast =

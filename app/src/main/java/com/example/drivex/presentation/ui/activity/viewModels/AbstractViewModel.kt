@@ -44,18 +44,21 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
 
     fun getExpensesByFilters(filters: ArrayList<String>) {
         val filtersPeriod = getPeriodOfFilter(filters)
-
-        filtersExpensesLiveData.addSource(
-            expensesRepository.getAllExpensesByPeriod(
-                filtersPeriod ?: Calendar.getInstance().timeInMillis
+        var source = getAllexpenses
+        if (filtersPeriod != null) {
+            source = expensesRepository.getAllExpensesByPeriod(
+                filtersPeriod
             )
+        }
+        filtersExpensesLiveData.addSource(
+            source
         ) { result ->
             val filteredExpenses = mutableListOf<Expenses>()
             result.forEach {
                 filters.forEach { filter ->
                     if (filtersPeriod != null && filters.size == 1)
                         filteredExpenses.add(it)
-                    else if ( it.title == filter)
+                    else if (it.title == filter)
                         filteredExpenses.add(it)
                 }
             }

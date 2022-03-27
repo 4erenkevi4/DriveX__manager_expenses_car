@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -38,6 +39,7 @@ class ServiceActivity : AbstractActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var descRecyclerView: View
     private lateinit var constraintLayout: ConstraintLayout
+    private lateinit var toolbar: Toolbar
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,12 +57,14 @@ class ServiceActivity : AbstractActivity() {
         descRecyclerView = findViewById(R.id.desc_recyclerview)
         constraintLayout = findViewById(R.id.constraintLayout)
         recyclerView = findViewById(R.id.recycler_view_service)
+        toolbar = findViewById(R.id.back_toolbar)
         val viewModelFactory = ViewModelFactory(application)
         abstractViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
         initCamera(photoPreview, buttonPhoto, recyclerView, descRecyclerView)
         setRecyclerview()
+        setToolbar(toolbar,R.string.refuel,true)
         description.setOnClickListener {
             recyclerView.isVisible = true
             descRecyclerView.isVisible = true
