@@ -7,7 +7,7 @@ interface ScreenManager {
 
    fun  initCalendar(textViewDate: TextView)
    fun initSaveButton(view: View)
-   fun putData()
+   fun putData( isUpdate: Boolean = false)
    fun showToast(text: String,view: View )
 
 }

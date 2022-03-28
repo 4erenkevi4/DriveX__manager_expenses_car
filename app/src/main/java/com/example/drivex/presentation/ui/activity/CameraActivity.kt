@@ -227,7 +227,7 @@ class CameraActivity : AbstractActivity() {
         TODO("Not yet implemented")
     }
 
-    override fun putData() {
+    override fun putData( isUpdate: Boolean) {
         TODO("Not yet implemented")
     }
 

@@ -89,7 +89,7 @@ class ServiceActivity : AbstractActivity() {
     }
 
 
-    override fun putData() {
+    override fun putData( isUpdate: Boolean) {
         val mileage: String = editTextMileage.text.toString()
         val desc: String = description.text.toString()
         val cost: String = editTextCost.text.toString()

@@ -43,11 +43,13 @@ class FuelActivity : AbstractActivity() {
     private lateinit var selectionType: TextView
     private lateinit var toolbar: Toolbar
     private lateinit var root: View
+    private lateinit var typeOfExpenses: TextView
     private var paymentType: String? = ""
-    var titte: String = ""
-    var startToast = ""
-    var desc = ""
-    var icon: Int? = null
+    private var titte: String? = null
+    private var startToast = ""
+    private var desc = ""
+    private var icon: Int? = null
+    private var localExpenses: Expenses? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +69,7 @@ class FuelActivity : AbstractActivity() {
         selectionType = findViewById(R.id.selection_type)
         desButtonPhoto = findViewById(R.id.description_button_photo)
         toolbar = findViewById(R.id.back_toolbar)
+        typeOfExpenses = findViewById(R.id.type)
         val viewModelFactory = ViewModelFactory(application)
         abstractViewModel =
             ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
@@ -80,7 +83,7 @@ class FuelActivity : AbstractActivity() {
         initCamera(containerPhoto, buttonPhoto)
         initTypePayment()
         makeText(this, startToast, Toast.LENGTH_SHORT).show()
-        setToolbar(toolbar,R.string.refuel,true)
+        setToolbar(toolbar, R.string.refuel, true)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -128,23 +131,29 @@ class FuelActivity : AbstractActivity() {
 
     private fun updateMode(id: Long) {
         val intent = Intent(this, MainActivity::class.java)
-        abstractViewModel.readRefuelById(id).observe(this) { desc ->
-            desc?.let {
+
+        abstractViewModel.readRefuelById(id).observe(this) { expenses ->
+            expenses?.let {
                 desButtonPhoto.isVisible = false
                 buttonPhoto.isVisible = false
                 selectionType.text = getText(R.string.category)
-                editTextMileage.setText(desc.mileage.toString())
-                editTextVolume.setText(desc.title)
-                editTextCost.setText(desc.totalSum.toString())
-                textViewDate.text = desc.date.toString()
-                description.hint = desc.description
-                containerPhoto.setImageURI(desc.photoURI?.toUri())
+                editTextMileage.setText(expenses.mileage.toString())
+                editTextVolume.setText(expenses.volume.toString())
+                editTextCost.setText(expenses.totalSum.toString())
+                textViewDate.text = expenses.date.toString()
+                description.hint = expenses.description
+                typeOfExpenses.run {
+                    this.isVisible = true
+                    this.text = expenses.title
+                }
+                containerPhoto.setImageURI(expenses.photoURI?.toUri())
             }
+            localExpenses = expenses
         }
-        buttonSave.setOnClickListener { startActivity(intent) }
+        buttonSave.setOnClickListener { putData(isUpdate = true) }
     }
 
-    override fun putData() {
+    override fun putData(isUpdate: Boolean) {
 
         val mileage: String = editTextMileage.text.toString()
         var volume: String = editTextVolume.text.toString()
@@ -158,18 +167,21 @@ class FuelActivity : AbstractActivity() {
             if (volume.isNullOrEmpty())
                 volume = "0"
             val expenses = Expenses(
-                id = 0,
-                title = titte,
+                id = localExpenses?.id ?: 0,
+                title = titte ?: localExpenses?.title ?: typeOfExpenses.text.toString(),
                 mileage = mileage.toInt(),
                 volume = volume.toInt(),
                 totalSum = cost.toDouble(),
-                date = textViewDate.text.toString(),
-                icon = icon,
-                description = descriptionValue,
-                photoURI = uriPhoto?.toString(),
-                timeForMillis = System.currentTimeMillis()
+                date = localExpenses?.date ?: textViewDate.text.toString(),
+                icon = getIconByType(titte ?: typeOfExpenses.text.toString()),
+                description = localExpenses?.description ?: descriptionValue,
+                photoURI = localExpenses?.photoURI ?: uriPhoto?.toString(),
+                timeForMillis = localExpenses?.timeForMillis ?: System.currentTimeMillis()
             )
-            abstractViewModel.addRefuel(expenses)
+            if (isUpdate)
+                abstractViewModel.insert(expenses)
+            else
+                abstractViewModel.addRefuel(expenses)
             startActivity(intent)
 
         } else {
@@ -183,6 +195,19 @@ class FuelActivity : AbstractActivity() {
                 showToast(getString(R.string.please_add_cost_fuel), editTextCost)
             }
 
+        }
+    }
+
+    private fun getIconByType(type: String): Int {
+        return when (type) {
+            IS_REFUEL -> return R.drawable.fuel_icon;
+
+            IS_SHOPPING -> return R.drawable.shoping_icon
+
+            IS_PAYMENT -> return R.drawable.pay_icon
+            else -> {
+                R.drawable.fuel_icon
+            }
         }
     }
 
