@@ -77,7 +77,7 @@ class CameraActivity : AbstractActivity() {
         cameraProviderFuture.addListener({
             imagePreview = Preview.Builder().apply {
                 setTargetAspectRatio(AspectRatio.RATIO_16_9)
-                setTargetRotation(previewView.display.rotation)
+                previewView.display?.rotation?.let { setTargetRotation(it) }
             }.build()
             imageAnalysis = ImageAnalysis.Builder().apply {
                 setImageQueueDepth(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
