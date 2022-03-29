@@ -111,6 +111,13 @@
     <string name="description">Описание</string>
     <string name="resave_expenses">Редактировать</string>
     <string name="make_new_photo">Новое фото</string>
+    //Map fragments
+    <string name="trip_details">Детали поездки</string>
+    <string name="total_time">Общее время</string>
+    <string name="avg_speed">Средняя скорость</string>
+    <string name="top_speed">Макс. скорость</string>
+    <string name="total_dist">Дистанция, km</string>
+
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>

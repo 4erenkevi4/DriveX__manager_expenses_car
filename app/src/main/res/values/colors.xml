@@ -12,6 +12,7 @@
     <color name="white40">#BFBFBF</color>
     <color name="gray20">#A1A1A1</color>
     <color name="gray40">#27D5CECE</color>
+    <color name="gray60">#27575757</color>
     <color name="yellow20">#BF9B03</color>
     <color name="yellow10">#A19B83</color>
     <color name="orange20">#AC4222</color>
@@ -21,6 +22,7 @@
     <color name="text_100">#50B1B1</color>
     <color name="text_background_alfa">#0AFFFFFF</color>
     <color name="background_blue">#3B4667</color>
+    <color name="background_blue_lite_lite">#816D7693</color>
     <color name="background_blue_lite">#6D7693</color>
     <color name="background_blue_new">#0f75bd</color>
     <color name="background_setting_gray">#A1A1A1</color>

@@ -111,6 +111,11 @@
     <string name="description">Description</string>
     <string name="resave_expenses">Edit and re-save</string>
     <string name="make_new_photo">Make a new photo</string>
+    <string name="trip_details">Trip details</string>
+    <string name="total_time">Total time</string>
+    <string name="avg_speed">Avg speed</string>
+    <string name="top_speed">Top speed</string>
+    <string name="total_dist">Distance, km</string>
 
     <string-array name="filter_options">
         <item>Sort by date</item>

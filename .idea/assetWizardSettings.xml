@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/filter_alt/baseline_filter_alt_24.xml" />
+                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/monetization_on/baseline_monetization_on_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,9 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="1da536" />
-                            <entry key="outputName" value="ic_baseline_filter_alt_24" />
-                            <entry key="sourceFile" value="D:\AndroidProjects\Drivex_Car\DriveX__manager_expenses_car" />
+                            <entry key="outputName" value="ic_baseline_monetization" />
+                            <entry key="sourceFile" value="C:\Users\Северный\Desktop\auto\svg icons\free-icon-font-trash-3917772.svg" />
                           </map>
                         </option>
                       </PersistentState>

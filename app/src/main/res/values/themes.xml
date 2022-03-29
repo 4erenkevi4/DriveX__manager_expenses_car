@@ -25,6 +25,13 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@color/text_background_alfa</item>
     </style>
+    <style name="Description_map_text">
+        <item name="android:textSize">9sp</item>
+        <item name="android:textColorHint">@color/gray20</item>
+        <item name="android:textColor">@color/gray20</item>
+        <item name="android:gravity">center</item>
+       <item name="android:textStyle">italic</item>
+    </style>
     <style name="Notify_icon">
         <item name="android:gravity">center</item>
        <item name="android:layout_margin">5dp</item>

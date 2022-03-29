@@ -45,7 +45,7 @@ class RideFragment : AbstractFragment() {
         super.onViewCreated(view, savedInstanceState)
         rideAdapter = RideAdapter()
         viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
-        toolbarRide = view.findViewById(R.id.main_toolbar)
+        toolbarRide = view.findViewById(R.id.rides_toolbar)
         setupRecyclerView()
         setToolbar(toolbarRide,R.string.menu_ride)
 
