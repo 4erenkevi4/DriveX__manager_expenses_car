@@ -8,7 +8,7 @@
     <string name="action_settings">Settings</string>
     <string name="save_date">Save data</string>
     <string name="add_check">Attach receipt</string>
-    <string name="add_receipt">You can attach a photo of the receipt</string>
+    <string name="add_receipt">You can attach photo of the receipt</string>
     <string name="volume">Volume</string>
     <string name="summ">Amount</string>
     <string name="mileage">Mileage</string>
@@ -109,6 +109,8 @@
     <string name="apply_filters">Apply filters</string>
     <string name="reset_filters">reset</string>
     <string name="description">Description</string>
+    <string name="resave_expenses">Edit and re-save</string>
+    <string name="make_new_photo">Make a new photo</string>
 
     <string-array name="filter_options">
         <item>Sort by date</item>

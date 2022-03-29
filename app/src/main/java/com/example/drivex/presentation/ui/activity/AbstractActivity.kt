@@ -27,30 +27,28 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
         const val PHOTO_EXTENSION = ".jpg"
         const val FUEL_ACTIVITY_PACKAGE = "presentation.ui.activity.FuelActivity"
         const val SERVICE_ACTIVITY_PACKAGE = "presentation.ui.activity.ServiceActivity"
+    }
 
-        @SuppressLint("SimpleDateFormat")
-        fun initCalendar(textViewDate: TextView, context: Context) {
-            textViewDate.setOnClickListener {
-                textViewDate.text =
-                    SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis())
-                val cal = Calendar.getInstance()
-                val dateSetListener =
-                    DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                        cal.set(Calendar.YEAR, year)
-                        cal.set(Calendar.MONTH, monthOfYear)
-                        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                        val sdf = SimpleDateFormat( "dd.MM.yyyy", Locale.US)
-                        textViewDate.text = sdf.format(cal.time)
-                    }
-                textViewDate.setOnClickListener {
-                    DatePickerDialog(
-                        context, dateSetListener,
-                        cal.get(Calendar.YEAR),
-                        cal.get(Calendar.MONTH),
-                        cal.get(Calendar.DAY_OF_MONTH)
-                    ).show()
+    @SuppressLint("SimpleDateFormat")
+    fun initCalendar(textViewDate: TextView, context: Context) {
+        textViewDate.text =
+            SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis())
+        textViewDate.setOnClickListener {
+            val cal = Calendar.getInstance()
+            val dateSetListener =
+                DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                    cal.set(Calendar.YEAR, year)
+                    cal.set(Calendar.MONTH, monthOfYear)
+                    cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.US)
+                    textViewDate.text = sdf.format(cal.time)
                 }
-            }
+            DatePickerDialog(
+                context, dateSetListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
     }
 
@@ -60,7 +58,6 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
         recyclerView: View? = null,
         descRecyclerView: View? = null,
     ) {
-
         //uriPhoto = intent?.getStringExtra(URI_PHOTO)
         if (uriPhoto != null) {
             containerPhoto.isVisible = true
@@ -91,6 +88,7 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
             Toast.LENGTH_SHORT
         ).show()
     }
+
     fun setToolbar(
         toolbar: androidx.appcompat.widget.Toolbar?,
         textTitleResID: Int,
@@ -104,6 +102,7 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
             toolbar?.setNavigationOnClickListener { this.onBackPressed() }
     }
 }
+
 
 
 

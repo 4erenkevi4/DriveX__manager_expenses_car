@@ -11,8 +11,11 @@ import android.widget.Toast
 import android.widget.Toast.makeText
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.drivex.R
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
@@ -23,8 +26,6 @@ import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SHOPPING
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 @Suppress("UNCHECKED_CAST")
@@ -44,6 +45,9 @@ class FuelActivity : AbstractActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var root: View
     private lateinit var typeOfExpenses: TextView
+    private lateinit var descriptionBtnSave: TextView
+    private lateinit var liveDataMileage: LiveData<String>
+
     private var paymentType: String? = ""
     private var titte: String? = null
     private var startToast = ""
@@ -54,7 +58,9 @@ class FuelActivity : AbstractActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val viewModelFactory = ViewModelFactory(application)
+        abstractViewModel =
+            ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         paymentType = intent.getStringExtra(PAYMENT_TYPE)
         setContentView(R.layout.activity_refuel)
         root = findViewById(R.id.refuel_root)
@@ -64,15 +70,17 @@ class FuelActivity : AbstractActivity() {
         editTextVolume = findViewById(R.id.edit_text_volume)
         buttonPhoto = findViewById(R.id.button_photo)
         buttonSave = findViewById(R.id.button_save)
+        descriptionBtnSave = findViewById(R.id.description_button_save)
         containerPhoto = findViewById(R.id.fuel_photo_container)
         description = findViewById(R.id.textView_description)
         selectionType = findViewById(R.id.selection_type)
         desButtonPhoto = findViewById(R.id.description_button_photo)
         toolbar = findViewById(R.id.back_toolbar)
         typeOfExpenses = findViewById(R.id.type)
-        val viewModelFactory = ViewModelFactory(application)
-        abstractViewModel =
-            ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
+        liveDataMileage = abstractViewModel.lastMileageStr
+        liveDataMileage.observe(this) {
+            editTextMileage.setText(it)
+        }
         val id = intent.getLongExtra("id", -1L)
         if (id == -1L) {
             initSaveButton(buttonSave)
@@ -84,13 +92,18 @@ class FuelActivity : AbstractActivity() {
         initTypePayment()
         makeText(this, startToast, Toast.LENGTH_SHORT).show()
         setToolbar(toolbar, R.string.refuel, true)
+        containerPhoto.setOnClickListener {
+            initCamera(it as ImageView, it)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         uriPhoto = data?.getStringExtra(URI_PHOTO)
-        containerPhoto.isVisible = true
-        containerPhoto.setImageURI(uriPhoto!!.toUri())
+        uriPhoto?.let {
+            containerPhoto.isVisible = true
+            containerPhoto.setImageURI(it.toUri())
+        }
     }
 
     override fun initCalendar(textViewDate: TextView) {
@@ -134,8 +147,8 @@ class FuelActivity : AbstractActivity() {
 
         abstractViewModel.readRefuelById(id).observe(this) { expenses ->
             expenses?.let {
-                desButtonPhoto.isVisible = false
-                buttonPhoto.isVisible = false
+                descriptionBtnSave.text = getString(R.string.resave_expenses)
+                desButtonPhoto.text = getString(R.string.make_new_photo)
                 selectionType.text = getText(R.string.category)
                 editTextMileage.setText(expenses.mileage.toString())
                 editTextVolume.setText(expenses.volume.toString())
@@ -173,9 +186,11 @@ class FuelActivity : AbstractActivity() {
                 volume = volume.toInt(),
                 totalSum = cost.toDouble(),
                 date = localExpenses?.date ?: textViewDate.text.toString(),
-                icon = getIconByType(titte ?: typeOfExpenses.text.toString()),
+                icon = localExpenses?.icon ?: getIconByType(
+                    titte ?: typeOfExpenses.text.toString()
+                ),
                 description = localExpenses?.description ?: descriptionValue,
-                photoURI = localExpenses?.photoURI ?: uriPhoto?.toString(),
+                photoURI = uriPhoto ?: localExpenses?.photoURI,
                 timeForMillis = localExpenses?.timeForMillis ?: System.currentTimeMillis()
             )
             if (isUpdate)

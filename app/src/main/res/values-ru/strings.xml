@@ -109,6 +109,8 @@
     <string name="apply_filters">применить фильтры</string>
     <string name="reset_filters">сбросить</string>
     <string name="description">Описание</string>
+    <string name="resave_expenses">Редактировать</string>
+    <string name="make_new_photo">Новое фото</string>
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>
