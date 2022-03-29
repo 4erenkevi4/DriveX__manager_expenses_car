@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -44,11 +45,13 @@ class MainAdapter(val context: Context?, val currency: String?, private val clic
         private val nameType: TextView = root.findViewById(R.id.name_type)
         private val date: TextView = root.findViewById(R.id.date)
         private val cost: TextView = root.findViewById(R.id.cost)
+        private val photo: ImageView = root.findViewById(R.id.preview_photo)
 
         @RequiresApi(Build.VERSION_CODES.M)
         @SuppressLint("SetTextI18n")
         fun bind(context: Context?, expenss: Expenses, currency: String?) {
             date.text = expenss.date.toString()
+            photo.setImageURI(expenss.photoURI?.toUri())
             cost.text = expenss.totalSum.toString() + " " + currency
             iconType.setImageResource(expenss.icon ?: R.drawable.ic_car)
             context.let {
