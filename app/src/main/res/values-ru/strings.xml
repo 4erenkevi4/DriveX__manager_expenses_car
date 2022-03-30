@@ -117,7 +117,10 @@
     <string name="avg_speed">Средняя скорость</string>
     <string name="top_speed">Макс. скорость</string>
     <string name="total_dist">Дистанция, km</string>
-
+    <string name="city_fuel_consumption">Расход топлива в городе</string>
+    <string name="consumption_off_city">Расход топлива по трассе</string>
+    <string name="insufficient_data">Нет данных</string>
+    <string name="send_extra_text">Вот маршрут моей поездки/(отправлено с помощью приложения DriveX)</string>
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>

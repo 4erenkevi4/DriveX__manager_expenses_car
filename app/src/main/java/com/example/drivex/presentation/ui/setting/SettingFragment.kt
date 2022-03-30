@@ -1,5 +1,6 @@
 package com.example.drivex.presentation.ui.setting
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
@@ -15,6 +16,8 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+import androidx.core.animation.doOnCancel
+import androidx.core.animation.doOnEnd
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
@@ -28,6 +31,8 @@ import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CONSUMPTION
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_CURENCY
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_DISTANCE
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_OFF_SITY_CONSUMPTION
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_SITY_CONSUMPTION
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_SOUND
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_VOLUME
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
@@ -59,6 +64,10 @@ class SettingFragment : AbstractFragment() {
     private lateinit var buttonSave: ImageView
     private lateinit var buttonSetAvatar: ImageView
     private lateinit var toolbarSetting: Toolbar
+    private lateinit var consSityValue: EditText
+    private lateinit var consOffSityValue: EditText
+    private lateinit var saveBtnConsOffSity: ImageButton
+    private lateinit var saveBtnConsSity: ImageButton
 
     @Inject
     lateinit var prefs: SharedPreferences
@@ -80,6 +89,10 @@ class SettingFragment : AbstractFragment() {
 
         // setToolbar(false)
         setFloatingMenuVisibility(false)
+        consSityValue = view.findViewById(R.id.sity_consumption_value)
+        consOffSityValue = view.findViewById(R.id.offsity_consumption_value)
+        saveBtnConsOffSity = view.findViewById(R.id.save_btn_cons_off_sity)
+        saveBtnConsSity = view.findViewById(R.id.save_btn_cons_sity)
         carVendor = view.findViewById(R.id.car_vendor)
         carModel = view.findViewById(R.id.Car_model)
         soundStartApp = view.findViewById(R.id.switch_sound)
@@ -128,7 +141,14 @@ class SettingFragment : AbstractFragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
+        saveBtnConsOffSity.setOnClickListener {
 
+            saveConsumptionToSP(it, consOffSityValue, TYPE_OFF_SITY_CONSUMPTION)
+        }
+
+        saveBtnConsSity.setOnClickListener {
+            saveConsumptionToSP(it, consSityValue, TYPE_SITY_CONSUMPTION)
+        }
         utilsVolume.setOnClickListener {
             createDialog(
                 arrayOf(
@@ -177,6 +197,37 @@ class SettingFragment : AbstractFragment() {
             .show()
     }
 
+    private fun saveConsumptionToSP(view: View, editText: EditText, type: String) {
+        if (editText.text.isEmpty()) {
+            startRotate(view)
+            Toast.makeText(
+                context,
+                "Please add fuel consumption!",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        } else
+            abstractViewModel.saveToSP(
+                keyType = type,
+                floatValue = editText.text.toString().toFloat(),
+                prefs = prefs
+            )
+        editText.hint = editText.text.toString()
+        editText.setText("")
+
+    }
+
+    private fun startRotate(view: View) {
+        val rotateAnimator = ObjectAnimator.ofFloat(view, "rotation", 0f, 30f)
+        rotateAnimator.run {
+            this.repeatCount = 2
+            this.duration = 70
+            this.start()
+            this.doOnEnd {
+                ObjectAnimator.ofFloat(view, "rotation", 30f, 0f).start()
+            }
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun applySettingsToSP(prefs: SharedPreferences) {
@@ -195,6 +246,12 @@ class SettingFragment : AbstractFragment() {
         }
         if (prefs.contains(TYPE_SOUND)) {
             switch_sound.isChecked = prefs.getBoolean(TYPE_SOUND, false)
+        }
+        if (prefs.contains(TYPE_SITY_CONSUMPTION)) {
+            consSityValue.hint = (prefs.getFloat(TYPE_SITY_CONSUMPTION, 0f).toString())
+        }
+        if (prefs.contains(TYPE_OFF_SITY_CONSUMPTION)) {
+            consOffSityValue.hint =(prefs.getFloat(TYPE_OFF_SITY_CONSUMPTION, 0f).toString())
         }
         if (prefs.contains(TYPE_CAR)) {
             carModel.setText(prefs.getString(TYPE_CAR, ""))

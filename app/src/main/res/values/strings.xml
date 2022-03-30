@@ -116,6 +116,10 @@
     <string name="avg_speed">Avg speed</string>
     <string name="top_speed">Top speed</string>
     <string name="total_dist">Distance, km</string>
+    <string name="city_fuel_consumption">City fuel consumption</string>
+    <string name="consumption_off_city">Highway fuel consumption</string>
+    <string name="insufficient_data">Insufficient data</string>
+    <string name="send_extra_text">This is my ride route / Sent using the DriveX app</string>
 
     <string-array name="filter_options">
         <item>Sort by date</item>

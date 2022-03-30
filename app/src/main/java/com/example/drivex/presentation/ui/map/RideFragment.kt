@@ -19,15 +19,19 @@ import dagger.hilt.android.AndroidEntryPoint
 
 import kotlinx.android.synthetic.main.fragment_ride.*
 import android.content.Intent
-import android.graphics.Color
+import android.content.SharedPreferences
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import com.example.drivex.presentation.ui.activity.MapsActivity
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class RideFragment : AbstractFragment() {
+
+    @Inject
+    lateinit var prefs: SharedPreferences
 
     private lateinit var rideAdapter: RideAdapter
     private lateinit var viewModel: MapViewModel
@@ -45,12 +49,13 @@ class RideFragment : AbstractFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rideAdapter = RideAdapter()
+        rideAdapter = RideAdapter(prefs,context)
         viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
         toolbarRide = view.findViewById(R.id.rides_toolbar)
        // shareBtn = view.findViewById(R.id.share_btn)
         setupRecyclerView()
         setToolbar(toolbarRide,R.string.menu_ride)
+
 
         when (viewModel.sortType) {
             SortType.DATE -> spFilter.setSelection(0)

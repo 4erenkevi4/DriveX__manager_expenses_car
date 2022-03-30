@@ -118,10 +118,12 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
         keyType: String,
         value: Boolean = false,
         set: Set<String>? = null,
-        prefs: SharedPreferences
+        prefs: SharedPreferences,
+        floatValue: Float? = null
     ) {
         val editor: SharedPreferences.Editor = prefs.edit()
         when {
+            floatValue != null -> editor.putFloat(keyType, floatValue)
             string != null -> editor.putString(keyType, string)
             set != null -> editor.putStringSet(keyType, set)
             else -> editor.putBoolean(keyType, value)

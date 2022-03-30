@@ -28,9 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="0f98ab" />
-                            <entry key="outputName" value="ic_baseline_share_24" />
-                            <entry key="sourceFile" value="C:\Users\Северный\Desktop\auto\svg icons\free-icon-font-trash-3917772.svg" />
+                            <entry key="outputName" value="ic_free_icon_save" />
+                            <entry key="sourceFile" value="C:\Users\Северный\Desktop\free-icon-font-checkbox-3917090.svg" />
                           </map>
                         </option>
                       </PersistentState>

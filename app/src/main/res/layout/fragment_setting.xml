@@ -281,10 +281,93 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_down" />
             </LinearLayout>
-
-
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layout_consumpt_sity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/description_width"
+            android:gravity="start|center">
+
+            <ImageView
+                android:layout_width="@dimen/item_dimensions_32"
+                android:layout_height="@dimen/item_dimensions_32"
+                android:contentDescription="@string/Notifications_settings"
+                android:src="@drawable/ic_free_arrow_grow" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:layout_weight="1"
+                android:text="@string/city_fuel_consumption" />
+
+            <LinearLayout
+                android:id="@+id/cons_sity_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:clickable="true"
+                android:focusable="true">
+
+                <EditText
+                    android:id="@+id/sity_consumption_value"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:inputType="numberDecimal" />
+
+                <ImageButton
+                    android:id="@+id/save_btn_cons_sity"
+                    android:layout_width="@dimen/item_dimensions_32"
+                    android:layout_height="@dimen/item_dimensions_32"
+                    android:src="@drawable/ic_free_icon_save" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_consumpt_offsity"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/description_width"
+            android:gravity="start|center">
+
+            <ImageView
+                android:layout_width="@dimen/item_dimensions_32"
+                android:layout_height="@dimen/item_dimensions_32"
+                android:contentDescription="@string/Notifications_settings"
+                android:src="@drawable/ic_free_arrow_down" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:layout_weight="1"
+                android:text="@string/consumption_off_city" />
+
+            <LinearLayout
+                android:id="@+id/cons_offsity_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin_16"
+                android:clickable="true"
+                android:focusable="true">
+
+                <EditText
+                    android:id="@+id/offsity_consumption_value"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:inputType="numberDecimal" />
+
+                <ImageButton
+                    android:id="@+id/save_btn_cons_off_sity"
+                    android:layout_width="@dimen/item_dimensions_32"
+                    android:layout_height="@dimen/item_dimensions_32"
+                    android:src="@drawable/ic_free_icon_save" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 
