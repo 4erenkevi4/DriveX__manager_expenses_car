@@ -30,13 +30,14 @@ import kotlin.math.round
 @AndroidEntryPoint
 class MapsActivity : AppCompatActivity() {
 
-    private  var mMap: GoogleMap? = null
+    private var mMap: GoogleMap? = null
     lateinit var btnToggleRun: Button
     lateinit var btnFinishRun: Button
     lateinit var tvTimer: TextView
     private var isTracking = false
     private var curTimeInMillis = 0L
     private var pathPoints = mutableListOf<MutableList<LatLng>>()
+    private var sppedList = mutableListOf<Float>()
     private val viewModel: MapViewModel by viewModels()
     private var menu: Menu? = null
 
@@ -44,11 +45,11 @@ class MapsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.fragment_tracking)
-        btnToggleRun=findViewById(R.id.btnToggleRun)
-        btnFinishRun=findViewById(R.id.btnFinishRun)
-        tvTimer=findViewById(R.id.tvTimer)
+        btnToggleRun = findViewById(R.id.btnToggleRun)
+        btnFinishRun = findViewById(R.id.btnFinishRun)
+        tvTimer = findViewById(R.id.tvTimer)
 
-val viewMap = mapGoogle as SupportMapFragment
+        val viewMap = mapGoogle as SupportMapFragment
         viewMap.getMapAsync {
             mMap = it
             addAllPolylines()
@@ -82,6 +83,11 @@ val viewMap = mapGoogle as SupportMapFragment
             val formattedTime = TrackingUtility.getFormattedStopWatchTime(it, true)
             tvTimer.text = formattedTime
         }
+        TrackingService.speedLivedata.observe(this) {
+            sppedList.add(it)
+        }
+
+
     }
 
     private fun moveCameraToUser() {
@@ -191,10 +197,13 @@ val viewMap = mapGoogle as SupportMapFragment
             for (polyline in pathPoints) {
                 distanceInMeters += TrackingUtility.calculatePolylineLength(polyline).toInt()
             }
+            //val speedList = TrackingUtility.getSpeedList(this)
+            val maxSpeed = Math.round((Collections.max(sppedList) * 3.6))
             val avgSpeed =
                 round((distanceInMeters / 1000f) / (curTimeInMillis / 1000f / 60 / 60) * 10) / 10f
             val timestamp = Calendar.getInstance().timeInMillis
-            val run = MapModels( bmp, timestamp, avgSpeed,  distanceInMeters, curTimeInMillis)
+            val run =
+                MapModels(bmp, timestamp, avgSpeed, distanceInMeters, curTimeInMillis, maxSpeed)
             viewModel.insertRun(run)
 
             stopDrive()

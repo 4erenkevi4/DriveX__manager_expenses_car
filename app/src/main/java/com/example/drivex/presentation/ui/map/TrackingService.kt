@@ -55,6 +55,7 @@ class TrackingService : LifecycleService() {
         val timeDriveInMillis = MutableLiveData<Long>()
         val isTracking = MutableLiveData<Boolean>()
         val pathPoints = MutableLiveData<Polylines>()
+        val speedLivedata = MutableLiveData<Float>()
     }
 
     @Inject
@@ -79,6 +80,7 @@ class TrackingService : LifecycleService() {
         isTracking.postValue(false)
         pathPoints.postValue(mutableListOf())
         timeDriveInSeconds.postValue(0L)
+        speedLivedata.postValue(0F)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -133,6 +135,7 @@ class TrackingService : LifecycleService() {
                 result?.locations?.let { locations ->
                     for(location in locations) {
                         addPathPoint(location)
+
                     }
                 }
             }
@@ -176,6 +179,7 @@ class TrackingService : LifecycleService() {
                 last().add(pos)
                 pathPoints.postValue(this)
             }
+            speedLivedata.postValue(location.speed)
         }
     }
 

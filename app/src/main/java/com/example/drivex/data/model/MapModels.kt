@@ -13,6 +13,7 @@ data class MapModels(
     var avgSpeedInKMH: Float = 0f,
     var distanceInMeters: Int = 0,
     var timeInMillis: Long = 0,
+    var maxSpeed:Long = 0L
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null

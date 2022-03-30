@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/monetization_on/baseline_monetization_on_24.xml" />
+                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/share/baseline_share_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_monetization" />
+                            <entry key="color" value="0f98ab" />
+                            <entry key="outputName" value="ic_baseline_share_24" />
                             <entry key="sourceFile" value="C:\Users\Северный\Desktop\auto\svg icons\free-icon-font-trash-3917772.svg" />
                           </map>
                         </option>

@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_ride.*
 import android.content.Intent
 import android.graphics.Color
+import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import com.example.drivex.presentation.ui.activity.MapsActivity
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
@@ -31,6 +32,7 @@ class RideFragment : AbstractFragment() {
     private lateinit var rideAdapter: RideAdapter
     private lateinit var viewModel: MapViewModel
     private lateinit var toolbarRide: Toolbar
+    private lateinit var shareBtn:ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +48,7 @@ class RideFragment : AbstractFragment() {
         rideAdapter = RideAdapter()
         viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
         toolbarRide = view.findViewById(R.id.rides_toolbar)
+       // shareBtn = view.findViewById(R.id.share_btn)
         setupRecyclerView()
         setToolbar(toolbarRide,R.string.menu_ride)
 

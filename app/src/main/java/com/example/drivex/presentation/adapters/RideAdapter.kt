@@ -59,6 +59,9 @@ class RideAdapter : RecyclerView.Adapter<RideAdapter.RunViewHolder>() {
             "${drive.avgSpeedInKMH}km/h".also {
                 tvAvgSpeed.text = it
             }
+            "${drive.maxSpeed}km/h".also {
+                tvTopSpeed.text = it
+            }
 
                 "${drive.distanceInMeters / 1000f}km".also {
                     tvDistance.text = it

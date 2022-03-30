@@ -1,13 +1,16 @@
 package com.example.drivex.utils
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.LOCATION_SERVICE
 import android.location.Location
-import android.os.Build
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
+import android.widget.Toast
 import com.example.drivex.presentation.ui.map.Polyline
-import com.google.android.gms.maps.model.LatLng
-import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.TimeUnit
+
 
 class TrackingUtility {
 
@@ -52,6 +55,31 @@ class TrackingUtility {
                 distance += result[0]
             }
             return distance
+        }
+
+        fun getSpeedList(context: Context): ArrayList<Float> {
+            val speed = arrayListOf<Float>()
+            val locationManager = context.getSystemService(LOCATION_SERVICE) as LocationManager
+
+            val locationListener: LocationListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    location.latitude
+                    speed.add(location.speed)
+                    //Toast.makeText(context, "Скорость:" + location.speed, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+                override fun onProviderEnabled(provider: String) {}
+                override fun onProviderDisabled(provider: String) {}
+            }
+
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                1000,
+                1f,
+                locationListener
+            )
+            return speed
         }
     }
 }
