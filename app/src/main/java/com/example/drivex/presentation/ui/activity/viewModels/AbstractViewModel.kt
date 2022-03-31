@@ -138,27 +138,34 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
 
     private fun getPeriodOfFilter(filters: ArrayList<String>): Long? {
         val periodsCalendar = Calendar.getInstance()
+        val currentCalendar = Calendar.getInstance()
         var period: Long? = null
         if (filters.contains(Constans.PERIOD_ALL))
             period = periodsCalendar.timeInMillis
         if (filters.contains(Constans.PERIOD_DAY)) {
-            periodsCalendar.set(Calendar.DAY_OF_YEAR, Calendar.DAY_OF_YEAR - 1)
+            periodsCalendar.set(
+                Calendar.DAY_OF_MONTH,
+                currentCalendar.get(Calendar.DAY_OF_MONTH) - 1
+            )
             period = periodsCalendar.timeInMillis
         }
         if (filters.contains(Constans.PERIOD_WEEK)) {
-            periodsCalendar.set(Calendar.WEEK_OF_YEAR, Calendar.WEEK_OF_YEAR - 1)
+            periodsCalendar.set(
+                Calendar.WEEK_OF_MONTH,
+                currentCalendar.get(Calendar.WEEK_OF_MONTH) - 1
+            )
             period = periodsCalendar.timeInMillis
         }
         if (filters.contains(Constans.PERIOD_MOUNTH)) {
-            periodsCalendar.set(Calendar.MONTH, Calendar.MONTH - 1)
+            periodsCalendar.set(Calendar.MONTH, currentCalendar.get(Calendar.MONTH) - 1)
             period = periodsCalendar.timeInMillis
         }
         if (filters.contains(Constans.PERIOD_THREE_MOUNTH)) {
-            periodsCalendar.set(Calendar.MONTH, Calendar.MONTH - 3)
+            periodsCalendar.set(Calendar.MONTH, currentCalendar.get(Calendar.MONTH) - 3)
             period = periodsCalendar.timeInMillis
         }
         if (filters.contains(Constans.PERIOD_YEAR)) {
-            periodsCalendar.set(Calendar.YEAR, Calendar.YEAR - 1)
+            periodsCalendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR) - 1)
             period = periodsCalendar.timeInMillis
         }
         return period

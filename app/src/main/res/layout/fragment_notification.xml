@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_blue">
+    android:background="@drawable/blue_backg_gradient3">
 
     <include layout="@layout/main_toolbar" />
 
@@ -317,7 +317,7 @@
     <EditText
         android:id="@+id/editText_desc_of_notification"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"

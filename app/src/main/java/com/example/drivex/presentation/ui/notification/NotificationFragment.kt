@@ -56,7 +56,7 @@ open class NotificationFragment : AbstractFragment() {
     private lateinit var buttonOther: ImageView
     private var titleOfNotification: String = "Напоминание"
     private var notifyId: Int = 1
-    lateinit var listButton: ArrayList<ImageView>
+    lateinit var listButtons: ArrayList<ImageView>
     private lateinit var toolbarNotify: Toolbar
 
     override fun onCreateView(
@@ -76,7 +76,7 @@ open class NotificationFragment : AbstractFragment() {
         buttonPitstop = view.findViewById(R.id.notify_pitstop)
         buttonDiagnostic = view.findViewById(R.id.notify_diagnost)
         buttonStrah = view.findViewById(R.id.notify_strah)
-        startNotificationButton =view.findViewById(R.id.settime)
+        startNotificationButton = view.findViewById(R.id.settime)
         buttonLicense = view.findViewById(R.id.notify_license)
         buttonTexosm = view.findViewById(R.id.notify_texosmotr)
         buttonShopping = view.findViewById(R.id.notify_shopping)
@@ -87,60 +87,60 @@ open class NotificationFragment : AbstractFragment() {
         toolbarNotify = view.findViewById(R.id.main_toolbar)
         setFloatingMenuVisibility(false)
         setTitleOfNotify()
-        setToolbar(toolbarNotify,R.string.menu_notify)
+        setToolbar(toolbarNotify, R.string.menu_notify)
     }
 
     private fun setTitleOfNotify() {
-        listButton = arrayListOf(
+        listButtons = arrayListOf(
             buttonTO,
-            buttonDiagnostic,
             buttonDrive,
+            buttonWash,
+            buttonPitstop,
+            buttonDiagnostic,
+            buttonStrah,
             buttonLicense,
             buttonOil,
-            buttonOther,
-            buttonPay,
-            buttonPitstop,
-            buttonPitstop,
-            buttonStrah,
             buttonTexosm,
-            buttonWash,
+            buttonPay,
+            buttonShopping,
+            buttonOther
         )
 
         buttonTO.setOnClickListener {
-            onClick(buttonTO, NOTIFY1, 1)
+            onClick(it, NOTIFY1, 1)
         }
         buttonDrive.setOnClickListener {
-            onClick(buttonDrive, NOTIFY2, 2)
+            onClick(it, NOTIFY2, 2)
         }
         buttonWash.setOnClickListener {
-            onClick(buttonWash, NOTIFY3, 3)
+            onClick(it, NOTIFY3, 3)
         }
         buttonPitstop.setOnClickListener {
-            onClick(buttonWash, NOTIFY4, 4)
+            onClick(it, NOTIFY4, 4)
         }
         buttonDiagnostic.setOnClickListener {
-            onClick(buttonDiagnostic, NOTIFY5, 5)
+            onClick(it, NOTIFY5, 5)
         }
         buttonStrah.setOnClickListener {
-            onClick(buttonStrah, NOTIFY6, 6)
+            onClick(it, NOTIFY6, 6)
         }
         buttonLicense.setOnClickListener {
-            onClick(buttonLicense, NOTIFY7, 7)
+            onClick(it, NOTIFY7, 7)
         }
         buttonOil.setOnClickListener {
-            onClick(buttonOil, NOTIFY8, 8)
+            onClick(it, NOTIFY8, 8)
         }
         buttonPay.setOnClickListener {
-            onClick(buttonPay, NOTIFY9, 9)
+            onClick(it, NOTIFY9, 9)
         }
         buttonTexosm.setOnClickListener {
-            onClick(buttonTexosm, NOTIFY10, 10)
+            onClick(it, NOTIFY10, 10)
         }
         buttonShopping.setOnClickListener {
-            onClick(buttonShopping, NOTIFY11, 11)
+            onClick(it, NOTIFY11, 11)
         }
         buttonOther.setOnClickListener {
-            onClick(buttonOther, NOTIFY12, 12)
+            onClick(it, NOTIFY12, 12)
         }
         startNotificationButton.setOnClickListener {
             if (isCalendarSettUp)
@@ -151,8 +151,9 @@ open class NotificationFragment : AbstractFragment() {
         }
     }
 
-    private fun onClick(button: ImageView, title: String, notificationId: Int) {
-        listButton.forEach { it.clearAnimation() }
+    private fun onClick(button: View, title: String, notificationId: Int) {
+        listButtons.forEach { it.clearAnimation()
+        }
         val animForButton = AnimationUtils.loadAnimation(context, R.anim.fab_go)
         titleOfNotification = title
         notifyId = notificationId
@@ -209,7 +210,7 @@ open class NotificationFragment : AbstractFragment() {
         isCalendarSettUp = false
         Toast.makeText(context, "Создано напоминание: $titleOfNotification", Toast.LENGTH_SHORT)
             .show()
-        notificationViewModel.makeActiveButtons(listButton)
+        notificationViewModel.makeActiveButtons(listButtons)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             notificationViewModel.startAlarm(
                 requireContext(),
@@ -228,7 +229,7 @@ open class NotificationFragment : AbstractFragment() {
                 notifyId,
                 titleOfNotification,
                 editTextDesc.text.toString(),
-                listButton,
+                listButtons,
                 startNotificationButton
             )
         val manager = childFragmentManager
@@ -237,8 +238,8 @@ open class NotificationFragment : AbstractFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        listButton.forEach { it.isClickable = true }
-        listButton.forEach { it.isFocusable = true }
+        listButtons.forEach { it.isClickable = true }
+        listButtons.forEach { it.isFocusable = true }
     }
 }
 

@@ -2,12 +2,14 @@ package com.example.drivex.presentation.ui.activity
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
@@ -32,7 +34,7 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
     @SuppressLint("SimpleDateFormat")
     fun initCalendar(textViewDate: TextView, context: Context) {
         textViewDate.text =
-            SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis())
+            SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis())
         textViewDate.setOnClickListener {
             val cal = Calendar.getInstance()
             val dateSetListener =
@@ -40,9 +42,23 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
                     cal.set(Calendar.YEAR, year)
                     cal.set(Calendar.MONTH, monthOfYear)
                     cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.US)
-                    textViewDate.text = sdf.format(cal.time)
+                    val timeSetListener =
+                        TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                            cal.set(Calendar.HOUR_OF_DAY, hour)
+                            cal.set(Calendar.MINUTE, minute)
+
+                            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+                            textViewDate.text = sdf.format(cal.timeInMillis)
+                        }
+                    TimePickerDialog(
+                        context,
+                        timeSetListener,
+                        cal.get(Calendar.HOUR_OF_DAY),
+                        cal.get(Calendar.MINUTE),
+                        true
+                    ).show()
                 }
+
             DatePickerDialog(
                 context, dateSetListener,
                 cal.get(Calendar.YEAR),

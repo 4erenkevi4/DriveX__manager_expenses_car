@@ -11,11 +11,9 @@ import android.widget.Toast
 import android.widget.Toast.makeText
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.drivex.R
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
@@ -26,6 +24,9 @@ import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SHOPPING
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Suppress("UNCHECKED_CAST")
@@ -191,7 +192,7 @@ class FuelActivity : AbstractActivity() {
                 ),
                 description = localExpenses?.description ?: descriptionValue,
                 photoURI = uriPhoto ?: localExpenses?.photoURI,
-                timeForMillis = localExpenses?.timeForMillis ?: System.currentTimeMillis()
+                timeForMillis = localExpenses?.timeForMillis ?: getTimeForMillis()?:System.currentTimeMillis()
             )
             if (isUpdate)
                 abstractViewModel.insert(expenses)
@@ -211,6 +212,12 @@ class FuelActivity : AbstractActivity() {
             }
 
         }
+    }
+
+    private fun getTimeForMillis(): Long {
+       val test =  textViewDate.text.toString()
+        val format: DateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH)
+        return  format.parse(test).time
     }
 
     private fun getIconByType(type: String): Int {
