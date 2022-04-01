@@ -22,9 +22,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.drivex.R
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog.Companion.TYPE_SOUND
 import com.example.drivex.utils.Constans
-import com.example.drivex.utils.Constans.IS_PAYMENT
-import com.example.drivex.utils.Constans.IS_REFUEL
-import com.example.drivex.utils.Constans.IS_SHOPPING
+import com.example.drivex.utils.Constans.PAYMENT
+import com.example.drivex.utils.Constans.REFUEL
+import com.example.drivex.utils.Constans.SHOPPING
 import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import com.google.android.material.navigation.NavigationView
 import com.nightonke.boommenu.BoomButtons.TextOutsideCircleButton
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
         val buttonFuel = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_car)
             .normalText(getString(R.string.refuel))
-            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_REFUEL)) }
+            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, REFUEL)) }
         val buttonService = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_service)
             .normalText(getString(R.string.add_service))
@@ -175,11 +175,11 @@ class MainActivity : AppCompatActivity() {
         val buttonPayments = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_money)
             .normalText(getString(R.string.payment))
-            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_PAYMENT)) }
+            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, PAYMENT)) }
         val buttonExpenses = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_shopping)
             .normalText(getString(R.string.your_buy))
-            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, IS_SHOPPING)) }
+            .listener { startActivity(intentFuell.putExtra(PAYMENT_TYPE, SHOPPING)) }
         val buttonDriving = TextOutsideCircleButton.Builder()
             .normalImageRes(R.drawable.ic_map)
             .normalText(getString(R.string.add_ride))

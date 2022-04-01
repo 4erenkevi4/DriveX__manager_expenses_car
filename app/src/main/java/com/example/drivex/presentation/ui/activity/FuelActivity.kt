@@ -17,13 +17,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.drivex.R
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
-import com.example.drivex.utils.Constans.IS_PAYMENT
-import com.example.drivex.utils.Constans.IS_REFUEL
-import com.example.drivex.utils.Constans.IS_SHOPPING
 import com.example.drivex.utils.Constans.PAYMENT
-import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SHOPPING
+import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -114,15 +111,15 @@ class FuelActivity : AbstractActivity() {
     private fun initTypePayment() {
 
         when (paymentType) {
-            IS_REFUEL -> {
+            REFUEL -> {
                 titte = REFUEL
                 desc = getString(R.string.info_about_refuel)
                 icon = R.drawable.fuel_icon;
                 startToast =
                     getString(R.string.please_add_refuel_data)
             }
-            IS_SHOPPING -> {
-                root.setBackgroundResource(R.color.gray80);
+            SHOPPING -> {
+                root.setBackgroundResource(R.drawable.blue_backg_gradient3)
                 titte = SHOPPING
                 desc = getString(R.string.info_of_your_buy)
                 icon = R.drawable.shoping_icon
@@ -130,8 +127,8 @@ class FuelActivity : AbstractActivity() {
                 editTextVolume.isVisible = false
                 selectionType.isVisible = false
             }
-            IS_PAYMENT -> {
-                root.setBackgroundResource(R.color.black20);
+            PAYMENT -> {
+                root.setBackgroundResource(R.drawable.blue_backg_gradient3)
                 titte = PAYMENT
                 desc = getString(R.string.payment_info)
                 icon = R.drawable.pay_icon; startToast =
@@ -192,7 +189,8 @@ class FuelActivity : AbstractActivity() {
                 ),
                 description = localExpenses?.description ?: descriptionValue,
                 photoURI = uriPhoto ?: localExpenses?.photoURI,
-                timeForMillis = localExpenses?.timeForMillis ?: getTimeForMillis()?:System.currentTimeMillis()
+                timeForMillis = localExpenses?.timeForMillis ?: getTimeForMillis()
+                ?: System.currentTimeMillis()
             )
             if (isUpdate)
                 abstractViewModel.insert(expenses)
@@ -201,10 +199,10 @@ class FuelActivity : AbstractActivity() {
             startActivity(intent)
 
         } else {
-            if (mileage.isEmpty() && paymentType == IS_REFUEL) {
+            if (mileage.isEmpty() && paymentType == REFUEL) {
                 showToast(getString(R.string.please_add_mileage), editTextMileage)
             }
-            if (volume.isEmpty() && paymentType == IS_REFUEL) {
+            if (volume.isEmpty() && paymentType == REFUEL) {
                 showToast(getString(R.string.please_add_volume_fuel), editTextVolume)
             }
             if (cost.isEmpty()) {
@@ -215,18 +213,18 @@ class FuelActivity : AbstractActivity() {
     }
 
     private fun getTimeForMillis(): Long {
-       val test =  textViewDate.text.toString()
+        val test = textViewDate.text.toString()
         val format: DateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH)
-        return  format.parse(test).time
+        return format.parse(test).time
     }
 
     private fun getIconByType(type: String): Int {
         return when (type) {
-            IS_REFUEL -> return R.drawable.fuel_icon;
+            REFUEL -> return R.drawable.fuel_icon;
 
-            IS_SHOPPING -> return R.drawable.shoping_icon
+            SHOPPING -> return R.drawable.shoping_icon
 
-            IS_PAYMENT -> return R.drawable.pay_icon
+            PAYMENT -> return R.drawable.pay_icon
             else -> {
                 R.drawable.fuel_icon
             }

@@ -31,6 +31,11 @@ class ExpensesRepositoryImpl(application: Application) :
     override fun getAllExpensesBydate() = refuelDao.getAllExpensesBydate()
 
     override fun getAllExpensesByPeriod(period: Long) = refuelDao.getAllExpensesFromPeriod(period)
+    override fun getExpensesBetweenPeriods(
+        minPeriod: Int,
+        maxPeriod: Int
+    ): LiveData<List<Expenses>> = refuelDao.getExpensesBetweenPeriods(minPeriod, maxPeriod)
+
 
     override fun getRefuelById(id: Long): LiveData<Expenses> {
         return refuelDao.getRefuelById(id)

@@ -46,8 +46,9 @@ interface ExpensesDao {
     @Query("SELECT mileage FROM refuel ORDER BY date DESC LIMIT 1")
     fun getLastMileageInt(): Int
 
-    @Query("SELECT SUM(totalSum) FROM refuel WHERE title = :titleExp")
+    @Query("SELECT SUM(totalSum) FROM refuel WHERE title = :titleExp ")
     fun getSUmExpensesIntById(titleExp:String): Int
 
-
+    @Query("SELECT * FROM refuel WHERE timeForMillis BETWEEN :minPeriod AND :maxPeriod")
+    fun getExpensesBetweenPeriods(minPeriod: Int, maxPeriod: Int): LiveData<List<Expenses>>
 }

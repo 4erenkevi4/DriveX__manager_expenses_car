@@ -15,4 +15,5 @@ interface ExpensesRepository {
     suspend fun getSUmExpensesIntById(key:String):Int
     fun getAllExpensesBydate(): LiveData<List<Expenses>>
     fun getAllExpensesByPeriod(period: Long): LiveData<List<Expenses>>
+    fun getExpensesBetweenPeriods(minPeriod: Int, maxPeriod: Int): LiveData<List<Expenses>>
 }

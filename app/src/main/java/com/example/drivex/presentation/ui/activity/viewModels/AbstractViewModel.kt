@@ -132,7 +132,7 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun convertStringToDate(stringDate: String): Long? {
-        val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.US)
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
         return sdf.parse(stringDate).time
     }
 
