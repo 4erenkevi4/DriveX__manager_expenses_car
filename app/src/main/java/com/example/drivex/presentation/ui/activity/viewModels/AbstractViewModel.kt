@@ -136,6 +136,15 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
         return sdf.parse(stringDate).time
     }
 
+    fun getMonthOrYear(stringDate: String, isMonth: Boolean): Int {
+        val date = convertStringToDate(stringDate)
+        return if (isMonth)
+            SimpleDateFormat("MM").format(date).toInt()
+        else
+            SimpleDateFormat("yyyy").format(date).toInt()
+    }
+
+
     private fun getPeriodOfFilter(filters: ArrayList<String>): Long? {
         val periodsCalendar = Calendar.getInstance()
         val currentCalendar = Calendar.getInstance()

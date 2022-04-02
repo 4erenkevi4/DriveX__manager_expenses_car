@@ -1,6 +1,5 @@
 package com.example.drivex.presentation.ui.stat
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
 import com.example.drivex.data.model.Expenses
-import com.example.drivex.presentation.adapters.ServiceAdapter
 import com.example.drivex.presentation.adapters.StatAdapter
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
@@ -26,7 +24,6 @@ import java.io.Serializable
 
 
 class StatFragment : AbstractFragment() {
-
 
 
     private lateinit var liveDataCost: LiveData<Double>
@@ -47,8 +44,9 @@ class StatFragment : AbstractFragment() {
 
     ////////
     private lateinit var statisticRecyclerView: RecyclerView
-    private lateinit  var resultExpenses: List<Expenses>
+    private lateinit var resultExpenses: List<Expenses>
     lateinit var adapter: StatAdapter
+    private val isSortByMonths: Boolean = true
 
 
     override fun onCreateView(
@@ -74,49 +72,79 @@ class StatFragment : AbstractFragment() {
         statisticRecyclerView = view.findViewById(R.id.statistic_recycler_view)
 
         abstractViewModel.expenses.observe(viewLifecycleOwner) { expenses ->
-           // prepareDaraForAdapter(expenses)
+            // prepareDaraForAdapter(expenses)
             setRecyclerview(expenses)
         }
-       // adapter.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        // adapter.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    private fun setRecyclerview( resultExpenses: List<Expenses>) {
-        val adapter = StatAdapter(prepareDaraForAdapter(resultExpenses))
-        statisticRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    private fun setRecyclerview(resultExpenses: List<Expenses>) {
+        val context = context ?: return
+        val adapter = StatAdapter(startDataSort(resultExpenses), context)
+        statisticRecyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         statisticRecyclerView.adapter = adapter
     }
 
-    private fun prepareDaraForAdapter(expenses: List<Expenses>):ArrayList<StatExpenses> {
+    private fun prepareDaraForAdapter(expenses: List<Expenses>): ArrayList<StatExpenses> {
         val test = expenses.groupBy { it.title }
         val statList: ArrayList<StatExpenses> = arrayListOf()
         for (i in 1..3) {
             statList.add(
                 StatExpenses(
-                    refuelTotalSum = (test[REFUEL] as List).sumBy { it.totalSum.toInt() },
-                    serviceTotalSum = (test[SERVICE] as List).sumBy { it.totalSum.toInt() },
-                    paymentTotalSum = (test[PAYMENT] as List).sumBy { it.totalSum.toInt() },
-                    shopingTotalSum = (test[SHOPPING] as List).sumBy { it.totalSum.toInt() },
+                    refuelTotalSum = test[REFUEL]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
+                        ?: 0,
+                    serviceTotalSum = test[SERVICE]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
+                        ?: 0,
+                    paymentTotalSum = test[PAYMENT]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
+                        ?: 0,
+                    shopingTotalSum = test[SHOPPING]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
+                        ?: 0,
+                    allTotalSum = 1,
+                    month = 1
                 )
             )
         }
         return statList
     }
 
-    private fun initialStatExpenses(test: Map<String, List<Expenses>>): List<StatExpenses> {
-        val statList: ArrayList<StatExpenses> = arrayListOf()
-        statList.add(
-            StatExpenses(
-                refuelTotalSum = (test[REFUEL] as List).sumBy { it.totalSum.toInt() },
-                serviceTotalSum = (test[SERVICE] as List).sumBy { it.totalSum.toInt() },
-                paymentTotalSum = (test[PAYMENT] as List).sumBy { it.totalSum.toInt() },
-                shopingTotalSum = (test[SHOPPING] as List).sumBy { it.totalSum.toInt() },
-                allTotalSum = 1,
-            )
-        )
-        return statList.toList()
-    }
-}
+    fun startDataSort(resultExpenses: List<Expenses>): ArrayList<StatExpenses> {
+        var sortedMapExpenses: Map<Int, List<Expenses>> = mapOf()
+        sortedMapExpenses = if (isSortByMonths)
+            resultExpenses.groupBy { it.month }
+        else
+            resultExpenses.groupBy { it.year }
+        return createFinishSortedList(sortedMapExpenses)
 
+    }
+
+
+    private fun createFinishSortedList(mapOfExpenses: Map<Int, List<Expenses>>): ArrayList<StatExpenses> {
+        val finishList: ArrayList<StatExpenses> = arrayListOf()
+        for (list in mapOfExpenses.values) {
+            val stageTwo = list.groupBy { it.title }
+            finishList.add(
+                StatExpenses(
+                    refuelTotalSum = stageTwo[REFUEL]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
+                        ?: 0,
+                    serviceTotalSum = stageTwo[SERVICE]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
+                        ?: 0,
+                    paymentTotalSum = stageTwo[PAYMENT]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
+                        ?: 0,
+                    shopingTotalSum = stageTwo[SHOPPING]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
+                        ?: 0,
+                    allTotalSum = 100,
+                    month = stageTwo[REFUEL]?.first()?.month ?: stageTwo[SERVICE]?.first()?.month
+                    ?: stageTwo[PAYMENT]?.first()?.month ?: stageTwo[SHOPPING]?.first()?.month!!,
+                    year = stageTwo[REFUEL]?.first()?.year ?: stageTwo[SERVICE]?.first()?.year
+                    ?: stageTwo[PAYMENT]?.first()?.year ?: stageTwo[SHOPPING]?.first()?.year!!,
+                )
+            )
+        }
+        return finishList
+    }
+
+}
 
 data class StatExpenses(
     var refuelTotalSum: Int = 0,
@@ -124,8 +152,8 @@ data class StatExpenses(
     var paymentTotalSum: Int = 0,
     var shopingTotalSum: Int = 0,
     var allTotalSum: Int = 0,
-    var startPeriod: Long? = null,
-    var endPeriod: Long? = null,
+    var month: Int = 0,
+    var year: Int = 0,
 ) : Serializable
 
 

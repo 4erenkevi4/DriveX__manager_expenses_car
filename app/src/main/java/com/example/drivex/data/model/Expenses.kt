@@ -17,5 +17,7 @@ data class Expenses(
     var date: String = "",
     var icon: Int? = null,
     val photoURI: String? = null,
-    val timeForMillis : Long? = null
+    val timeForMillis : Long? = null,
+    val month: Int = 0,
+    val year: Int = 0,
 ) : Serializable

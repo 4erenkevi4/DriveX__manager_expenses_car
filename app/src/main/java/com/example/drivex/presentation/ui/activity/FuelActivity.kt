@@ -189,8 +189,9 @@ class FuelActivity : AbstractActivity() {
                 ),
                 description = localExpenses?.description ?: descriptionValue,
                 photoURI = uriPhoto ?: localExpenses?.photoURI,
-                timeForMillis = localExpenses?.timeForMillis ?: getTimeForMillis()
-                ?: System.currentTimeMillis()
+                timeForMillis = localExpenses?.timeForMillis ?: getTimeForMillis(),
+                month = abstractViewModel.getMonthOrYear(textViewDate.text.toString(), isMonth = true),
+                year = abstractViewModel.getMonthOrYear(textViewDate.text.toString(), isMonth = false)
             )
             if (isUpdate)
                 abstractViewModel.insert(expenses)

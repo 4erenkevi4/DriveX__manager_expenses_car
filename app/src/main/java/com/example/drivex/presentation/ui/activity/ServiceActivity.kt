@@ -105,7 +105,9 @@ class ServiceActivity : AbstractActivity() {
                 date = textViewDate.text.toString(),
                 icon = R.drawable.servicel_icon,
                 photoURI = uriPhoto?.toString(),
-                timeForMillis = abstractViewModel.convertStringToDate(textViewDate.text.toString())
+                timeForMillis = abstractViewModel.convertStringToDate(textViewDate.text.toString()),
+                month = abstractViewModel.getMonthOrYear(textViewDate.text.toString(), isMonth = true),
+                year = abstractViewModel.getMonthOrYear(textViewDate.text.toString(), isMonth = false)
             )
             abstractViewModel.addRefuel(refuel)
             startActivity(intent)

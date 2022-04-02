@@ -1,5 +1,6 @@
 package com.example.drivex.presentation.adapters
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.drivex.R
 import com.example.drivex.presentation.adapters.StatAdapter.ViewHolder
 import com.example.drivex.presentation.ui.stat.StatExpenses
+import com.example.drivex.presentation.ui.stat.StatFragment
 import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SERVICE
@@ -22,24 +24,25 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 
-class StatAdapter(private var expenses: ArrayList<StatExpenses>) :
+class StatAdapter(private var expenses: ArrayList<StatExpenses>, private val context:Context) :
     RecyclerView.Adapter<ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
         private val allExpenses: TextView = view.findViewById(R.id.all_payments_summary)
         private val expensesRefuel: TextView = view.findViewById(R.id.refuel_payments_summary)
         private val expensesService: TextView = view.findViewById(R.id.desc_service_payments_summary)
         private val expensesShopping: TextView = view.findViewById(R.id.shoping_payments_summary)
         private val expensesPayment: TextView = view.findViewById(R.id.payments_summary)
         private var pieChart: PieChart = view.findViewById(R.id.pieChart)
+        val monthNames  = context.resources.getStringArray(R.array.months)
 
-
-        private fun setupPieChart() {
+        private fun setupPieChart(item: StatExpenses) {
             pieChart.isDrawHoleEnabled = true
             pieChart.setUsePercentValues(true)
             pieChart.setEntryLabelTextSize(12F)
             pieChart.setEntryLabelColor(Color.BLACK)
-            pieChart.centerText = "Статистика расходов"
+            pieChart.centerText =" ${monthNames[item.month?:1]}${item.year}"
             pieChart.setCenterTextSize(24F)
             pieChart.description.isEnabled = false
             val l: Legend = pieChart.legend
@@ -87,11 +90,9 @@ class StatAdapter(private var expenses: ArrayList<StatExpenses>) :
             expensesService.text = item.serviceTotalSum.toString()
             expensesShopping.text = item.shopingTotalSum.toString()
             expensesPayment.text = item.paymentTotalSum.toString()
-            setupPieChart()
+            setupPieChart(item)
             loadPieChartData(item)
         }
-
-        private val root: View = view.findViewById(R.id.stat_root)
     }
 
     fun submitList(expen: ArrayList<StatExpenses>) {
