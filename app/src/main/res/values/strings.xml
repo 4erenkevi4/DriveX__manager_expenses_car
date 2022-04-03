@@ -120,6 +120,12 @@
     <string name="consumption_off_city">Highway fuel consumption</string>
     <string name="insufficient_data">Insufficient data</string>
     <string name="send_extra_text">This is my ride route / Sent using the DriveX app</string>
+    <string name="all_period">all period</string>
+    <string name="last_day">last day</string>
+    <string name="last_week">last week</string>
+    <string name="last_month">last month</string>
+    <string name="last_three_months">last 3 months</string>
+    <string name="last_year">last year</string>
 
     <string-array name="filter_options">
         <item>Sort by date</item>

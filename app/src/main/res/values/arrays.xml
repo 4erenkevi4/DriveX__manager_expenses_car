@@ -69,8 +69,8 @@
         <item>all period</item>
         <item>last day</item>
         <item>last week</item>
-        <item>last mount</item>
-        <item>last 3 mounts</item>
+        <item>last month</item>
+        <item>last 3 months</item>
         <item>last year</item>
     </string-array>
 

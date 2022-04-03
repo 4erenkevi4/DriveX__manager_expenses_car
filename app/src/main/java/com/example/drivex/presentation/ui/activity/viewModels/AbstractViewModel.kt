@@ -2,14 +2,15 @@ package com.example.drivex.presentation.ui.activity.viewModels
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.*
+import com.example.drivex.R
 import com.example.drivex.domain.ExpensesDao
 import com.example.drivex.data.ExpensesRoomDatabase
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.data.repository.ExpensesRepository
 import com.example.drivex.data.repository.ExpensesRepositoryImpl
-import com.example.drivex.utils.Constans
 import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SERVICE
@@ -42,8 +43,9 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun getExpensesByFilters(filters: ArrayList<String>) {
-        val filtersPeriod = getPeriodOfFilter(filters)
+    fun getExpensesByFilters(filters: ArrayList<String>, context: Context?) {
+        val context = context ?: return
+        val filtersPeriod = getPeriodOfFilter(filters, context)
         var source = getAllexpenses
         if (filtersPeriod != null) {
             source = expensesRepository.getAllExpensesByPeriod(
@@ -144,36 +146,35 @@ class AbstractViewModel(application: Application) : AndroidViewModel(application
             SimpleDateFormat("yyyy").format(date).toInt()
     }
 
-
-    private fun getPeriodOfFilter(filters: ArrayList<String>): Long? {
+    private fun getPeriodOfFilter(filters: ArrayList<String>, context: Context): Long? {
         val periodsCalendar = Calendar.getInstance()
         val currentCalendar = Calendar.getInstance()
         var period: Long? = null
-        if (filters.contains(Constans.PERIOD_ALL))
+        if (filters.contains(context.getString(R.string.all_period)))
             period = periodsCalendar.timeInMillis
-        if (filters.contains(Constans.PERIOD_DAY)) {
+        if (filters.contains(context.getString(R.string.last_day))) {
             periodsCalendar.set(
                 Calendar.DAY_OF_MONTH,
                 currentCalendar.get(Calendar.DAY_OF_MONTH) - 1
             )
             period = periodsCalendar.timeInMillis
         }
-        if (filters.contains(Constans.PERIOD_WEEK)) {
+        if (filters.contains(context.getString(R.string.last_week))) {
             periodsCalendar.set(
                 Calendar.WEEK_OF_MONTH,
                 currentCalendar.get(Calendar.WEEK_OF_MONTH) - 1
             )
             period = periodsCalendar.timeInMillis
         }
-        if (filters.contains(Constans.PERIOD_MOUNTH)) {
+        if (filters.contains(context.getString(R.string.last_month))) {
             periodsCalendar.set(Calendar.MONTH, currentCalendar.get(Calendar.MONTH) - 1)
             period = periodsCalendar.timeInMillis
         }
-        if (filters.contains(Constans.PERIOD_THREE_MOUNTH)) {
+        if (filters.contains(context.getString(R.string.last_three_months))) {
             periodsCalendar.set(Calendar.MONTH, currentCalendar.get(Calendar.MONTH) - 3)
             period = periodsCalendar.timeInMillis
         }
-        if (filters.contains(Constans.PERIOD_YEAR)) {
+        if (filters.contains(context.getString(R.string.last_year))) {
             periodsCalendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR) - 1)
             period = periodsCalendar.timeInMillis
         }

@@ -117,7 +117,7 @@ class HomeFragment : AbstractFragment() {
         timefilterPeriod = arguments?.getLong(FILTER_PERIOD_TIME)
         if (filters != null) {
             filterButton.setImageResource(R.drawable.ic_baseline_filter_alt_24)
-            abstractViewModel.getExpensesByFilters(filters!!)
+            abstractViewModel.getExpensesByFilters(filters!!, context)
             abstractViewModel.filtersExpensesLiveData.observe(viewLifecycleOwner) { filtersExpenses ->
                 if (filtersExpenses.isNotEmpty())
                     historyDescription.text = getString(R.string.general_history)

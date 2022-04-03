@@ -122,6 +122,13 @@
     <string name="insufficient_data">Нет данных</string>
     <string name="send_extra_text">Вот маршрут моей поездки/(отправлено с помощью приложения DriveX)</string>
 
+    <string name="all_period">весь период</string>
+    <string name="last_day">день</string>
+    <string name="last_week">неделя</string>
+    <string name="last_month">месяц</string>
+    <string name="last_three_months">3 месяца</string>
+    <string name="last_year">год</string>
+
     <string-array name="filter_options">
         <item>Сортировать по дате</item>
         <item>Сортировать по длительности</item>
