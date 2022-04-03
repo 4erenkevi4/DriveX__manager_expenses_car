@@ -4,6 +4,8 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.example.drivex.data.repository.MapRepository
 
-class StatViewModel : ViewModel() {
+class StatViewModel @ViewModelInject constructor(
+    mapRepository: MapRepository
+) : ViewModel() {
 
 }
