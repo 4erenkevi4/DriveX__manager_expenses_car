@@ -1,5 +1,7 @@
 package com.example.drivex.presentation.ui.stat
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +21,8 @@ import androidx.recyclerview.widget.SnapHelper
 import com.example.drivex.R
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.presentation.adapters.StatAdapter
+import com.example.drivex.presentation.ui.activity.MainActivity
+import com.example.drivex.presentation.ui.activity.MapsActivity
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
@@ -27,6 +32,7 @@ import com.example.drivex.utils.Constans.SERVICE
 import com.example.drivex.utils.Constans.SHOPPING
 import com.github.mikephil.charting.charts.PieChart
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_ride.*
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -85,26 +91,40 @@ class StatFragment : AbstractFragment() {
         buttonMonth = view.findViewById(R.id.buttonMonth)
         buttonYear = view.findViewById(R.id.buttonYear)
         toolbarStat = view.findViewById(R.id.main_toolbar)
-        toolbarStat.setBackgroundColor(resources.getColor(R.color.black))
+        toolbarStat.setBackgroundColor(resources.getColor(R.color.toolbar_background3))
         toolbarStat.setTitle(R.string.menu_setting)
         setToolbar(toolbarStat, R.string.menu_stat)
         buttonYear.setEnabling(enabled = false)
         abstractViewModel.expenses.observe(viewLifecycleOwner) { expenses ->
-            localExpenses = expenses
-            setRecyclerview(expenses)
+            if (expenses.isEmpty()) {
+                val intentMap = Intent(activity, MainActivity::class.java)
+                val builder = AlertDialog.Builder(context)
+                builder
+                    .setTitle(R.string.warning)
+                    .setMessage(R.string.create_trip_nothing)
+                    .setIcon(R.drawable.ic_warning)
+                    .setPositiveButton(R.string.create_trip) { dialog, id ->
+                        startActivity(intentMap)
+                    }
 
+                builder.create()
+                builder.show()
+            } else {
+                localExpenses = expenses
+                setRecyclerview(expenses)
+            }
         }
         buttonYear.setOnClickListener {
             buttonYear.setEnabling(true)
             buttonMonth.setEnabling(enabled = false)
             isSortByMonths = false
-            adapter.submitList(startDataSort(localExpenses),isMonthModes = false)
+            adapter.submitList(startDataSort(localExpenses), isMonthModes = false)
         }
         buttonMonth.setOnClickListener {
             buttonMonth.setEnabling(true)
             buttonYear.setEnabling(enabled = false)
             isSortByMonths = true
-            adapter.submitList(startDataSort(localExpenses),true)
+            adapter.submitList(startDataSort(localExpenses), true)
         }
         setFloatingMenuVisibility(false)
 

@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.activity.viewModels
 import com.example.drivex.R
 import com.example.drivex.data.model.MapModels
@@ -28,18 +29,22 @@ import java.util.*
 import kotlin.math.round
 
 @AndroidEntryPoint
-class MapsActivity : AppCompatActivity() {
+class MapsActivity : AbstractActivity() {
 
     private var mMap: GoogleMap? = null
-    lateinit var btnToggleRun: Button
-    lateinit var btnFinishRun: Button
-    lateinit var tvTimer: TextView
+    private lateinit var btnToggleRun: Button
+    private lateinit var btnFinishRun: Button
+    private lateinit var mapToolbar:Toolbar
+    private lateinit var tvTimer: TextView
     private var isTracking = false
     private var curTimeInMillis = 0L
     private var pathPoints = mutableListOf<MutableList<LatLng>>()
     private var sppedList = mutableListOf<Float>()
     private val viewModel: MapViewModel by viewModels()
     private var menu: Menu? = null
+    override fun initCalendar(textViewDate: TextView) {
+        //Nothing
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +53,7 @@ class MapsActivity : AppCompatActivity() {
         btnToggleRun = findViewById(R.id.btnToggleRun)
         btnFinishRun = findViewById(R.id.btnFinishRun)
         tvTimer = findViewById(R.id.tvTimer)
+        mapToolbar = findViewById(R.id.back_toolbar)
 
         val viewMap = mapGoogle as SupportMapFragment
         viewMap.getMapAsync {
@@ -63,6 +69,7 @@ class MapsActivity : AppCompatActivity() {
             zoomToWholeTrack()
             enDriveAndSaveToDB()
         }
+        setToolbar(mapToolbar, null, true)
         subscribeToObservers()
     }
 
@@ -171,6 +178,10 @@ class MapsActivity : AppCompatActivity() {
         if (mapViewBundle != null) {
             mapGoogle?.onSaveInstanceState(mapViewBundle)
         }
+    }
+
+    override fun putData(isUpdate: Boolean) {
+        //Nothing
     }
 
     private fun zoomToWholeTrack() {

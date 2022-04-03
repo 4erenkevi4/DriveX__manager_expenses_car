@@ -1,5 +1,6 @@
 package com.example.drivex.presentation.ui.activity
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -7,13 +8,20 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.animation.doOnEnd
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
+import com.example.drivex.R
+import com.example.drivex.utils.Constans.PAYMENT
+import com.example.drivex.utils.Constans.REFUEL
+import com.example.drivex.utils.Constans.SERVICE
+import com.example.drivex.utils.Constans.SHOPPING
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -70,11 +78,10 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
 
     fun initCamera(
         containerPhoto: ImageView,
-        buttonPhoto: ImageView,
+        buttonPhoto: View,
         recyclerView: View? = null,
         descRecyclerView: View? = null,
     ) {
-        //uriPhoto = intent?.getStringExtra(URI_PHOTO)
         if (uriPhoto != null) {
             containerPhoto.isVisible = true
             containerPhoto.setImageURI(uriPhoto!!.toUri())
@@ -97,7 +104,7 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
     }
 
     override fun showToast(text: String, view: View) {
-        view.setBackgroundColor(Color.RED)
+        startErrorRotateAnimation(view)
         Toast.makeText(
             this,
             text,
@@ -106,17 +113,42 @@ abstract class AbstractActivity : AppCompatActivity(), ScreenManager {
     }
 
     fun setToolbar(
-        toolbar: androidx.appcompat.widget.Toolbar?,
-        textTitleResID: Int,
+        toolbar: Toolbar?,
+        textTitleResID: Int?,
         isBackButtonEnabled: Boolean = false
     ) {
         this.setSupportActionBar(toolbar)
         this.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar?.setTitle(textTitleResID)
+        textTitleResID?.let { toolbar?.setTitle(it) }
         toolbar?.setTitleTextColor(Color.WHITE)
         if (isBackButtonEnabled)
             toolbar?.setNavigationOnClickListener { this.onBackPressed() }
     }
+
+    private fun startErrorRotateAnimation(view: View) {
+        val rotateAnimator = ObjectAnimator.ofFloat(view, "rotation", 0f, 10f)
+        rotateAnimator.run {
+            this.repeatCount = 2
+            this.duration = 70
+            this.start()
+            this.doOnEnd {
+                ObjectAnimator.ofFloat(view, "rotation", 10f, 0f).start()
+            }
+        }
+    }
+
+    private fun startSuccecAnimation(view: View) {
+        val pulseAnimator = ObjectAnimator.ofFloat(view, "rotation", 0f, 30f)
+        pulseAnimator.run {
+            this.repeatCount = 1
+            this.duration = 200
+            this.start()
+            this.doOnEnd {
+                ObjectAnimator.ofFloat(view, "rotation", 30f, 0f).start()
+            }
+        }
+    }
+
 }
 
 

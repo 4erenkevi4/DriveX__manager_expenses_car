@@ -18,9 +18,9 @@ import com.example.drivex.R
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
 import com.example.drivex.utils.Constans.PAYMENT
+import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SHOPPING
-import com.example.drivex.utils.Constans.PAYMENT_TYPE
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,9 +34,9 @@ class FuelActivity : AbstractActivity() {
     private lateinit var editTextCost: EditText
     private lateinit var editTextVolume: EditText
     private lateinit var description: EditText
-    private lateinit var buttonPhoto: ImageView
+    private lateinit var buttonPhoto: View
     private lateinit var desButtonPhoto: TextView
-    private lateinit var buttonSave: ImageView
+    private lateinit var buttonSave: View
     private lateinit var containerPhoto: ImageView
     private lateinit var abstractViewModel: AbstractViewModel
     private lateinit var selectionType: TextView
@@ -89,7 +89,7 @@ class FuelActivity : AbstractActivity() {
         initCamera(containerPhoto, buttonPhoto)
         initTypePayment()
         makeText(this, startToast, Toast.LENGTH_SHORT).show()
-        setToolbar(toolbar, R.string.refuel, true)
+        setToolbar(toolbar, null, true)
         containerPhoto.setOnClickListener {
             initCamera(it as ImageView, it)
         }
@@ -113,13 +113,17 @@ class FuelActivity : AbstractActivity() {
         when (paymentType) {
             REFUEL -> {
                 titte = REFUEL
+                toolbar.setTitle(R.string.refuel)
                 desc = getString(R.string.info_about_refuel)
                 icon = R.drawable.fuel_icon;
                 startToast =
                     getString(R.string.please_add_refuel_data)
             }
             SHOPPING -> {
+
                 root.setBackgroundResource(R.drawable.blue_backg_gradient3)
+                toolbar.setBackgroundColor(resources.getColor(R.color.toolbar_background3))
+                toolbar.setTitle(R.string.your_buy)
                 titte = SHOPPING
                 desc = getString(R.string.info_of_your_buy)
                 icon = R.drawable.shoping_icon
@@ -129,6 +133,8 @@ class FuelActivity : AbstractActivity() {
             }
             PAYMENT -> {
                 root.setBackgroundResource(R.drawable.blue_backg_gradient3)
+                toolbar.setBackgroundColor(resources.getColor(R.color.toolbar_background3))
+                toolbar.setTitle(R.string.payment)
                 titte = PAYMENT
                 desc = getString(R.string.payment_info)
                 icon = R.drawable.pay_icon; startToast =
@@ -154,7 +160,7 @@ class FuelActivity : AbstractActivity() {
                 textViewDate.text = expenses.date.toString()
                 description.hint = expenses.description
                 typeOfExpenses.run {
-                    this.isVisible = true
+                    this.isVisible = false
                     this.text = expenses.title
                 }
                 containerPhoto.setImageURI(expenses.photoURI?.toUri())
@@ -184,14 +190,20 @@ class FuelActivity : AbstractActivity() {
                 volume = volume.toInt(),
                 totalSum = cost.toDouble(),
                 date = localExpenses?.date ?: textViewDate.text.toString(),
-                icon = localExpenses?.icon ?: getIconByType(
+                icon = icon ?: localExpenses?.icon ?: getIconByType(
                     titte ?: typeOfExpenses.text.toString()
                 ),
                 description = localExpenses?.description ?: descriptionValue,
                 photoURI = uriPhoto ?: localExpenses?.photoURI,
                 timeForMillis = localExpenses?.timeForMillis ?: getTimeForMillis(),
-                month = abstractViewModel.getMonthOrYear(textViewDate.text.toString(), isMonth = true),
-                year = abstractViewModel.getMonthOrYear(textViewDate.text.toString(), isMonth = false)
+                month = abstractViewModel.getMonthOrYear(
+                    textViewDate.text.toString(),
+                    isMonth = true
+                ),
+                year = abstractViewModel.getMonthOrYear(
+                    textViewDate.text.toString(),
+                    isMonth = false
+                )
             )
             if (isUpdate)
                 abstractViewModel.insert(expenses)
@@ -202,6 +214,7 @@ class FuelActivity : AbstractActivity() {
         } else {
             if (mileage.isEmpty() && paymentType == REFUEL) {
                 showToast(getString(R.string.please_add_mileage), editTextMileage)
+
             }
             if (volume.isEmpty() && paymentType == REFUEL) {
                 showToast(getString(R.string.please_add_volume_fuel), editTextVolume)

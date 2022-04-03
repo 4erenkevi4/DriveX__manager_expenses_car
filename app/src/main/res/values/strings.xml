@@ -6,7 +6,7 @@
     <string name="nav_header_subtitle">Drive Expense Manager</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="save_date">Save data</string>
+    <string name="save_date">Save</string>
     <string name="add_check">Attach receipt</string>
     <string name="add_receipt">You can attach photo of the receipt</string>
     <string name="volume">Volume</string>
@@ -63,8 +63,9 @@
     <string name="km">Km.</string>
     <string name="mile">Mil.</string>
     <string name="warning">Warning</string>
-    <string name="create_trip">Create trip</string>
+    <string name="create_trip">Create</string>
     <string name="create_trip_nothing">You have no recorded trips</string>
+    <string name="create_expenses_nothing">You have no recorded expenses</string>
     <string name="add_ride">Trip</string>
     <string name="add_service">Service</string>
 
@@ -134,6 +135,15 @@
     <string name="payment_shopping">Shopping costs</string>
     <string name="service_costs">Service costs</string>
     <string name="fuel_costs">Fuel costs</string>
+    <string name="filters">Filters</string>
+    //INFO FRAGMENT
+    <string name="info_expense_accounting">Expense accounting</string>
+    <string name="info_create_reminders">Create reminders</string>
+    <string name="info_recording_routes">Recording routes</string>
+    <string name="info_title">DriveX is the financial manager for your car.</string>
+    <string name="info_desc1">Find out how much your car is spending on fuel, service, purchases, and payments. In the app, you can see monthly expenses by category, as well as graphical and text display of expenses.</string>
+    <string name="info_desc2">DriveX helps in managing reminders for regular car services and expenses, such as service, oil change monitoring, maintenance inspections, car wash reminders, trip reminders, shopping reminders and other categories of reminders.</string>
+    <string name="info_desc_3">Stay informed about your journeys. This app allows you to record the route, duration, average speed, and time of each of your trips, and save this data in your trip history.</string>
 
 
     <string-array name="filter_options">

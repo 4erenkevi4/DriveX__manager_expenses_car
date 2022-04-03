@@ -23,8 +23,8 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:hint="@string/date"
-            android:textColor="#78F3FF"
-            android:textColorHint="#78F3FF"
+            android:textColor="@color/white40"
+            android:textColorHint="#7BAEB3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_desc" />
 
@@ -35,8 +35,8 @@
             android:gravity="center"
             android:hint="@string/mileage"
             android:inputType="number"
-            android:textColor="#78F3FF"
-            android:textColorHint="#78F3FF"
+            android:textColor="@color/white40"
+            android:textColorHint="#7BAEB3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView_data"
             app:layout_constraintTop_toTopOf="@+id/textView_data" />
@@ -50,8 +50,8 @@
             android:gravity="center"
             android:hint="@string/summ"
             android:inputType="numberDecimal"
-            android:textColor="#78F3FF"
-            android:textColorHint="#78F3FF"
+            android:textColor="@color/white40"
+            android:textColorHint="#7BAEB3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_data" />
 
@@ -62,7 +62,8 @@
             android:layout_margin="8dp"
             android:gravity="center"
             android:hint="@string/prepare_desc"
-            android:textColor="#78F3FF"
+            android:textColor="@color/white40"
+            android:textStyle="italic"
             android:textColorHint="#EAAC48"
             app:layout_constraintEnd_toStartOf="@+id/include"
             app:layout_constraintStart_toEndOf="@+id/include"

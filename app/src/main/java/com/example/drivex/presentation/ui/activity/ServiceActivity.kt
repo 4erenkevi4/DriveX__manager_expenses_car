@@ -59,12 +59,14 @@ class ServiceActivity : AbstractActivity() {
         recyclerView = findViewById(R.id.recycler_view_service)
         toolbar = findViewById(R.id.back_toolbar)
         val viewModelFactory = ViewModelFactory(application)
-        abstractViewModel = ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
+        abstractViewModel =
+            ViewModelProvider(this, viewModelFactory).get(AbstractViewModel::class.java)
         initCalendar(textViewDate)
         initSaveButton(buttonSave)
         initCamera(photoPreview, buttonPhoto, recyclerView, descRecyclerView)
         setRecyclerview()
-        setToolbar(toolbar,R.string.refuel,true)
+        setToolbar(toolbar, null, true)
+        toolbar.setTitle(R.string.service)
         description.setOnClickListener {
             recyclerView.isVisible = true
             descRecyclerView.isVisible = true
@@ -89,7 +91,7 @@ class ServiceActivity : AbstractActivity() {
     }
 
 
-    override fun putData( isUpdate: Boolean) {
+    override fun putData(isUpdate: Boolean) {
         val mileage: String = editTextMileage.text.toString()
         val desc: String = description.text.toString()
         val cost: String = editTextCost.text.toString()
@@ -106,8 +108,14 @@ class ServiceActivity : AbstractActivity() {
                 icon = R.drawable.servicel_icon,
                 photoURI = uriPhoto?.toString(),
                 timeForMillis = abstractViewModel.convertStringToDate(textViewDate.text.toString()),
-                month = abstractViewModel.getMonthOrYear(textViewDate.text.toString(), isMonth = true),
-                year = abstractViewModel.getMonthOrYear(textViewDate.text.toString(), isMonth = false)
+                month = abstractViewModel.getMonthOrYear(
+                    textViewDate.text.toString(),
+                    isMonth = true
+                ),
+                year = abstractViewModel.getMonthOrYear(
+                    textViewDate.text.toString(),
+                    isMonth = false
+                )
             )
             abstractViewModel.addRefuel(refuel)
             startActivity(intent)
@@ -124,10 +132,11 @@ class ServiceActivity : AbstractActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setRecyclerview() {
-        val adapter = ServiceAdapter(resources.getStringArray(R.array.maintenance_options)) { item, view ->
-            description.text = description.text.toString() + " " + item + ";"
-            view.setBackgroundColor(Color.GRAY)
-        }
+        val adapter =
+            ServiceAdapter(resources.getStringArray(R.array.maintenance_options)) { item, view ->
+                description.text = description.text.toString() + " " + item + ";"
+                view.setBackgroundColor(Color.GRAY)
+            }
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
     }

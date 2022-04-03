@@ -20,4 +20,8 @@ data class Expenses(
     val timeForMillis : Long? = null,
     val month: Int = 0,
     val year: Int = 0,
+    val reserve1: Int? = null,
+    val reserve2: Int? = null,
+    val reserveString: String? = null,
+    val reserveString2: String? = null,
 ) : Serializable

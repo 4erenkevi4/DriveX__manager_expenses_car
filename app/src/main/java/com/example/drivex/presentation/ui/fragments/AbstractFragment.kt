@@ -1,20 +1,10 @@
 package com.example.drivex.presentation.ui.fragments
 
-import android.annotation.SuppressLint
 import android.graphics.*
 import android.net.Uri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.example.drivex.R
 import com.example.drivex.presentation.ui.activity.MainActivity
-import com.example.drivex.utils.Constans.PERIOD_ALL
-import com.example.drivex.utils.Constans.PERIOD_DAY
-import com.example.drivex.utils.Constans.PERIOD_MOUNTH
-import com.example.drivex.utils.Constans.PERIOD_THREE_MOUNTH
-import com.example.drivex.utils.Constans.PERIOD_WEEK
-import com.example.drivex.utils.Constans.PERIOD_YEAR
-import java.util.*
-import kotlin.collections.ArrayList
 
 abstract class AbstractFragment : Fragment() {
     var imageCarUri: Uri? = null

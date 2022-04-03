@@ -85,6 +85,7 @@ open class NotificationFragment : AbstractFragment() {
         buttonPay = view.findViewById(R.id.notify_pay)
         editTextDesc = view.findViewById(R.id.editText_desc_of_notification)
         toolbarNotify = view.findViewById(R.id.main_toolbar)
+        toolbarNotify.setBackgroundColor(resources.getColor(R.color.toolbar_background3))
         setFloatingMenuVisibility(false)
         setTitleOfNotify()
         setToolbar(toolbarNotify, R.string.menu_notify)

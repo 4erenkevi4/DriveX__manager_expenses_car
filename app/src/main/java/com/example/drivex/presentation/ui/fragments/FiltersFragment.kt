@@ -23,6 +23,7 @@ import com.example.drivex.utils.Constans.SERVICE
 import com.example.drivex.utils.Constans.SHOPPING
 import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_filters.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,6 +61,15 @@ class FiltersFragment : AbstractFragment() {
         buyingSwitsh = view.findViewById(R.id.byuing_switsh)
         periodSpinner = view.findViewById(R.id.period_spinner)
         resetFiltersButton = view.findViewById(R.id.reset_button)
+        toolbar_search.setTitle(R.string.filters)
+        toolbar_search.setNavigationOnClickListener {
+            spFilters = setOf()
+            filters = mutableListOf()
+            initFilters()
+            (activity as MainActivity).replaceFragment(
+                R.id.action_global_nav_car
+            )
+        }
         saveButton = view.findViewById(R.id.save_button)
         resetFiltersButton.setOnClickListener {
             abstractViewModel.saveToSP(keyType = LIST_OF_FILTERS_SP, set = setOf(), prefs = prefs)

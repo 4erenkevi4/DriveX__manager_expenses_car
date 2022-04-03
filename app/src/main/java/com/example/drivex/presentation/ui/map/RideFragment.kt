@@ -51,6 +51,7 @@ class RideFragment : AbstractFragment() {
         rideAdapter = RideAdapter(prefs,context)
         viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
         toolbarRide = view.findViewById(R.id.rides_toolbar)
+        toolbarRide.setBackgroundColor(resources.getColor(R.color.toolbar_background3))
         setupRecyclerView()
         setToolbar(toolbarRide,R.string.menu_ride)
 

@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -91,6 +92,7 @@ class HomeFragment : AbstractFragment() {
             .also { it.setTextColor(resources.getColor(R.color.white20)) }
         allCostService = view.findViewById<TextView?>(R.id.service_summ)
             .also { it.setTextColor(resources.getColor(R.color.white20)) }
+
         recyclerView = view.findViewById(R.id.recycler_view_home)
         carModel = view.findViewById(R.id.text_model_info)
         avatarCard = view.findViewById(R.id.avatarCardImage)
@@ -165,7 +167,9 @@ class HomeFragment : AbstractFragment() {
         liveDataCost.observe(viewLifecycleOwner) {
             chekVisibilyty(it, allExpenses)
             allExpenses.text = getString(R.string.total_expenses) + ": $it $currencySP"
+            welcomeText.isVisible = false
         }
+
         liveDataMileage.observe(viewLifecycleOwner) {
             chekVisibilyty(it, allMileage)
             allMileage.text = getString(R.string.mileage) + ": $it $distanceSP"

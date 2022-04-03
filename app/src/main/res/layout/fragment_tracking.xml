@@ -7,7 +7,8 @@
     android:background="@color/background_blue"
     android:id="@+id/rootMap">
 
-    <include layout="@layout/back_toolbar" />
+    <include android:id="@+id/map_toolbar"
+        layout="@layout/back_toolbar" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnToggleRun"

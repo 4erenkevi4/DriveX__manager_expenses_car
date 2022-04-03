@@ -53,21 +53,25 @@ class MainAdapter(val context: Context?, val currency: String?, private val clic
             date.text = expenss.date.toString()
             photo.setImageURI(expenss.photoURI?.toUri())
             cost.text = expenss.totalSum.toString() + " " + currency
-            iconType.setImageResource(expenss.icon ?: R.drawable.ic_car)
+            //iconType.setImageResource(expenss.icon ?: R.drawable.ic_car)
             context.let {
                 nameType.setTextColor(it!!.getColor(R.color.purple20))
                 when (expenss.title) {
                     REFUEL -> {
                         nameType.text = it.getText(R.string.refuel)
+                        iconType.setImageResource(R.drawable.fuel_icon)
                     }
                     SERVICE -> {
                         nameType.text = it.getText(R.string.service)
+                        iconType.setImageResource(R.drawable.service_car_icon)
                     }
                     SHOPPING -> {
                         nameType.text = it.getText(R.string.your_buy)
+                        iconType.setImageResource(R.drawable.shoping_icon)
                     }
                     PAYMENT -> {
                         nameType.text = it.getText(R.string.payment)
+                        iconType.setImageResource(R.drawable.pay_icon)
                     }
                 }
             }

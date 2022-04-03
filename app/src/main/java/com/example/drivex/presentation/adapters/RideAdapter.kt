@@ -110,7 +110,7 @@ class RideAdapter(prefs: SharedPreferences, context: Context?) :
         val intent = Intent(Intent.ACTION_SEND);
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
         intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(pathofBmp));
-        intent.putExtra(Intent.EXTRA_TEXT,mesage)
+        intent.putExtra(Intent.EXTRA_TEXT, mesage)
         intent.type = "image/png";
         context?.startActivity(Intent.createChooser(intent, "Share with Friends"));
     }
