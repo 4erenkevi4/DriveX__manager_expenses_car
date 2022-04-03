@@ -1,30 +1,40 @@
 package com.example.drivex.presentation.ui.stat
 
+import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.example.drivex.R
 import com.example.drivex.data.model.Expenses
 import com.example.drivex.presentation.adapters.StatAdapter
 import com.example.drivex.presentation.ui.activity.viewModels.AbstractViewModel
+import com.example.drivex.presentation.ui.dialogs.SettingsDialog
 import com.example.drivex.presentation.ui.fragments.AbstractFragment
 import com.example.drivex.utils.Constans.PAYMENT
 import com.example.drivex.utils.Constans.REFUEL
 import com.example.drivex.utils.Constans.SERVICE
 import com.example.drivex.utils.Constans.SHOPPING
 import com.github.mikephil.charting.charts.PieChart
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class StatFragment : AbstractFragment() {
 
+    @Inject
+    lateinit var prefs: SharedPreferences
 
     private lateinit var liveDataCost: LiveData<Double>
     lateinit var liveDataMileage: LiveData<Int>
@@ -40,14 +50,17 @@ class StatFragment : AbstractFragment() {
     lateinit var expensesService: TextView
     lateinit var expensesShopping: TextView
     lateinit var expensesPayment: TextView
-    private lateinit var toolbarStat: Toolbar
+
 
     ////////
     private lateinit var statisticRecyclerView: RecyclerView
-    private lateinit var resultExpenses: List<Expenses>
+    private lateinit var buttonMonth: TextView
+    private lateinit var buttonYear: TextView
     lateinit var adapter: StatAdapter
-    private val isSortByMonths: Boolean = true
-
+    private var isSortByMonths: Boolean = true
+    private var localExpenses: List<Expenses> = listOf()
+    private lateinit var toolbarStat: Toolbar
+    private var currencySP: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,48 +80,47 @@ class StatFragment : AbstractFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //TODO("Temp old initial view logic")
-        // oldLogic(view)
         statisticRecyclerView = view.findViewById(R.id.statistic_recycler_view)
-
+        currencySP = prefs.getString(SettingsDialog.TYPE_CURENCY, "$") ?: "$"
+        buttonMonth = view.findViewById(R.id.buttonMonth)
+        buttonYear = view.findViewById(R.id.buttonYear)
+        toolbarStat = view.findViewById(R.id.main_toolbar)
+        toolbarStat.setBackgroundColor(resources.getColor(R.color.black))
+        toolbarStat.setTitle(R.string.menu_setting)
+        setToolbar(toolbarStat, R.string.menu_stat)
+        buttonYear.setEnabling(enabled = false)
         abstractViewModel.expenses.observe(viewLifecycleOwner) { expenses ->
-            // prepareDaraForAdapter(expenses)
+            localExpenses = expenses
             setRecyclerview(expenses)
+
         }
-        // adapter.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        buttonYear.setOnClickListener {
+            buttonYear.setEnabling(true)
+            buttonMonth.setEnabling(enabled = false)
+            isSortByMonths = false
+            adapter.submitList(startDataSort(localExpenses),isMonthModes = false)
+        }
+        buttonMonth.setOnClickListener {
+            buttonMonth.setEnabling(true)
+            buttonYear.setEnabling(enabled = false)
+            isSortByMonths = true
+            adapter.submitList(startDataSort(localExpenses),true)
+        }
+        setFloatingMenuVisibility(false)
+
     }
 
     private fun setRecyclerview(resultExpenses: List<Expenses>) {
         val context = context ?: return
-        val adapter = StatAdapter(startDataSort(resultExpenses), context)
+        adapter = StatAdapter(startDataSort(resultExpenses), context, currency = currencySP)
         statisticRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         statisticRecyclerView.adapter = adapter
+        val snapHelper: SnapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(statisticRecyclerView)
     }
 
-    private fun prepareDaraForAdapter(expenses: List<Expenses>): ArrayList<StatExpenses> {
-        val test = expenses.groupBy { it.title }
-        val statList: ArrayList<StatExpenses> = arrayListOf()
-        for (i in 1..3) {
-            statList.add(
-                StatExpenses(
-                    refuelTotalSum = test[REFUEL]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
-                        ?: 0,
-                    serviceTotalSum = test[SERVICE]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
-                        ?: 0,
-                    paymentTotalSum = test[PAYMENT]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
-                        ?: 0,
-                    shopingTotalSum = test[SHOPPING]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
-                        ?: 0,
-                    allTotalSum = 1,
-                    month = 1
-                )
-            )
-        }
-        return statList
-    }
-
-    fun startDataSort(resultExpenses: List<Expenses>): ArrayList<StatExpenses> {
+    private fun startDataSort(resultExpenses: List<Expenses>): ArrayList<StatExpenses> {
         var sortedMapExpenses: Map<Int, List<Expenses>> = mapOf()
         sortedMapExpenses = if (isSortByMonths)
             resultExpenses.groupBy { it.month }
@@ -123,17 +135,22 @@ class StatFragment : AbstractFragment() {
         val finishList: ArrayList<StatExpenses> = arrayListOf()
         for (list in mapOfExpenses.values) {
             val stageTwo = list.groupBy { it.title }
+            val refuelTotalSum =
+                stageTwo[REFUEL]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } } ?: 0
+            val serviceTotalSum =
+                stageTwo[SERVICE]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } } ?: 0
+            val paymentTotalSum =
+                stageTwo[PAYMENT]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } } ?: 0
+            val shoppingTotalSum =
+                stageTwo[SHOPPING]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } } ?: 0
+
             finishList.add(
                 StatExpenses(
-                    refuelTotalSum = stageTwo[REFUEL]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
-                        ?: 0,
-                    serviceTotalSum = stageTwo[SERVICE]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
-                        ?: 0,
-                    paymentTotalSum = stageTwo[PAYMENT]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
-                        ?: 0,
-                    shopingTotalSum = stageTwo[SHOPPING]?.let { it.sumBy { expenses -> expenses.totalSum.toInt() } }
-                        ?: 0,
-                    allTotalSum = 100,
+                    refuelTotalSum = refuelTotalSum,
+                    serviceTotalSum = serviceTotalSum,
+                    paymentTotalSum = paymentTotalSum,
+                    shopingTotalSum = shoppingTotalSum,
+                    allTotalSum = refuelTotalSum + serviceTotalSum + paymentTotalSum + shoppingTotalSum,
                     month = stageTwo[REFUEL]?.first()?.month ?: stageTwo[SERVICE]?.first()?.month
                     ?: stageTwo[PAYMENT]?.first()?.month ?: stageTwo[SHOPPING]?.first()?.month!!,
                     year = stageTwo[REFUEL]?.first()?.year ?: stageTwo[SERVICE]?.first()?.year
@@ -144,6 +161,16 @@ class StatFragment : AbstractFragment() {
         return finishList
     }
 
+}
+
+private fun TextView.setEnabling(enabled: Boolean) {
+    if (enabled) {
+        this.setBackgroundResource(R.drawable.shape_corner_button)
+        this.setTextColor(Color.WHITE)
+    } else {
+        this.setBackgroundResource(R.drawable.shape_corner_disabled_button)
+        this.setTextColor(Color.GRAY)
+    }
 }
 
 data class StatExpenses(
@@ -183,10 +210,7 @@ data class StatExpenses(
     liveDataPaymentSum.observe(viewLifecycleOwner) {
         expensesPayment.text = "Расходы на покупки: $it BYN"
     }
-    toolbarStat = view.findViewById(R.id.back_toolbar)
-    toolbarStat.setTitle(R.string.menu_setting)
 
-    setToolbar(toolbarStat, R.string.menu_stat, isBackButtonEnabled = true)
 }
 
 private fun setupPieChart() {

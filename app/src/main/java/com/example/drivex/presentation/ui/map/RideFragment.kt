@@ -36,7 +36,6 @@ class RideFragment : AbstractFragment() {
     private lateinit var rideAdapter: RideAdapter
     private lateinit var viewModel: MapViewModel
     private lateinit var toolbarRide: Toolbar
-    private lateinit var shareBtn:ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +51,6 @@ class RideFragment : AbstractFragment() {
         rideAdapter = RideAdapter(prefs,context)
         viewModel = ViewModelProvider(this).get(MapViewModel::class.java)
         toolbarRide = view.findViewById(R.id.rides_toolbar)
-       // shareBtn = view.findViewById(R.id.share_btn)
         setupRecyclerView()
         setToolbar(toolbarRide,R.string.menu_ride)
 

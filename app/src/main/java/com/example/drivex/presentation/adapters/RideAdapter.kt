@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide
 import com.example.drivex.R
 import com.example.drivex.data.model.MapModels
 import com.example.drivex.presentation.ui.dialogs.SettingsDialog
-import kotlinx.android.synthetic.main.item_ride.*
 import kotlinx.android.synthetic.main.item_ride.view.*
 import java.text.SimpleDateFormat
 import java.util.*

@@ -94,9 +94,12 @@
     <string name="info_about_refuel">Information about the selected refueling:</string>
     <string name="please_add_refuel_data">"Please add the data of the current refueling"</string>
     <string name="your_buy">Buying</string>
+    <string name="shopping">Shopping</string>
+
     <string name="info_of_your_buy">Information about the selected purchase:</string>
     <string name="please_add_info_of_your_buy">Please add information about your purchase</string>
     <string name="payment">Payment</string>
+    <string name="payments">Payments</string>
     <string name="payment_info">Information about the selected payment:</string>
     <string name="please_add_payment_info">Please add your payment information:</string>
     <string name="category">Category:</string>
@@ -121,11 +124,17 @@
     <string name="insufficient_data">Insufficient data</string>
     <string name="send_extra_text">This is my ride route / Sent using the DriveX app</string>
     <string name="all_period">all period</string>
-    <string name="last_day">last day</string>
-    <string name="last_week">last week</string>
-    <string name="last_month">last month</string>
-    <string name="last_three_months">last 3 months</string>
-    <string name="last_year">last year</string>
+    <string name="last_day">day</string>
+    <string name="last_week">week</string>
+    <string name="last_month"> month</string>
+    <string name="last_three_months">3 months</string>
+    <string name="last_year">year</string>
+    <string name="total_expenses_desc"> Total expenses for </string>
+    <string name="payment_costs">Payment costs</string>
+    <string name="payment_shopping">Shopping costs</string>
+    <string name="service_costs">Service costs</string>
+    <string name="fuel_costs">Fuel costs</string>
+
 
     <string-array name="filter_options">
         <item>Sort by date</item>

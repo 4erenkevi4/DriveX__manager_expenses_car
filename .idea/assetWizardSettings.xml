@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/share/baseline_share_24.xml" />
+                                      <entry key="url" value="file:/C:/SDK/icons/material/materialicons/shopping_cart/baseline_shopping_cart_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,9 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="color" value="0f98ab" />
-                            <entry key="outputName" value="ic_free_icon_save" />
+                            <entry key="color" value="70008f" />
+                            <entry key="outputName" value="ic_baseline_shopping_cart_24" />
                             <entry key="sourceFile" value="C:\Users\Северный\Desktop\free-icon-font-checkbox-3917090.svg" />
                           </map>
                         </option>

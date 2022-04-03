@@ -96,6 +96,8 @@
     <string name="info_of_your_buy">Информация о выбранной покупке:</string>
     <string name="please_add_info_of_your_buy">Пожалуйста, добавьте информацию о вашей покупке</string>
     <string name="payment">Платеж</string>
+    <string name="payments">Платежи</string>
+    <string name="shopping">Покупки</string>
     <string name="payment_info">Информация о выбранном платеже:</string>
     <string name="please_add_payment_info">Пожалуйста, добавьте информацию о вашем платеже:</string>
     <string name="category">Категория:</string>
@@ -121,6 +123,8 @@
     <string name="consumption_off_city">Расход топлива по трассе</string>
     <string name="insufficient_data">Нет данных</string>
     <string name="send_extra_text">Вот маршрут моей поездки/(отправлено с помощью приложения DriveX)</string>
+    <string name="total_expenses_desc"> Общие расходы за </string>
+    <string name="payment_shopping">Расходы на покупки</string>
 
     <string name="all_period">весь период</string>
     <string name="last_day">день</string>
@@ -128,6 +132,9 @@
     <string name="last_month">месяц</string>
     <string name="last_three_months">3 месяца</string>
     <string name="last_year">год</string>
+    <string name="payment_costs">Расходы на платежи</string>
+    <string name="service_costs">Расходы на сервис</string>
+    <string name="fuel_costs">Расходы на топливо</string>
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>
