@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="О чем вам напомнить? "
+        android:text="@string/what_remind"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/notify_container1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Плановое ТО"
+            android:text="@string/plan_Repair"
             android:textColor="@color/yellow20"
             android:textSize="11sp" />
 
@@ -92,7 +92,7 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Поездка"
+            android:text="@string/Trip"
             android:textColor="@color/yellow20"
             android:textSize="11sp" />
 
@@ -101,7 +101,7 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Мойка авто"
+            android:text="@string/car_wash"
             android:textColor="@color/yellow20"
             android:textSize="11sp" />
 
@@ -110,7 +110,7 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Шиномонтаж"
+            android:text="@string/tire_fitting"
             android:textColor="@color/yellow20"
             android:textSize="11sp" />
 
@@ -180,7 +180,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="Диагностика"
+            android:text="@string/diagnostic"
             android:textColor="@color/yellow20"
             android:textSize="11sp" />
 
@@ -189,7 +189,7 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Страховка"
+            android:text="@string/insurance"
             android:textColor="@color/yellow20"
             android:textSize="11sp" />
 
@@ -198,18 +198,18 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Продлить права"
+            android:text="@string/renew_the_license"
             android:textColor="@color/yellow20"
-            android:textSize="11sp" />
+            android:textSize="9sp" />
 
         <TextView
             style="@style/Description_edit_text"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Замена масла"
+            android:text="@string/oil_change"
             android:textColor="@color/yellow20"
-            android:textSize="11sp" />
+            android:textSize="10sp" />
 
     </LinearLayout>
 
@@ -281,7 +281,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="Платеж"
+            android:text="@string/payment"
             android:textColor="@color/yellow20"
             android:textSize="11sp" />
 
@@ -290,7 +290,7 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Техосмотр"
+            android:text="@string/tech_Inspection"
             android:textColor="@color/yellow20"
             android:textSize="11sp" />
 
@@ -299,7 +299,7 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Покупка"
+            android:text="@string/your_buy"
             android:textColor="@color/yellow20"
             android:textSize="12sp" />
 
@@ -308,7 +308,7 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Прочее"
+            android:text="@string/other"
             android:textColor="@color/yellow20"
             android:textSize="12sp" />
 
@@ -322,7 +322,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
         android:gravity="center"
-        android:hint="Добавьте подробности напоминания"
+        android:hint="@string/add_detail_reminder"
         android:textColorHint="@color/gray20"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"

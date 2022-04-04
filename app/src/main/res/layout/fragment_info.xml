@@ -23,7 +23,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin_16"
-        android:background="@drawable/shape_corner_button"
+        android:background="@drawable/shape_corner_disabled_button"
         android:gravity="center"
         android:paddingHorizontal="@dimen/default_margin_8"
         android:text="@string/info_expense_accounting"
@@ -38,7 +38,7 @@
         android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/shape_corner_button"
+        android:background="@drawable/shape_corner_disabled_button"
         android:text="@string/info_create_reminders"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
         android:id="@+id/textView4"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_corner_button"
+        android:background="@drawable/shape_corner_disabled_button"
         android:layout_marginTop="@dimen/default_margin_16"
         android:gravity="center"
         android:text="@string/info_recording_routes"
@@ -66,7 +66,8 @@
         android:padding="@dimen/default_margin_8"
         android:text="@string/info_title"
         android:textAlignment="center"
-        android:textColor="@color/yellow20"
+        android:textColor="@color/white20"
+        android:textStyle="bold"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_back_Button" />
@@ -120,13 +121,39 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/logo_drivex_n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/privacy_policy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_16"
+        android:background="@drawable/shape_corner_button"
+        android:padding="@dimen/default_margin_8"
+        android:text="Privacy policy →"
+        android:textColor="@color/purple20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/terms_andcond" />
+
+    <TextView
+        android:id="@+id/terms_andcond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_16"
+        android:background="@drawable/shape_corner_button"
+        android:padding="@dimen/default_margin_8"
+        android:text="Terms and Conditions  → "
+        android:textColor="@color/purple20"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_info3" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

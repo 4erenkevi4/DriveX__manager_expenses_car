@@ -187,6 +187,7 @@ class MapsActivity : AbstractActivity() {
     private fun zoomToWholeTrack() {
         val bounds = LatLngBounds.Builder()
         for (polyline in pathPoints) {
+            if(polyline.isNullOrEmpty()) return
             for (point in polyline) {
                 bounds.include(point)
             }

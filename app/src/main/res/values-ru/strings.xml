@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">DriveX</string>
+    <string name="portrait_orientation">portrait</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">DriveX</string>
@@ -144,6 +145,21 @@
     <string name="info_desc1">Узнайте, сколько ваш автомобиль тратит на топливо, сервис, покупки и платежи . В приложении доступна аналитика ежемесячныч расходов по категориям, графическое и текстовое отображение расходов.</string>
     <string name="info_desc2">DriveX помогает в управлении напоминаниями о регулярных услугах и расходах по обслуживанию автомобиля, таких как сервис, мониторинг замены масла, техосмотры, напоминание о мойке авто, о поездке, покупке и прочих категориях напоминаний.</string>
     <string name="info_desc_3">Оставайтесь в курсе совершенных поездок. Данное приложение поволяет записывать маршрут, продолжительность, среднюю скорость и время каждой вашей поездки, и сохранять эти данные в истории поездок.</string>
+    <string name="year">Год</string>
+    <string name="Month">Месяц</string>
+    //NOTIFICATION_FRAGMENT
+    <string name="what_remind">О чем вам напомнить?</string>
+    <string name="plan_Repair">Плановое ТО</string>
+    <string name="Trip">Поездка</string>
+    <string name="car_wash">Мойка авто</string>
+    <string name="tire_fitting">Шиномонтаж</string>
+    <string name="diagnostic">Диагностика</string>
+    <string name="insurance">Страховка</string>
+    <string name="renew_the_license">Продлить права</string>
+    <string name="oil_change">Замена масла</string>
+    <string name="tech_Inspection">Техосмотр</string>
+    <string name="other">Прочее</string>
+    <string name="add_detail_reminder">Добавьте подробности напоминания</string>
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>

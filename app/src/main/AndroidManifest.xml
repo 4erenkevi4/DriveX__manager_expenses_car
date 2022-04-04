@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.drivex">
 
-    <uses-sdk android:minSdkVersion="17"
+    <uses-sdk
+        android:minSdkVersion="17"
         tools:ignore="GradleOverrides" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -17,38 +19,60 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.DriveX">
         <receiver
             android:name=".presentation.ui.notification.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
+
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"
-            />
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".presentation.ui.activity.MainActivity"
-            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/Theme.DriveX.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.ui.activity.CameraActivity" />
-        <activity android:name=".presentation.ui.activity.FuelActivity" />
-        <activity android:name=".presentation.ui.activity.AbstractActivity" />
-        <activity android:name=".presentation.ui.activity.ServiceActivity" />
-        <activity android:name=".presentation.ui.activity.MapsActivity" />
-        <service android:name="com.example.drivex.presentation.ui.map.TrackingService"
-            android:foregroundServiceType="location"/>
+        <activity
+            android:name=".presentation.ui.activity.CameraActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".presentation.ui.activity.FuelActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity
+            android:name=".presentation.ui.activity.AbstractActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity
+            android:name=".presentation.ui.activity.ServiceActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity
+            android:name=".presentation.ui.activity.MapsActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+
+        <service
+            android:name="com.example.drivex.presentation.ui.map.TrackingService"
+            android:foregroundServiceType="location" />
     </application>
 
 </manifest>

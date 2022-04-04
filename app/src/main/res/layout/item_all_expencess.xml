@@ -26,17 +26,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin_8"
         android:layout_marginTop="20dp"
-        tools:hint="Вид расхода"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/image_type"
-        app:layout_constraintTop_toTopOf="@+id/image_type" />
+        app:layout_constraintTop_toTopOf="@+id/image_type"
+        tools:hint="Вид расхода" />
 
     <ImageView
         android:id="@+id/preview_photo"
-        android:layout_width="45dp"
+        android:layout_width="40dp"
         android:layout_height="60dp"
         android:alpha="0.7"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cost"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin_8"
         android:layout_marginBottom="20dp"
-        android:textSize="12sp"
+        android:textSize="11sp"
         android:hint="Дата"
         app:layout_constraintBottom_toBottomOf="@+id/image_type"
         app:layout_constraintStart_toEndOf="@+id/image_type" />
@@ -56,10 +56,13 @@
         android:id="@+id/cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:text="50 BYN"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/shape_corner_disabled_button"
         android:gravity="end"
-        android:textSize="24sp"
+        android:paddingHorizontal="@dimen/default_margin_8"
+        android:text="50 BYN"
+        android:textColor="@color/white20"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

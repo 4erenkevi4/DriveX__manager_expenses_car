@@ -30,7 +30,7 @@
             android:gravity="center"
             android:paddingHorizontal="@dimen/default_margin_16"
             android:paddingVertical="4dp"
-            android:text="Год"
+            android:text="@string/year"
             android:textColor="@color/white" />
 
         <TextView
@@ -42,7 +42,7 @@
             android:gravity="center"
             android:paddingHorizontal="@dimen/default_margin_16"
             android:paddingVertical="4dp"
-            android:text="Месяц"
+            android:text="@string/Month"
             android:textColor="@color/white" />
     </LinearLayout>
 

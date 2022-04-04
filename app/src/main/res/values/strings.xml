@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">DriveX</string>
+    <string name="portrait_orientation">portrait</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">DriveX</string>
@@ -144,6 +146,21 @@
     <string name="info_desc1">Find out how much your car is spending on fuel, service, purchases, and payments. In the app, you can see monthly expenses by category, as well as graphical and text display of expenses.</string>
     <string name="info_desc2">DriveX helps in managing reminders for regular car services and expenses, such as service, oil change monitoring, maintenance inspections, car wash reminders, trip reminders, shopping reminders and other categories of reminders.</string>
     <string name="info_desc_3">Stay informed about your journeys. This app allows you to record the route, duration, average speed, and time of each of your trips, and save this data in your trip history.</string>
+    <string name="year">Year</string>
+    <string name="Month">Month</string>
+    //NOTIFICATION_FRAGMENT
+    <string name="what_remind">What can I remind you of?</string>
+    <string name="plan_Repair">Repair</string>
+    <string name="Trip">Trip</string>
+    <string name="car_wash">Car Wash</string>
+    <string name="tire_fitting">Tire fitting</string>
+    <string name="diagnostic">Diagnostic</string>
+    <string name="insurance">Insurance</string>
+    <string name="renew_the_license">Renew license</string>
+    <string name="oil_change">Oil change</string>
+    <string name="tech_Inspection">Tech inspection</string>
+    <string name="other">Other</string>
+    <string name="add_detail_reminder">Add reminder details</string>
 
 
     <string-array name="filter_options">

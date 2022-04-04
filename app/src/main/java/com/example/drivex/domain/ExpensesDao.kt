@@ -22,7 +22,7 @@ interface ExpensesDao {
     @Query("SELECT * FROM refuel ORDER BY date ASC")
     fun getAllRefuel(): List<Expenses>
 
-    @Query("SELECT * FROM refuel ORDER BY id ASC")
+    @Query("SELECT * FROM refuel ORDER BY timeForMillis DESC")
     fun getAllExpensesBydate(): LiveData<List<Expenses>>
 
     @Query("SELECT * FROM refuel WHERE timeForMillis > :period")
