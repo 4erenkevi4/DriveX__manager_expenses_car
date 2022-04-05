@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.drivex">
+    package="com.cherenkevich.drivex">
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".BaseApplication"
+        android:name="com.cherenkevich.drivex.BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DriveX">
         <receiver
-            android:name=".presentation.ui.notification.AlarmReceiver"
+            android:name="com.cherenkevich.drivex.presentation.ui.notification.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
 
@@ -39,7 +39,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".presentation.ui.activity.MainActivity"
+            android:name="com.cherenkevich.drivex.presentation.ui.activity.MainActivity"
             android:screenOrientation="portrait"
 
             tools:ignore="LockedOrientationActivity"
@@ -50,28 +50,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.ui.activity.CameraActivity"
+            android:name="com.cherenkevich.drivex.presentation.ui.activity.CameraActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".presentation.ui.activity.FuelActivity"
+            android:name="com.cherenkevich.drivex.presentation.ui.activity.FuelActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name=".presentation.ui.activity.AbstractActivity"
+            android:name="com.cherenkevich.drivex.presentation.ui.activity.AbstractActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name=".presentation.ui.activity.ServiceActivity"
+            android:name="com.cherenkevich.drivex.presentation.ui.activity.ServiceActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name=".presentation.ui.activity.MapsActivity"
+            android:name="com.cherenkevich.drivex.presentation.ui.activity.MapsActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
 
         <service
-            android:name="com.example.drivex.presentation.ui.map.TrackingService"
+            android:name="com.cherenkevich.drivex.presentation.ui.map.TrackingService"
             android:foregroundServiceType="location" />
     </application>
 

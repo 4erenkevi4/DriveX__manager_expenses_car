@@ -7,7 +7,7 @@
     https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=06:02:DB:7B:BB:AB:47:91:F2:D5:B8:5C:45:DC:B6:2E:F0:F2:BD:7D%3Bcom.example.drivex.presentation.ui.activity
 
     You can also add your credentials to an existing key, using these values:
-
+old key AIzaSyAC481rJ6D1bepaPzevAkHDbS77WYFH8bw
     Package name:
     com.example.drivex.presentation.ui.activity
 
@@ -20,5 +20,5 @@
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAC481rJ6D1bepaPzevAkHDbS77WYFH8bw</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAMgiFuWc3DsmwzjvB4pC8K74dUX8lXeB8</string>
 </resources>
