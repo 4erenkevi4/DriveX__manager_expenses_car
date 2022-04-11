@@ -55,7 +55,7 @@ open class NotificationFragment : AbstractFragment() {
     private lateinit var buttonTexosm: ImageView
     private lateinit var buttonShopping: ImageView
     private lateinit var buttonOther: ImageView
-    private var titleOfNotification: String = "Напоминание"
+    private var titleOfNotification: String = getString(R.string.reminderGeneral)
     private var notifyId: Int = 1
     lateinit var listButtons: ArrayList<ImageView>
     private lateinit var toolbarNotify: Toolbar
@@ -171,7 +171,7 @@ open class NotificationFragment : AbstractFragment() {
             calendar[Calendar.MONTH],
             calendar[Calendar.DAY_OF_MONTH]
         )
-        dateSetListener.setTitle("Выберите дату напоминания")
+        dateSetListener.setTitle(getString(R.string.dateOfReminder))
         dateSetListener.show()
     }
 
@@ -183,7 +183,7 @@ open class NotificationFragment : AbstractFragment() {
             calendar[Calendar.MINUTE],
             true
         )
-        timePickerDialog.setTitle("Выберите время напоминания")
+        timePickerDialog.setTitle(getString(R.string.timeOfReminder))
         timePickerDialog.show()
     }
 
@@ -210,7 +210,7 @@ open class NotificationFragment : AbstractFragment() {
 
     private fun startNotification() {
         isCalendarSettUp = false
-        Toast.makeText(context, "Создано напоминание: $titleOfNotification", Toast.LENGTH_SHORT)
+        Toast.makeText(context, "${getString(R.string.creationReminder)} $titleOfNotification", Toast.LENGTH_SHORT)
             .show()
         notificationViewModel.makeActiveButtons(listButtons)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -256,20 +256,15 @@ class MyDialogFragment(
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val notificationViewModel = ViewModelProvider(this).get(NotificationViewModel::class.java)
-        val title = "Продолжить без описания напоминания?"
-        val message =
-            "Вы не заполнили описание напоминания. Создать уведомление без описания, или добавить подробности? "
-        val button1String = "Продолжить"
-        val button2String = "Добавить"
         val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
-        builder.setTitle(title) // заголовок
-        builder.setMessage(message) // сообщение
+        builder.setTitle(getString(R.string.continieReminder))
+        builder.setMessage(getString(R.string.emptyDescriptionOfReminder))
         builder.setPositiveButton(
-            button1String
+            getString(R.string.accept_general)
         ) { dialog, id ->
             notificationViewModel.makeActiveButtons(listButton)
             Toast.makeText(
-                activity, "Создано напоминание: ",
+                activity, getString(R.string.creationReminder),
                 Toast.LENGTH_SHORT
             ).show()
 
@@ -282,10 +277,10 @@ class MyDialogFragment(
             )
         }
         builder.setNegativeButton(
-            button2String
+            getString(R.string.cancel_general)
         ) { dialog, id ->
             startNotificationButton.isVisible = true
-            Toast.makeText(activity, "Введите описание напоминания", Toast.LENGTH_SHORT)
+            Toast.makeText(activity, getString(R.string.enterDescriptionOfReminder), Toast.LENGTH_SHORT)
                 .show()
         }
         builder.setCancelable(true)

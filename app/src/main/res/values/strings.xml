@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">DriveX</string>
     <string name="portrait_orientation">portrait</string>
-
+    <string name="location_permishion_title">"Submit the required permissions"</string>
+    <string name="location_permishion_text">“DriveX app collects location data to enable  for the trip route saving function to work correctly, as well as calculating mileage and fuel consumption data, even when the app is closed or not in use.”</string>
+    <string name="location_permishion_warning">"Without this permission, DriveX will not be able to record a route"</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">DriveX</string>
@@ -75,6 +77,7 @@
     // Selected
     <string name="selected_general">Selected : </string>
     <string name="cancel_general">Cancel </string>
+    <string name="accept_general">Accept </string>
     <string name="general_history">History</string>
 
     //Home_Fragment
@@ -160,7 +163,17 @@
     <string name="oil_change">Oil change</string>
     <string name="tech_Inspection">Tech inspection</string>
     <string name="other">Other</string>
+    <string name="reminderGeneral"> Reminder</string>
     <string name="add_detail_reminder">Add reminder details</string>
+    <string name="dateOfReminder">Select reminder date</string>
+    <string name="timeOfReminder">Select reminder time</string>
+    <string name="creationReminder">Created reminder</string>
+    <string name="continieReminder">Continue without reminder description?</string>
+    <string name="emptyDescriptionOfReminder">You did not fill in a description for reminder. Create notification without a description, or add details? </string>
+    <string name="enterDescriptionOfReminder">Enter a description for the reminder</string>
+
+
+
 
 
     <string-array name="filter_options">

@@ -90,34 +90,18 @@ class MainActivity : AppCompatActivity() {
     private fun requestPermissions() {
         if (ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_DENIED
         ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 ActivityCompat.requestPermissions(
                     this, arrayOf(
                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.FOREGROUND_SERVICE
-                    ),
-                    Constans.REQUEST_CODE_GET_PERMISSION
-                )
-            } else {
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        Manifest.permission.CAMERA
                     ),
                     Constans.REQUEST_CODE_GET_PERMISSION
                 )
             }
         }
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

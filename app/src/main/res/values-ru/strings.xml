@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">DriveX</string>
     <string name="portrait_orientation">portrait</string>
+    <string name="location_permishion_title">"Предоставьте необходимые разрешения"</string>
+    <string name="location_permishion_text"> "Приложение DriveX может записывать данные о местоположении для корректной работы функции сохранения маршрута поездки, а также рассчета данных о пробеге и расходе топлива"</string>
+    <string name="location_permishion_warning">"Без этого разрешения приложение не сможет записывать маршрут"</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">DriveX</string>
@@ -73,6 +76,7 @@
     //Selected
     <string name="selected_general">Вы выбрали : </string>
     <string name="cancel_general">Отмена </string>
+    <string name="accept_general">Принять </string>
     <string name="general_history">История</string>
 
     //Home_Fragment
@@ -159,7 +163,15 @@
     <string name="oil_change">Замена масла</string>
     <string name="tech_Inspection">Техосмотр</string>
     <string name="other">Прочее</string>
+    <string name="reminderGeneral">Напоминание</string>
     <string name="add_detail_reminder">Добавьте подробности напоминания</string>
+    <string name="dateOfReminder">Выберите дату напоминания</string>
+    <string name="timeOfReminder">Выберите время напоминания</string>
+    <string name="creationReminder">Создано напоминание </string>
+    <string name="continieReminder">Продолжить без описания напоминания?</string>
+    <string name="emptyDescriptionOfReminder">Вы не заполнили описание напоминания. Создать уведомление без описания, или добавить подробности?</string>
+    <string name="enterDescriptionOfReminder">Введите описание напоминания</string>
+
 
     <string-array name="filter_options">
         <item>Сортировать по дате</item>

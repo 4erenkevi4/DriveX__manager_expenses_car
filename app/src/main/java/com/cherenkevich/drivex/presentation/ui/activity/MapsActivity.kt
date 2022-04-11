@@ -1,16 +1,22 @@
 package com.cherenkevich.drivex.presentation.ui.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentTransaction
 import com.cherenkevich.drivex.R
 import com.cherenkevich.drivex.data.model.MapModels
+import com.cherenkevich.drivex.presentation.ui.dialogs.PermissionDialog
 import com.cherenkevich.drivex.presentation.ui.map.MapViewModel
 import com.cherenkevich.drivex.presentation.ui.map.TrackingService
 import com.cherenkevich.drivex.utils.Constans
@@ -26,6 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tracking.*
 import java.util.*
 import kotlin.math.round
+
 
 @AndroidEntryPoint
 class MapsActivity : AbstractActivity() {
@@ -47,20 +54,19 @@ class MapsActivity : AbstractActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.fragment_tracking)
         btnToggleRun = findViewById(R.id.btnToggleRun)
         btnFinishRun = findViewById(R.id.btnFinishRun)
         tvTimer = findViewById(R.id.tvTimer)
         mapToolbar = findViewById(R.id.back_toolbar)
-
+        checkPermisshions()
         val viewMap = mapGoogle as SupportMapFragment
         viewMap.getMapAsync {
             mMap = it
             addAllPolylines()
         }
-
         btnToggleRun.setOnClickListener {
+            checkPermisshions()
             toggleDrive()
         }
 
@@ -72,6 +78,47 @@ class MapsActivity : AbstractActivity() {
         subscribeToObservers()
     }
 
+   private fun checkPermisshions(){
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_DENIED
+        ){
+            val permissionDialog = PermissionDialog()
+            val manager = supportFragmentManager
+            val transaction: FragmentTransaction = manager.beginTransaction()
+            permissionDialog.show(transaction, "dialog")
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    Toast.makeText(
+                        this,
+                        " Permissions was granted.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+
+                    Toast.makeText(
+                        this,
+                        "Permission denied to read your location",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                return
+            }
+        }
+    }
 
     private fun subscribeToObservers() {
         TrackingService.isTracking.observe(this) {
