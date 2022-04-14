@@ -39,7 +39,7 @@ object ServiceModule {
         .setAutoCancel(false)
         .setOngoing(true)
         .setSmallIcon(R.drawable.ic_car)
-        .setContentTitle("Поездка записывается...")
+        .setContentTitle(context.getString(R.string.trip_writing))
         .setContentText("00:00:00")
         .setContentIntent(pendingIntent)
 

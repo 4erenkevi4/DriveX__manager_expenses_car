@@ -131,6 +131,8 @@
     <string name="send_extra_text">Вот маршрут моей поездки/(отправлено с помощью приложения DriveX)</string>
     <string name="total_expenses_desc"> Общие расходы за </string>
     <string name="payment_shopping">Расходы на покупки</string>
+    <string name="trip_writing"> Поездка записывается…</string>
+
 
     <string name="all_period">весь период</string>
     <string name="last_day">день</string>

@@ -141,6 +141,7 @@
     <string name="service_costs">Service costs</string>
     <string name="fuel_costs">Fuel costs</string>
     <string name="filters">Filters</string>
+    <string name="trip_writing">Trip written…</string>
     //INFO FRAGMENT
     <string name="info_expense_accounting">Expense accounting</string>
     <string name="info_create_reminders">Create reminders</string>
