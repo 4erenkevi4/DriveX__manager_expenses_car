@@ -55,7 +55,7 @@ open class NotificationFragment : AbstractFragment() {
     private lateinit var buttonTexosm: ImageView
     private lateinit var buttonShopping: ImageView
     private lateinit var buttonOther: ImageView
-    private var titleOfNotification: String = getString(R.string.reminderGeneral)
+    private lateinit var titleOfNotification: String
     private var notifyId: Int = 1
     lateinit var listButtons: ArrayList<ImageView>
     private lateinit var toolbarNotify: Toolbar
@@ -71,6 +71,7 @@ open class NotificationFragment : AbstractFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        titleOfNotification = getString(R.string.reminderGeneral)
         buttonTO = view.findViewById(R.id.notify_to)
         buttonDrive = view.findViewById(R.id.notify_drive)
         buttonWash = view.findViewById(R.id.notify_wash)

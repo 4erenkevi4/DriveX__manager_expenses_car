@@ -106,7 +106,7 @@ class RideAdapter(prefs: SharedPreferences, context: Context?) :
         val pathofBmp: String =
             Images.Media.insertImage(context?.contentResolver, url, "title", null)
         val mesage =
-            "${context?.getString(R.string.send_extra_text)}${context?.getString(R.string.total_dist)}\"${drive.distanceInMeters / 1000f}km\""
+            "${context?.getString(R.string.send_extra_text)}${context?.getString(R.string.total_dist)}\"${drive.distanceInMeters / 1000f}\""
         val intent = Intent(Intent.ACTION_SEND);
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
         intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(pathofBmp));

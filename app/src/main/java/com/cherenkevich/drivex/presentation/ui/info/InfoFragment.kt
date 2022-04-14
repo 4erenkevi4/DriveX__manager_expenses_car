@@ -32,7 +32,7 @@ class InfoFragment : AbstractFragment() {
         setFloatingMenuVisibility(false)
         setToolbar(toolbar, R.string.menu_info, true)
         privacyPolicy.setOnClickListener {
-            val adress: Uri = Uri.parse("https://drive.google.com/file/d/1HGHMJrMm6xLwCM09dwmvgHO2HABbDEQL/view?usp=sharing")
+            val adress: Uri = Uri.parse("https://pages.flycricket.io/drivex/privacy.html")
             val browser = Intent(Intent.ACTION_VIEW, adress)
             startActivity(browser)
         }

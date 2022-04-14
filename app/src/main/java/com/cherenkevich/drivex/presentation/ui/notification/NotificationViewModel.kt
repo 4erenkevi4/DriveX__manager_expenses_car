@@ -29,14 +29,35 @@ class NotificationViewModel : ViewModel() {
     ) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
         intent.putExtra("Title", titleOfNotification)
         intent.putExtra("Description", editTextDesc)
         intent.putExtra("id", notifyId)
-        val pendingIntent = PendingIntent.getBroadcast(context, notifyId, intent, 0)
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+
+        val pendingFlags: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT;
+        }
+        val pendingIntent = PendingIntent.getBroadcast(context, notifyId, intent, pendingFlags)
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    pendingIntent
+                )
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT -> {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+            }
+            else -> {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+            }
+        }
     }
 
-    fun makeActiveButtons(listButton: ArrayList<ImageView>){
+    fun makeActiveButtons(listButton: ArrayList<ImageView>) {
         listButton.forEach { it.isClickable = true }
         listButton.forEach { it.isFocusable = true }
         listButton.forEach { it.clearAnimation() }
