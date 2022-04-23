@@ -173,6 +173,7 @@
     <string name="continieReminder">Продолжить без описания напоминания?</string>
     <string name="emptyDescriptionOfReminder">Вы не заполнили описание напоминания. Создать уведомление без описания, или добавить подробности?</string>
     <string name="enterDescriptionOfReminder">Введите описание напоминания</string>
+    <string name="time">Время в пути:</string>
 
 
     <string-array name="filter_options">

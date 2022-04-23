@@ -13,6 +13,7 @@
         android:id="@+id/layout_vehicle_setting"
         android:layout_width="0dp"
         android:layout_marginTop="?attr/actionBarSize"
+        android:paddingHorizontal="4dp"
         android:background="#111E1E1E"
         android:layout_height="@dimen/description_width_big"
         android:gravity="center"
@@ -48,7 +49,8 @@
 
             <EditText
                 android:id="@+id/Car_model"
-                android:layout_width="160dp"
+                android:layout_width="wrap_content"
+                android:textSize="12sp"
                 android:layout_height="wrap_content"
                 android:hint="@string/car_model" />
 
@@ -64,7 +66,7 @@
     <LinearLayout
         android:id="@+id/sound_app_lounch"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/description_width"
+        android:layout_height="wrap_content"
         android:gravity="start|center"
         app:layout_constraintTop_toBottomOf="@+id/layout_vehicle_setting">
 
@@ -104,7 +106,7 @@
         android:text="@string/units"
         android:textColor="@color/colorAccent"
         android:layout_marginStart="@dimen/default_margin_8"
-        android:layout_marginTop="@dimen/default_margin_16"
+        android:layout_marginTop="@dimen/default_margin_8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sound_app_lounch" />
 
@@ -120,7 +122,9 @@
         <LinearLayout
             android:id="@+id/layout_location_setting"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/description_width"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
+            android:layout_marginTop="4dp"
             android:gravity="center">
 
             <ImageView
@@ -162,7 +166,8 @@
         <LinearLayout
             android:id="@+id/layout_day_notification_setting"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/description_width"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
             android:gravity="start|center">
 
             <ImageView
@@ -203,7 +208,8 @@
         <LinearLayout
             android:id="@+id/layout_time_notifications_setting"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/description_width"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
             android:gravity="start|center">
 
             <ImageView
@@ -245,7 +251,8 @@
         <LinearLayout
             android:id="@+id/layout_distance_until"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/description_width"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
             android:gravity="start|center">
 
             <ImageView
@@ -286,7 +293,8 @@
         <LinearLayout
             android:id="@+id/layout_consumpt_sity"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/description_width"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
             android:gravity="start|center">
 
             <ImageView
@@ -329,7 +337,8 @@
         <LinearLayout
             android:id="@+id/layout_consumpt_offsity"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/description_width"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
             android:gravity="start|center">
 
             <ImageView

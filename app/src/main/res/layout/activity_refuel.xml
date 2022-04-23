@@ -23,12 +23,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_ref"
         tools:text="type" />
-
     <EditText
         android:id="@+id/textView_description"
         style="@style/Description_edit_text"
-        android:layout_width="300dp"
-        android:layout_height="70dp"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/item_dimensions_32"
+        android:layout_height="50dp"
         android:layout_marginTop="@dimen/default_margin_8"
         android:gravity="center"
         android:hint="@string/description"
@@ -39,110 +39,127 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/type" />
 
-    <TextView
-        android:id="@+id/textView_date"
-        style="@style/Description_edit_text"
-        android:layout_width="170dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin_16"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_description" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_description">
 
-    <TextView
-        android:layout_width="100dp"
+        <TextView
+            android:id="@+id/textView_date"
+            style="@style/Description_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:paddingVertical="4dp" />
+
+        <EditText
+            android:id="@+id/text_mileage"
+            style="@style/Description_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:paddingVertical="4dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/date"
-        android:textColor="@color/gray20"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView_date"
-        app:layout_constraintHorizontal_bias="0.525"
-        app:layout_constraintStart_toStartOf="@+id/textView_date"
-        app:layout_constraintTop_toBottomOf="@+id/textView_date" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-    <EditText
-        android:id="@+id/text_mileage"
-        style="@style/Description_edit_text"
-        android:layout_width="170dp"
-        android:layout_height="45dp"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:text="@string/date"
+            android:textColor="@color/gray20"
+            android:textSize="12sp" />
 
-        android:layout_marginEnd="16dp"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView_date"
-        app:layout_constraintTop_toTopOf="@+id/textView_date" />
+        <TextView
+            android:id="@+id/mileage_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:text="@string/mileage"
+            android:textColor="@color/gray20"
+            android:textSize="12sp" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/mileage_desc"
-        android:layout_width="100dp"
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/mileage"
-        android:textColor="@color/gray20"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/text_mileage"
-        app:layout_constraintHorizontal_bias="0.525"
-        app:layout_constraintStart_toStartOf="@+id/text_mileage"
-        app:layout_constraintTop_toBottomOf="@+id/text_mileage" />
+        android:layout_marginTop="@dimen/default_margin_8"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-    <EditText
-        android:id="@+id/cost_fuell"
-        style="@style/Description_edit_text"
-        android:layout_width="160dp"
+        <EditText
+            android:id="@+id/edit_text_volume"
+            style="@style/Description_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:paddingVertical="4dp"  />
+
+        <EditText
+            android:id="@+id/cost_fuell"
+            style="@style/Description_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mileage_desc" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/summ"
-        android:textColor="@color/gray20"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/cost_fuell"
-        app:layout_constraintHorizontal_bias="0.525"
-        app:layout_constraintStart_toStartOf="@+id/cost_fuell"
-        app:layout_constraintTop_toBottomOf="@+id/cost_fuell" />
+        <TextView
+            android:id="@+id/selection_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:layout_weight="1"
+            android:text="@string/date"
+            android:textColor="@color/gray20"
+            android:textSize="12sp" />
 
-    <EditText
-        android:id="@+id/edit_text_volume"
-        style="@style/Description_edit_text"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mileage_desc" />
-
-    <TextView
-        android:id="@+id/selection_type"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/volume"
-        android:textColor="@color/gray20"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/edit_text_volume"
-        app:layout_constraintHorizontal_bias="0.525"
-        app:layout_constraintStart_toStartOf="@+id/edit_text_volume"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_volume" />
-
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/default_margin_16"
+            android:text="@string/summ"
+            android:textColor="@color/gray20"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/button_photo"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/item_dimensions_32"
+        android:layout_marginStart="@dimen/default_margin_16"
+        android:layout_marginBottom="@dimen/default_margin_16"
         android:background="@drawable/shape_corner_mint_color"
         android:orientation="vertical"
         android:padding="@dimen/default_margin_8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_save">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -158,6 +175,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/add_check"
+            android:textSize="12dp"
             android:textColor="@color/white40"
             app:layout_constraintEnd_toEndOf="@+id/button_photo"
             app:layout_constraintStart_toStartOf="@+id/button_photo"
@@ -169,14 +187,13 @@
         android:id="@+id/button_save"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="@dimen/item_dimensions_32"
+        android:layout_marginEnd="@dimen/default_margin_16"
+        android:layout_marginBottom="@dimen/default_margin_16"
         android:background="@drawable/shape_corner_mint_color"
         android:orientation="vertical"
         android:padding="@dimen/default_margin_8"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fuel_photo_container">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
 
@@ -203,14 +220,14 @@
 
     <ImageView
         android:id="@+id/fuel_photo_container"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="@dimen/default_margin_16"
+        android:layout_width="wrap_content"
+        android:layout_height="220dp"
         android:contentDescription="@string/todo"
         android:src="@drawable/save_bill_alpha"
         android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/button_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

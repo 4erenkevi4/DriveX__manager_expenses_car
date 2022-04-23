@@ -172,10 +172,7 @@
     <string name="continieReminder">Continue without reminder description?</string>
     <string name="emptyDescriptionOfReminder">You did not fill in a description for reminder. Create notification without a description, or add details? </string>
     <string name="enterDescriptionOfReminder">Enter a description for the reminder</string>
-
-
-
-
+    <string name="time">time in road:</string>
 
     <string-array name="filter_options">
         <item>Sort by date</item>

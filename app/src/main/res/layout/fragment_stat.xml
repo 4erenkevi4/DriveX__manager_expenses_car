@@ -16,26 +16,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/default_margin_16"
+        android:layout_marginTop="@dimen/default_margin_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include2">
 
         <TextView
             android:id="@+id/buttonYear"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin_8"
             android:background="@drawable/shape_corner_button"
             android:gravity="center"
-            android:paddingHorizontal="@dimen/default_margin_16"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="4dp"
             android:text="@string/year"
             android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/buttonMonth"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin_8"
             android:background="@drawable/shape_corner_button"
