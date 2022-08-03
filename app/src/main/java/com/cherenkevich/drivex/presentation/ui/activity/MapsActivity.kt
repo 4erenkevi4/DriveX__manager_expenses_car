@@ -32,6 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_tracking.*
 import java.util.*
 import kotlin.math.round
+import kotlin.math.roundToLong
 
 
 @AndroidEntryPoint
@@ -40,16 +41,20 @@ class MapsActivity : AbstractActivity() {
     private var mMap: GoogleMap? = null
     private lateinit var btnToggleRun: Button
     private lateinit var btnFinishRun: Button
-    private lateinit var mapToolbar:Toolbar
+    private lateinit var mapToolbar: Toolbar
     private lateinit var tvTimer: TextView
     private var isTracking = false
     private var curTimeInMillis = 0L
     private var pathPoints = mutableListOf<MutableList<LatLng>>()
-    private var sppedList = mutableListOf<Float>()
+    private var sppedList = mutableMapOf<Float, Long>()
     private val viewModel: MapViewModel by viewModels()
     private var menu: Menu? = null
     override fun initCalendar(textViewDate: TextView) {
         //Nothing
+    }
+
+    companion object Coefficient {
+        private const val EXTRA_BRAKES_COEF = 1.2F
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,12 +83,12 @@ class MapsActivity : AbstractActivity() {
         subscribeToObservers()
     }
 
-   private fun checkPermisshions(){
+    private fun checkPermisshions() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_DENIED
-        ){
+        ) {
             val permissionDialog = PermissionDialog()
             val manager = supportFragmentManager
             val transaction: FragmentTransaction = manager.beginTransaction()
@@ -124,23 +129,19 @@ class MapsActivity : AbstractActivity() {
         TrackingService.isTracking.observe(this) {
             updateTracking(it)
         }
-
         TrackingService.pathPoints.observe(this) {
             pathPoints = it
             addLatestPolyline()
             moveCameraToUser()
         }
-
         TrackingService.timeDriveInMillis.observe(this) {
             curTimeInMillis = it
             val formattedTime = TrackingUtility.getFormattedStopWatchTime(it, true)
             tvTimer.text = formattedTime
         }
         TrackingService.speedLivedata.observe(this) {
-            sppedList.add(it)
+            sppedList.put(it, System.currentTimeMillis())
         }
-
-
     }
 
     private fun moveCameraToUser() {
@@ -233,7 +234,7 @@ class MapsActivity : AbstractActivity() {
     private fun zoomToWholeTrack() {
         val bounds = LatLngBounds.Builder()
         for (polyline in pathPoints) {
-            if(polyline.isNullOrEmpty()) return
+            if (polyline.isNullOrEmpty()) return
             for (point in polyline) {
                 bounds.include(point)
             }
@@ -256,16 +257,35 @@ class MapsActivity : AbstractActivity() {
                 distanceInMeters += TrackingUtility.calculatePolylineLength(polyline).toInt()
             }
             //val speedList = TrackingUtility.getSpeedList(this)
-            val maxSpeed = Math.round((Collections.max(sppedList) * 3.6))
+            val maxSpeed = (Collections.max(sppedList.keys) * 3.6).roundToLong()
             val avgSpeed =
                 round((distanceInMeters / 1000f) / (curTimeInMillis / 1000f / 60 / 60) * 10) / 10f
             val timestamp = Calendar.getInstance().timeInMillis
-            val run =
-                MapModels(bmp, timestamp, avgSpeed, distanceInMeters, curTimeInMillis, maxSpeed)
-            viewModel.insertRun(run)
+            val trip =
+                MapModels(
+                    bmp,
+                    timestamp,
+                    avgSpeed,
+                    distanceInMeters,
+                    curTimeInMillis,
+                    maxSpeed,
+                    getExtremeBrakingAmount()
+                )
+            viewModel.insertRun(trip)
 
             stopDrive()
         }
+    }
+
+    private fun getExtremeBrakingAmount(): Int {
+        var brakingCounter = 0
+        var previousSpeed = 0F
+        sppedList.forEach { currentSpeed ->
+                if (currentSpeed.key * EXTRA_BRAKES_COEF < previousSpeed)
+                    brakingCounter += 1
+            previousSpeed = currentSpeed.key
+        }
+        return brakingCounter
     }
 
     private fun stopDrive() {

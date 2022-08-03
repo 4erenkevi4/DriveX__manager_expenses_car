@@ -76,6 +76,8 @@ class RideAdapter(prefs: SharedPreferences, context: Context?) :
                 tvTopSpeed.text = it
             }
 
+            braking.text = drive.extraBrakes.toString()
+
             "${drive.distanceInMeters / 1000f}km".also {
                 tvDistance.text = it
             }

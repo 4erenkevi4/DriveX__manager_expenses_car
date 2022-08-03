@@ -5,11 +5,11 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_LOW
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.content.Context
 import android.content.Intent
 import android.location.Location
 import android.os.Build
+import android.os.Bundle
 import android.os.Looper
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -39,6 +39,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 typealias Polyline = MutableList<LatLng>
 typealias Polylines = MutableList<Polyline>
@@ -134,18 +135,18 @@ class TrackingService : LifecycleService() {
 
 
     private val locationCallback = object : LocationCallback() {
+
         override fun onLocationResult(result: LocationResult?) {
             super.onLocationResult(result)
             if (isTracking.value!!) {
                 result?.locations?.let { locations ->
-                    for (location in locations) {
-                        addPathPoint(location)
-
+                        for (location in locations) {
+                            addPathPoint(location)
+                        }
                     }
                 }
             }
         }
-    }
 
     private var isTimerEnabled = false
     private var lapTime = 0L

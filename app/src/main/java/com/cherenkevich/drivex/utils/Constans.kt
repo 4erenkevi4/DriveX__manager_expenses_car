@@ -4,10 +4,7 @@ import android.graphics.Color
 import java.util.*
 
 object Constans {
-    const val CAMERA_PERMISSION_CODE = 1
-    const val CAMERA_PIC_REQUEST = 2
-    const val ACTIVITY_FUEL: Long = 11
-    const val ACTIVITY_SERVICE: Long = 12
+
     const val MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey"
     const val PAYMENT_TYPE = "PaymentType"
     const val FILTER_PERIOD_TIME = "time_filter"
@@ -20,7 +17,7 @@ object Constans {
     const val ACTION_STOP_SERVICE = "ACTION_STOP_SERVICE"
 
     // Tracking Options
-    const val LOCATION_UPDATE_INTERVAL = 5000L
+    const val LOCATION_UPDATE_INTERVAL = 4000L
     const val FASTEST_LOCATION_UPDATE_INTERVAL = 2000L
 
     // Database
@@ -37,9 +34,6 @@ object Constans {
     const val TIMER_UPDATE_INTERVAL = 50L
 
     // Notifications
-    const val NOTIFICATION = "Напоминание создано!"
-    const val DESCRIPTION = "Напоминание о вашем автомобиле:"
-    const val CHANNELID = "notification_worker"
     const val NOTIFICATION_CHANNEL_ID = "tracking_channel"
     const val NOTIFICATION_CHANNEL_NAME = "Tracking"
     const val NOTIFICATION_ID = 1
@@ -65,11 +59,4 @@ object Constans {
     const val NOTIFY11 = "Вас запланирована покупка"
     const val NOTIFY12 = "Уведомление:"
 
-
-    const val PERIOD_ALL = "all period"
-    const val PERIOD_DAY = "last day"
-    const val PERIOD_WEEK = "last week"
-    const val PERIOD_MOUNTH = "last mount"
-    const val PERIOD_THREE_MOUNTH = "last 3 mounts"
-    const val PERIOD_YEAR = "last year"
 }
