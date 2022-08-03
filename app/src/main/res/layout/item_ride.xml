@@ -215,7 +215,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/braking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
@@ -226,12 +226,11 @@
         tools:text="4" />
 
     <TextView
-        android:id="@+id/braking"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="торможения"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/textView10"
+        app:layout_constraintBottom_toTopOf="@+id/braking"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvDate" />
 </androidx.constraintlayout.widget.ConstraintLayout>
